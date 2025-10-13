@@ -1,0 +1,147 @@
+/* 
+  Localizable.strings
+  NeonVPN
+
+  Created by Stephen Schaaf on 2025/9/19.
+*/
+
+// Main UI
+"app_title" = "NeonVPN";
+"connect_button" = "连接";
+"disconnect_button" = "断开";
+"connecting_status" = "连接中...";
+"connected_status" = "已连接";
+"disconnected_status" = "未连接";
+"failed_status" = "连接失败";
+
+// Result Page
+"connection_success" = "连接成功";
+"connection_failed" = "连接失败";
+"got_it" = "知道了";
+"back" = "返回";
+
+// Language Settings
+"language_settings" = "语言设置";
+"english" = "English";
+"chinese_simplified" = "简体中文";
+"current_language" = "当前语言";
+
+// New UI Elements
+"secure_connection" = "安全连接";
+"encrypted" = "已加密";
+"connection_time" = "连接时间";
+"upload" = "上传";
+"download" = "下载";
+"servers_title" = "服务器";
+"servers_subtitle" = "全部节点";
+"settings_title" = "设置";
+"settings_subtitle" = "偏好项";
+"auto_node" = "自动";
+"recommended" = "推荐";
+
+// Traffic Monitor
+"network_type" = "网络类型";
+"connected" = "已连接";
+"disconnected" = "未连接";
+"data_usage" = "数据使用";
+"data_used" = "已使用";
+"reset_data" = "重置数据";
+"simulate_activity" = "模拟活动";
+
+// Traffic Stats
+"traffic_stats" = "流量统计";
+"today" = "今日";
+"this_week" = "本周";
+"this_month" = "本月";
+"current_network" = "当前网络";
+"total" = "总计";
+"usage_history" = "使用历史";
+"simulate_traffic" = "模拟流量";
+"reset_all" = "重置全部";
+"accuracy_notice" = "准确性说明";
+"accuracy_description" = "流量数据基于网络活动模式估算。由于iOS系统限制，实际使用量可能有所不同。";
+"status_ready" = "就绪";
+"status_negotiating" = "协商中";
+"status_protected" = "已保护";
+"status_retry" = "点击重试";
+"tap_to_connect" = "轻点连接";
+
+// Tab Navigation
+"home" = "主页";
+"history" = "历史";
+
+// History
+"no_history" = "暂无连接历史";
+"history_description" = "您的连接历史将显示在这里";
+"clear_all" = "清空全部";
+"failed" = "失败";
+"connected_at" = "连接时间";
+
+// Settings
+"change_language" = "更改应用语言";
+"notifications" = "通知";
+"notification_settings" = "管理通知";
+"security" = "安全";
+"security_settings" = "安全偏好";
+"about" = "关于";
+"app_info" = "应用信息";
+"privacy_policy" = "隐私政策";
+"privacy_policy_subtitle" = "查看我们的隐私政策";
+"terms_of_use" = "服务条款";
+"terms_of_use_subtitle" = "查看条款和条件";
+"about_description" = "一款现代化的VPN应用程序，旨在提供安全可靠的互联网连接。以隐私和用户体验为核心设计。";
+"about_features" = "功能包括安全连接、多服务器位置、连接历史和流量监控。";
+"developer" = "开发者";
+"platform" = "平台";
+"framework" = "框架";
+"build_date" = "构建日期";
+"all_rights_reserved" = "版权所有";
+
+// Launch Screen
+"launch_subtitle" = "安全VPN连接";
+"loading" = "加载中";
+
+// Onboarding
+"network_permission_title" = "网络访问权限";
+"network_permission_description" = "NeonVPN需要网络访问权限来建立安全的VPN连接并保护您的网络流量。";
+"grant_permission" = "授予权限";
+"terms_title" = "用户协议";
+"terms_content_1" = "使用本应用即表示您同意遵守相关法律法规。";
+"terms_content_2" = "本应用仅供合法用途使用，用户需自行承担使用风险。";
+"terms_content_3" = "开发者不对网络连接质量、服务可用性等做出保证。";
+"terms_content_4" = "用户应遵守当地法律法规，不得用于非法活动。";
+"agree_to_terms" = "我已阅读并同意用户协议";
+"continue" = "继续";
+"setup_complete" = "设置完成！";
+"welcome_message" = "欢迎使用NeonVPN！您的安全连接已准备就绪。";
+"start_using" = "开始使用";
+
+// Delete
+"delete_record" = "删除记录";
+"delete_record_message" = "确定要删除这条连接记录吗？";
+"delete" = "删除";
+"cancel" = "取消";
+"edit" = "编辑";
+"done" = "完成";
+"cancel" = "取消";
+"confirm" = "确认";
+"vpn_status" = "VPN状态";
+"success_subtitle" = "您的连接已安全保护";
+"failed_subtitle" = "连接失败，请重试";
+"connection_info" = "连接信息";
+"server_location" = "服务器位置";
+"connection_time" = "连接时间";
+"protection_status" = "保护状态";
+"active" = "已激活";
+"suggestions" = "建议";
+"troubleshooting" = "故障排除";
+"suggestion_1" = "保持VPN连接以获得最大安全性";
+"suggestion_2" = "定期检查您的网络连接";
+"suggestion_3" = "使用我们的自动连接功能";
+"troubleshoot_1" = "检查您的网络连接";
+"troubleshoot_2" = "尝试切换到其他服务器";
+"troubleshoot_3" = "如果问题持续，请重启应用";
+"session_stats" = "会话统计";
+"uploaded" = "已上传";
+"downloaded" = "已下载";
+"duration" = "持续时间";

@@ -6,14 +6,67 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1619EF89A894311430FB95E6 /* Pods_NeonVPN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B446555FBD20B7EC4789E2E8 /* Pods_NeonVPN.framework */; };
+		FE003E5D2E7D47EB0071416A /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE003E5C2E7D47EB0071416A /* NetworkExtension.framework */; };
+		FE003E652E7D47EB0071416A /* cocopacket.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FE003E5B2E7D47EB0071416A /* cocopacket.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FE003E632E7D47EB0071416A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE003E2B2E7D46110071416A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FE003E5A2E7D47EB0071416A;
+			remoteInfo = cocopacket;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FE003E6A2E7D47EB0071416A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FE003E652E7D47EB0071416A /* cocopacket.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		38550FF39600451DFE392AE0 /* Pods-NeonVPN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeonVPN.release.xcconfig"; path = "Target Support Files/Pods-NeonVPN/Pods-NeonVPN.release.xcconfig"; sourceTree = "<group>"; };
+		763CB924486EF783044D50B5 /* Pods-NeonVPN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeonVPN.debug.xcconfig"; path = "Target Support Files/Pods-NeonVPN/Pods-NeonVPN.debug.xcconfig"; sourceTree = "<group>"; };
+		B446555FBD20B7EC4789E2E8 /* Pods_NeonVPN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeonVPN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE003E332E7D46110071416A /* NeonVPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeonVPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE003E5B2E7D47EB0071416A /* cocopacket.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = cocopacket.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE003E5C2E7D47EB0071416A /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FE003E662E7D47EB0071416A /* Exceptions for "cocopacket" folder in "cocopacket" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FE003E5A2E7D47EB0071416A /* cocopacket */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FE003E352E7D46110071416A /* NeonVPN */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = NeonVPN;
+			sourceTree = "<group>";
+		};
+		FE003E5E2E7D47EB0071416A /* cocopacket */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FE003E662E7D47EB0071416A /* Exceptions for "cocopacket" folder in "cocopacket" target */,
+			);
+			path = cocopacket;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -23,17 +76,47 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1619EF89A894311430FB95E6 /* Pods_NeonVPN.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE003E582E7D47EB0071416A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE003E5D2E7D47EB0071416A /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E7B480231F25AC5AF8E841B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				763CB924486EF783044D50B5 /* Pods-NeonVPN.debug.xcconfig */,
+				38550FF39600451DFE392AE0 /* Pods-NeonVPN.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		5E09182D2F93BED86B6AE79F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B446555FBD20B7EC4789E2E8 /* Pods_NeonVPN.framework */,
+				FE003E5C2E7D47EB0071416A /* NetworkExtension.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FE003E2A2E7D46110071416A = {
 			isa = PBXGroup;
 			children = (
 				FE003E352E7D46110071416A /* NeonVPN */,
+				FE003E5E2E7D47EB0071416A /* cocopacket */,
 				FE003E342E7D46110071416A /* Products */,
+				3E7B480231F25AC5AF8E841B /* Pods */,
+				5E09182D2F93BED86B6AE79F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -41,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				FE003E332E7D46110071416A /* NeonVPN.app */,
+				FE003E5B2E7D47EB0071416A /* cocopacket.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -52,23 +136,47 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FE003E3F2E7D46120071416A /* Build configuration list for PBXNativeTarget "NeonVPN" */;
 			buildPhases = (
+				AE8799F74CB11EF826FD7CF4 /* [CP] Check Pods Manifest.lock */,
 				FE003E2F2E7D46110071416A /* Sources */,
 				FE003E302E7D46110071416A /* Frameworks */,
 				FE003E312E7D46110071416A /* Resources */,
+				58D25072387232CA91831FE8 /* [CP] Embed Pods Frameworks */,
+				FE003E6A2E7D47EB0071416A /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FE003E642E7D47EB0071416A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				FE003E352E7D46110071416A /* NeonVPN */,
+			);
+			name = NeonVPN;
+			productName = NeonVPN;
+			productReference = FE003E332E7D46110071416A /* NeonVPN.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FE003E5A2E7D47EB0071416A /* cocopacket */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE003E672E7D47EB0071416A /* Build configuration list for PBXNativeTarget "cocopacket" */;
+			buildPhases = (
+				FE003E572E7D47EB0071416A /* Sources */,
+				FE003E582E7D47EB0071416A /* Frameworks */,
+				FE003E592E7D47EB0071416A /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				FE003E352E7D46110071416A /* NeonVPN */,
+				FE003E5E2E7D47EB0071416A /* cocopacket */,
 			);
-			name = NeonVPN;
+			name = cocopacket;
 			packageProductDependencies = (
 			);
-			productName = NeonVPN;
-			productReference = FE003E332E7D46110071416A /* NeonVPN.app */;
-			productType = "com.apple.product-type.application";
+			productName = cocopacket;
+			productReference = FE003E5B2E7D47EB0071416A /* cocopacket.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -83,6 +191,9 @@
 					FE003E322E7D46110071416A = {
 						CreatedOnToolsVersion = 16.4;
 					};
+					FE003E5A2E7D47EB0071416A = {
+						CreatedOnToolsVersion = 16.4;
+					};
 				};
 			};
 			buildConfigurationList = FE003E2E2E7D46110071416A /* Build configuration list for PBXProject "NeonVPN" */;
@@ -91,6 +202,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = FE003E2A2E7D46110071416A;
 			minimizedProjectReferenceProxies = 1;
@@ -100,6 +212,7 @@
 			projectRoot = "";
 			targets = (
 				FE003E322E7D46110071416A /* NeonVPN */,
+				FE003E5A2E7D47EB0071416A /* cocopacket */,
 			);
 		};
 /* End PBXProject section */
@@ -112,7 +225,60 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE003E592E7D47EB0071416A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		58D25072387232CA91831FE8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NeonVPN/Pods-NeonVPN-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NeonVPN/Pods-NeonVPN-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NeonVPN/Pods-NeonVPN-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AE8799F74CB11EF826FD7CF4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NeonVPN-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FE003E2F2E7D46110071416A /* Sources */ = {
@@ -122,7 +288,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE003E572E7D47EB0071416A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE003E642E7D47EB0071416A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FE003E5A2E7D47EB0071416A /* cocopacket */;
+			targetProxy = FE003E632E7D47EB0071416A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		FE003E3D2E7D46120071416A /* Debug */ = {
@@ -159,11 +340,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 65F9DSLLJ5;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -221,11 +403,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65F9DSLLJ5;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -243,16 +426,20 @@
 		};
 		FE003E402E7D46120071416A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 763CB924486EF783044D50B5 /* Pods-NeonVPN.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NeonVPN/NeonVPN.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 65F9DSLLJ5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "VPN Fly";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -261,37 +448,42 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.NeonVPN;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.fly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Debug;
 		};
 		FE003E412E7D46120071416A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 38550FF39600451DFE392AE0 /* Pods-NeonVPN.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NeonVPN/NeonVPN.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 65F9DSLLJ5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "VPN Fly";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -300,22 +492,90 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.NeonVPN;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.fly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Release;
+		};
+		FE003E682E7D47EB0071416A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = cocopacket/cocopacket.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65F9DSLLJ5;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = cocopacket/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = cocopacket;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.fly.cocopacket;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		FE003E692E7D47EB0071416A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = cocopacket/cocopacket.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65F9DSLLJ5;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = cocopacket/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = cocopacket;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.fly.cocopacket;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -336,6 +596,15 @@
 			buildConfigurations = (
 				FE003E402E7D46120071416A /* Debug */,
 				FE003E412E7D46120071416A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE003E672E7D47EB0071416A /* Build configuration list for PBXNativeTarget "cocopacket" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE003E682E7D47EB0071416A /* Debug */,
+				FE003E692E7D47EB0071416A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

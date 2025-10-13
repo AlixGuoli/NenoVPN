@@ -9,9 +9,27 @@ import SwiftUI
 
 @main
 struct NeonVPNApp: App {
+    @StateObject private var launchManager = LaunchManager()
+    @StateObject private var onboardingManager = OnboardingManager()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if launchManager.isLaunching {
+                LaunchView()
+                    .preferredColorScheme(.dark)
+                    .onAppear {
+                        // 3秒后完成启动
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
+                            launchManager.completeLaunch()
+                        }
+                    }
+            } else if !onboardingManager.hasCompletedOnboarding {
+                OnboardingView(onboardingManager: onboardingManager)
+                    .preferredColorScheme(.dark)
+            } else {
+                ContentView()
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

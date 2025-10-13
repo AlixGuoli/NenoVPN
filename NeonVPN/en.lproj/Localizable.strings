@@ -1,0 +1,147 @@
+/* 
+  Localizable.strings
+  NeonVPN
+
+  Created by Stephen Schaaf on 2025/9/19.
+*/
+
+// Main UI
+"app_title" = "NeonVPN";
+"connect_button" = "Connect";
+"disconnect_button" = "Disconnect";
+"connecting_status" = "Connecting...";
+"connected_status" = "Connected";
+"disconnected_status" = "Disconnected";
+"failed_status" = "Connection Failed";
+
+// Result Page
+"connection_success" = "Connection Successful";
+"connection_failed" = "Connection Failed";
+"got_it" = "Got it";
+"back" = "Back";
+
+// Language Settings
+"language_settings" = "Language Settings";
+"english" = "English";
+"chinese_simplified" = "简体中文";
+"current_language" = "Current Language";
+
+// New UI Elements
+"secure_connection" = "Secure Connection";
+"encrypted" = "Encrypted";
+"connection_time" = "Connection Time";
+"upload" = "Upload";
+"download" = "Download";
+"servers_title" = "Servers";
+"servers_subtitle" = "All locations";
+"settings_title" = "Settings";
+"settings_subtitle" = "Preferences";
+"auto_node" = "Auto";
+"recommended" = "Recommended";
+
+// Traffic Monitor
+"network_type" = "Network Type";
+"connected" = "Connected";
+"disconnected" = "Disconnected";
+"data_usage" = "Data Usage";
+"data_used" = "Data Used";
+"reset_data" = "Reset Data";
+"simulate_activity" = "Simulate Activity";
+
+// Traffic Stats
+"traffic_stats" = "Traffic Statistics";
+"today" = "Today";
+"this_week" = "This Week";
+"this_month" = "This Month";
+"current_network" = "Current Network";
+"total" = "Total";
+"usage_history" = "Usage History";
+"simulate_traffic" = "Simulate Traffic";
+"reset_all" = "Reset All";
+"accuracy_notice" = "Accuracy Notice";
+"accuracy_description" = "Traffic data is estimated based on network activity patterns. Actual usage may vary due to iOS system limitations.";
+"status_ready" = "Ready";
+"status_negotiating" = "Negotiating";
+"status_protected" = "Protected";
+"status_retry" = "Tap to retry";
+"tap_to_connect" = "Tap to connect";
+
+// Tab Navigation
+"home" = "Home";
+"history" = "History";
+
+// History
+"no_history" = "No Connection History";
+"history_description" = "Your connection history will appear here";
+"clear_all" = "Clear All";
+"failed" = "Failed";
+"connected_at" = "Connected at";
+
+// Settings
+"change_language" = "Change app language";
+"notifications" = "Notifications";
+"notification_settings" = "Manage notifications";
+"security" = "Security";
+"security_settings" = "Security preferences";
+"about" = "About";
+"app_info" = "App information";
+"privacy_policy" = "Privacy Policy";
+"privacy_policy_subtitle" = "View our privacy policy";
+"terms_of_use" = "Terms of Use";
+"terms_of_use_subtitle" = "View terms and conditions";
+"about_description" = "A modern VPN application designed to provide secure and reliable internet connectivity. Built with privacy and user experience in mind.";
+"about_features" = "Features include secure connections, multiple server locations, connection history, and traffic monitoring.";
+"developer" = "Developer";
+"platform" = "Platform";
+"framework" = "Framework";
+"build_date" = "Build Date";
+"all_rights_reserved" = "All rights reserved";
+
+// Launch Screen
+"launch_subtitle" = "Secure VPN Connection";
+"loading" = "Loading";
+
+// Onboarding
+"network_permission_title" = "Network Access";
+"network_permission_description" = "NeonVPN needs network access permission to establish secure VPN connections and protect your internet traffic.";
+"grant_permission" = "Grant Permission";
+"terms_title" = "User Agreement";
+"terms_content_1" = "By using this application, you agree to comply with applicable laws and regulations.";
+"terms_content_2" = "This application is for lawful use only. Users are responsible for their own usage risks.";
+"terms_content_3" = "The developer makes no guarantees regarding network connection quality or service availability.";
+"terms_content_4" = "Users must comply with local laws and regulations and may not use this service for illegal activities.";
+"agree_to_terms" = "I have read and agree to the User Agreement";
+"continue" = "Continue";
+"setup_complete" = "Setup Complete!";
+"welcome_message" = "Welcome to NeonVPN! Your secure connection is ready to use.";
+"start_using" = "Start Using";
+
+// Delete
+"delete_record" = "Delete Record";
+"delete_record_message" = "Are you sure you want to delete this connection record?";
+"delete" = "Delete";
+"cancel" = "Cancel";
+"edit" = "Edit";
+"done" = "Done";
+"cancel" = "Cancel";
+"confirm" = "Confirm";
+"vpn_status" = "VPN Status";
+"success_subtitle" = "Your connection is secure and protected";
+"failed_subtitle" = "Connection failed. Please try again";
+"connection_info" = "Connection Information";
+"server_location" = "Server Location";
+"connection_time" = "Connection Time";
+"protection_status" = "Protection Status";
+"active" = "Active";
+"suggestions" = "Suggestions";
+"troubleshooting" = "Troubleshooting";
+"suggestion_1" = "Keep your VPN connected for maximum security";
+"suggestion_2" = "Check your network connection regularly";
+"suggestion_3" = "Use our auto-connect feature for convenience";
+"troubleshoot_1" = "Check your internet connection";
+"troubleshoot_2" = "Try switching to a different server";
+"troubleshoot_3" = "Restart the app if the problem persists";
+"session_stats" = "Session Statistics";
+"uploaded" = "Uploaded";
+"downloaded" = "Downloaded";
+"duration" = "Duration";
