@@ -73,7 +73,7 @@ class WireConductor {
     // 桥接/系统
     var tunnelSettingsHandler: ((NEPacketTunnelNetworkSettings, @escaping (Error?) -> Void) -> Void)?
     var tunnelFlow: NEPacketTunnelFlow
-    private let log = OSLog(subsystem: "NeonVPN", category: "WireConductor")
+    private let log = OSLog(subsystem: (Bundle.main.bundleIdentifier ?? "VPN Fly"), category: "WireConductor")
     private let logPrefix = "[NEON][Tunnel]"
     private func logInfo(_ message: String) { os_log("%{public}@ %{public}@", log: log, type: .error, logPrefix, message) }
     private func logError(_ message: String) { os_log("%{public}@ %{public}@", log: log, type: .error, logPrefix, message) }
@@ -131,7 +131,7 @@ private extension WireConductor {
         let host = NWEndpoint.Host(primaryHost)
         let conn = NWConnection(host: host, port: port, using: .tcp)
         connectionChannel = conn
-        workerQueue = .global()
+        workerQueue = DispatchQueue(label: "net.wireconductor.pipeline", qos: .userInitiated)
         conn.stateUpdateHandler = { [weak self] s in
             self?.trackChannelState(s)
         }
