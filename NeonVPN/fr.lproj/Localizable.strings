@@ -1,0 +1,153 @@
+/* 
+  Localizable.strings
+  NeonVPN
+
+  Created by Stephen Schaaf on 2025/9/19.
+*/
+
+// Main UI
+"app_title" = "VPN Fly";
+"connect_button" = "Se connecter";
+"disconnect_button" = "Se déconnecter";
+"connecting_status" = "Connexion...";
+"connected_status" = "Connecté";
+"disconnected_status" = "Déconnecté";
+"failed_status" = "Échec de connexion";
+
+// Result Page
+"connection_success" = "Connexion réussie";
+"connection_failed" = "Échec de connexion";
+"got_it" = "Compris";
+"back" = "Retour";
+
+// Language Settings
+"language_settings" = "Paramètres de langue";
+"english" = "English";
+"russian" = "Русский";
+"german" = "Deutsch";
+"spanish" = "Español";
+"french" = "Français";
+"japanese" = "日本語";
+"korean" = "한국어";
+"portuguese" = "Português";
+"current_language" = "Langue actuelle";
+
+// New UI Elements
+"secure_connection" = "Connexion sécurisée";
+"encrypted" = "Chiffré";
+"connection_time" = "Temps de connexion";
+"upload" = "Téléchargement";
+"download" = "Téléchargement";
+"servers_title" = "Serveurs";
+"servers_subtitle" = "Tous les emplacements";
+"settings_title" = "Paramètres";
+"settings_subtitle" = "Préférences";
+"auto_node" = "Auto";
+"recommended" = "Recommandé";
+
+// Traffic Monitor
+"network_type" = "Type de réseau";
+"connected" = "Connecté";
+"disconnected" = "Déconnecté";
+"data_usage" = "Utilisation des données";
+"data_used" = "Données utilisées";
+"reset_data" = "Réinitialiser les données";
+"simulate_activity" = "Simuler l'activité";
+
+// Traffic Stats
+"traffic_stats" = "Statistiques du trafic";
+"today" = "Aujourd'hui";
+"this_week" = "Cette semaine";
+"this_month" = "Ce mois";
+"current_network" = "Réseau actuel";
+"total" = "Total";
+"usage_history" = "Historique d'utilisation";
+"simulate_traffic" = "Simuler le trafic";
+"reset_all" = "Tout réinitialiser";
+"accuracy_notice" = "Avis de précision";
+"accuracy_description" = "Les données de trafic sont estimées basées sur les modèles d'activité réseau. L'utilisation réelle peut varier en raison des limitations du système iOS.";
+"status_ready" = "Prêt";
+"status_negotiating" = "Négociation";
+"status_protected" = "Protégé";
+"status_retry" = "Appuyez pour réessayer";
+"tap_to_connect" = "Appuyez pour vous connecter";
+
+// Tab Navigation
+"home" = "Accueil";
+"history" = "Historique";
+
+// History
+"no_history" = "Aucun historique de connexion";
+"history_description" = "Votre historique de connexion apparaîtra ici";
+"clear_all" = "Tout effacer";
+"failed" = "Échoué";
+"connected_at" = "Connecté à";
+
+// Settings
+"change_language" = "Changer la langue de l'application";
+"notifications" = "Notifications";
+"notification_settings" = "Gérer les notifications";
+"security" = "Sécurité";
+"security_settings" = "Paramètres de sécurité";
+"about" = "À propos";
+"app_info" = "Informations sur l'application";
+"privacy_policy" = "Politique de confidentialité";
+"privacy_policy_subtitle" = "Voir notre politique de confidentialité";
+"terms_of_use" = "Conditions d'utilisation";
+"terms_of_use_subtitle" = "Voir les termes et conditions";
+"about_description" = "Une application VPN moderne conçue pour fournir une connectivité Internet sécurisée et fiable. Construite avec la confidentialité et l'expérience utilisateur à l'esprit.";
+"about_features" = "Les fonctionnalités incluent des connexions sécurisées, plusieurs emplacements de serveur, historique des connexions et surveillance du trafic.";
+"developer" = "Développeur";
+"platform" = "Plateforme";
+"framework" = "Framework";
+"build_date" = "Date de construction";
+"version" = "Version";
+"all_rights_reserved" = "Tous droits réservés";
+
+// Launch Screen
+"launch_subtitle" = "Connexion VPN sécurisée";
+"loading" = "Chargement";
+
+// Onboarding
+"network_permission_title" = "Accès au réseau";
+"network_permission_description" = "VPN Fly a besoin d'une autorisation d'accès au réseau pour établir des connexions VPN sécurisées et protéger votre trafic Internet.";
+"grant_permission" = "Accorder l'autorisation";
+"terms_title" = "Accord utilisateur";
+"terms_content_1" = "En utilisant cette application, vous acceptez de respecter les lois et réglementations applicables.";
+"terms_content_2" = "Cette application est uniquement pour un usage légal. Les utilisateurs sont responsables de leurs propres risques d'utilisation.";
+"terms_content_3" = "Le développeur ne garantit pas la qualité de la connexion réseau ou la disponibilité du service.";
+"terms_content_4" = "Les utilisateurs doivent respecter les lois et réglementations locales et ne peuvent pas utiliser ce service pour des activités illégales.";
+"agree_to_terms" = "J'ai lu et accepté l'Accord utilisateur";
+"continue" = "Continuer";
+"setup_complete" = "Configuration terminée !";
+"welcome_message" = "Bienvenue sur VPN Fly ! Votre connexion sécurisée est prête à être utilisée.";
+"start_using" = "Commencer à utiliser";
+
+// Delete
+"delete_record" = "Supprimer l'enregistrement";
+"delete_record_message" = "Êtes-vous sûr de vouloir supprimer cet enregistrement de connexion ?";
+"delete" = "Supprimer";
+"cancel" = "Annuler";
+"edit" = "Modifier";
+"done" = "Terminé";
+"confirm" = "Confirmer";
+"vpn_status" = "Statut VPN";
+"success_subtitle" = "Votre connexion est sécurisée et protégée";
+"failed_subtitle" = "Échec de connexion. Veuillez réessayer";
+"connection_info" = "Informations de connexion";
+"server_location" = "Emplacement du serveur";
+"connection_time" = "Temps de connexion";
+"protection_status" = "Statut de protection";
+"active" = "Actif";
+"suggestions" = "Suggestions";
+"troubleshooting" = "Dépannage";
+"suggestion_1" = "Gardez votre VPN connecté pour une sécurité maximale";
+"suggestion_2" = "Vérifiez régulièrement votre connexion réseau";
+"suggestion_3" = "Utilisez notre fonction de connexion automatique pour plus de commodité";
+"troubleshoot_1" = "Vérifiez votre connexion Internet";
+"troubleshoot_2" = "Essayez de passer à un serveur différent";
+"troubleshoot_3" = "Redémarrez l'application si le problème persiste";
+"session_stats" = "Statistiques de session";
+"uploaded" = "Téléchargé";
+"downloaded" = "Téléchargé";
+"duration" = "Durée";

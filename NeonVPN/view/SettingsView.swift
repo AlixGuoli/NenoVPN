@@ -1,5 +1,12 @@
 import SwiftUI
 
+private struct AppMeta {
+    // 获取App版本号
+    static func getAppVersion() -> String {
+        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+    }
+}
+
 struct SettingsView: View {
     @ObservedObject private var localeManager = LocaleDao.shared
     @State private var showLanguageSettings = false
@@ -31,7 +38,7 @@ struct SettingsView: View {
                                 icon: "hand.raised.fill",
                                 title: LocalizedText("privacy_policy"),
                                 subtitle: LocalizedText("privacy_policy_subtitle"),
-                                action: { openURL("https://keyvpnone.xyz/p.html") }
+                                action: { openURL("https://keyvpntwo.xyz/p.html") }
                             )
                             
                             // 服务条款
@@ -96,16 +103,18 @@ struct AppInfoCard: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            // 应用图标占位符
-            ZStack {
-                Circle()
-                    .fill(LinearGradient(colors: [Color.accentColor.opacity(0.3), Color.accentColor.opacity(0.1)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .frame(width: 80, height: 80)
-                
-                Image(systemName: "shield.checkered")
-                    .font(.system(size: 32, weight: .medium))
-                    .foregroundColor(.accentColor)
-            }
+            // 应用图标（使用 Assets 中的 logo）
+            Image("logo")
+                .resizable()
+                .renderingMode(.original)
+                .scaledToFit()
+                .frame(width: 80, height: 80)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Color.white.opacity(0.08), lineWidth: 0.5)
+                )
+                .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
             
             // 应用名称和版本
             VStack(spacing: 4) {
@@ -113,7 +122,7 @@ struct AppInfoCard: View {
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(.white)
                 
-                Text("Version 1.0.0")
+                Text("\(LocalizedText("version")) \(AppMeta.getAppVersion())")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.white.opacity(0.6))
             }
@@ -204,22 +213,24 @@ struct AboutView: View {
                     VStack(spacing: 24) {
                         // 应用图标和名称
                         VStack(spacing: 16) {
-                            ZStack {
-                                Circle()
-                                    .fill(LinearGradient(colors: [Color.accentColor.opacity(0.3), Color.accentColor.opacity(0.1)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                                    .frame(width: 100, height: 100)
-                                
-                                Image(systemName: "shield.checkered")
-                                    .font(.system(size: 40, weight: .medium))
-                                    .foregroundColor(.accentColor)
-                            }
+                            Image("logo")
+                                .resizable()
+                                .renderingMode(.original)
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
+                                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                        .stroke(Color.white.opacity(0.08), lineWidth: 0.5)
+                                )
+                                .shadow(color: Color.black.opacity(0.25), radius: 12, x: 0, y: 5)
                             
                             VStack(spacing: 4) {
                                 Text(LocalizedText("app_title"))
                                     .font(.system(size: 28, weight: .bold))
                                     .foregroundColor(.white)
                                 
-                                Text("Version 1.0.0")
+                                Text("\(LocalizedText("version")) \(AppMeta.getAppVersion())")
                                     .font(.system(size: 16, weight: .medium))
                                     .foregroundColor(.white.opacity(0.6))
                             }

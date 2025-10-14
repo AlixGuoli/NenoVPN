@@ -74,8 +74,15 @@ struct OnboardingView: View {
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .animation(.easeInOut(duration: 0.5), value: currentPage)
+                .gesture(
+                    // 禁用滑动手势，防止意外滑动
+                    DragGesture()
+                        .onChanged { _ in }
+                        .onEnded { _ in }
+                )
             }
         }
+        .bindLocale()
         .onAppear {
             // 移除自动检测网络权限
         }
@@ -88,12 +95,18 @@ struct NetworkPermissionPage: View {
     @Binding var hasPermission: Bool
     let onNext: () -> Void
     @ObservedObject private var localeManager = LocaleDao.shared
+    @State private var isRequesting = false
     
     private func requestNetworkPermission() {
+        // 防止重复点击
+        guard !isRequesting else { return }
+        isRequesting = true
+        
         // 模拟网络权限请求
         // 在实际应用中，这里会触发系统的网络权限请求
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             hasPermission = true
+            isRequesting = false
             onNext()
         }
     }
@@ -138,16 +151,24 @@ struct NetworkPermissionPage: View {
             Button(action: {
                 requestNetworkPermission()
             }) {
-                Text(LocalizedText("grant_permission"))
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.accentColor)
-                    )
+                HStack {
+                    if isRequesting {
+                        ProgressView()
+                            .tint(.white)
+                            .scaleEffect(0.8)
+                    }
+                    Text(LocalizedText("grant_permission"))
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.white)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(isRequesting ? Color.accentColor.opacity(0.7) : Color.accentColor)
+                )
             }
+            .disabled(isRequesting)
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
         }

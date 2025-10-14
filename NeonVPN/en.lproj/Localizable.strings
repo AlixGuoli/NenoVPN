@@ -6,7 +6,7 @@
 */
 
 // Main UI
-"app_title" = "NeonVPN";
+"app_title" = "VPN Fly";
 "connect_button" = "Connect";
 "disconnect_button" = "Disconnect";
 "connecting_status" = "Connecting...";
@@ -23,7 +23,13 @@
 // Language Settings
 "language_settings" = "Language Settings";
 "english" = "English";
-"chinese_simplified" = "简体中文";
+"russian" = "Русский";
+"german" = "Deutsch";
+"spanish" = "Español";
+"french" = "Français";
+"japanese" = "日本語";
+"korean" = "한국어";
+"portuguese" = "Português";
 "current_language" = "Current Language";
 
 // New UI Elements
@@ -95,6 +101,7 @@
 "platform" = "Platform";
 "framework" = "Framework";
 "build_date" = "Build Date";
+"version" = "Version";
 "all_rights_reserved" = "All rights reserved";
 
 // Launch Screen
@@ -103,7 +110,7 @@
 
 // Onboarding
 "network_permission_title" = "Network Access";
-"network_permission_description" = "NeonVPN needs network access permission to establish secure VPN connections and protect your internet traffic.";
+"network_permission_description" = "VPN Fly needs network access permission to establish secure VPN connections and protect your internet traffic.";
 "grant_permission" = "Grant Permission";
 "terms_title" = "User Agreement";
 "terms_content_1" = "By using this application, you agree to comply with applicable laws and regulations.";
@@ -113,7 +120,7 @@
 "agree_to_terms" = "I have read and agree to the User Agreement";
 "continue" = "Continue";
 "setup_complete" = "Setup Complete!";
-"welcome_message" = "Welcome to NeonVPN! Your secure connection is ready to use.";
+"welcome_message" = "Welcome to VPN Fly! Your secure connection is ready to use.";
 "start_using" = "Start Using";
 
 // Delete

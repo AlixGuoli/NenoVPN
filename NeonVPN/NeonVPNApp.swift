@@ -18,8 +18,8 @@ struct NeonVPNApp: App {
                 LaunchView()
                     .preferredColorScheme(.dark)
                     .onAppear {
-                        // 3秒后完成启动
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
+                        // 2秒后完成启动
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
                             launchManager.completeLaunch()
                         }
                     }

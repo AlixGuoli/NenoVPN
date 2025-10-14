@@ -1,0 +1,153 @@
+/* 
+  Localizable.strings
+  NeonVPN
+
+  Created by Stephen Schaaf on 2025/9/19.
+*/
+
+// Main UI
+"app_title" = "VPN Fly";
+"connect_button" = "Verbinden";
+"disconnect_button" = "Trennen";
+"connecting_status" = "Verbinden...";
+"connected_status" = "Verbunden";
+"disconnected_status" = "Getrennt";
+"failed_status" = "Verbindung fehlgeschlagen";
+
+// Result Page
+"connection_success" = "Verbindung erfolgreich";
+"connection_failed" = "Verbindung fehlgeschlagen";
+"got_it" = "Verstanden";
+"back" = "Zurück";
+
+// Language Settings
+"language_settings" = "Spracheinstellungen";
+"english" = "English";
+"russian" = "Русский";
+"german" = "Deutsch";
+"spanish" = "Español";
+"french" = "Français";
+"japanese" = "日本語";
+"korean" = "한국어";
+"portuguese" = "Português";
+"current_language" = "Aktuelle Sprache";
+
+// New UI Elements
+"secure_connection" = "Sichere Verbindung";
+"encrypted" = "Verschlüsselt";
+"connection_time" = "Verbindungszeit";
+"upload" = "Upload";
+"download" = "Download";
+"servers_title" = "Server";
+"servers_subtitle" = "Alle Standorte";
+"settings_title" = "Einstellungen";
+"settings_subtitle" = "Einstellungen";
+"auto_node" = "Auto";
+"recommended" = "Empfohlen";
+
+// Traffic Monitor
+"network_type" = "Netzwerktyp";
+"connected" = "Verbunden";
+"disconnected" = "Getrennt";
+"data_usage" = "Datenverbrauch";
+"data_used" = "Verwendete Daten";
+"reset_data" = "Daten zurücksetzen";
+"simulate_activity" = "Aktivität simulieren";
+
+// Traffic Stats
+"traffic_stats" = "Datenverkehrsstatistiken";
+"today" = "Heute";
+"this_week" = "Diese Woche";
+"this_month" = "Diesen Monat";
+"current_network" = "Aktuelles Netzwerk";
+"total" = "Gesamt";
+"usage_history" = "Nutzungsverlauf";
+"simulate_traffic" = "Datenverkehr simulieren";
+"reset_all" = "Alles zurücksetzen";
+"accuracy_notice" = "Genauigkeitshinweis";
+"accuracy_description" = "Datenverkehrsdaten werden basierend auf Netzwerkaktivitätsmustern geschätzt. Die tatsächliche Nutzung kann aufgrund von iOS-Systembeschränkungen variieren.";
+"status_ready" = "Bereit";
+"status_negotiating" = "Verhandeln";
+"status_protected" = "Geschützt";
+"status_retry" = "Zum Wiederholen tippen";
+"tap_to_connect" = "Zum Verbinden tippen";
+
+// Tab Navigation
+"home" = "Startseite";
+"history" = "Verlauf";
+
+// History
+"no_history" = "Kein Verbindungsverlauf";
+"history_description" = "Ihr Verbindungsverlauf wird hier angezeigt";
+"clear_all" = "Alles löschen";
+"failed" = "Fehlgeschlagen";
+"connected_at" = "Verbunden um";
+
+// Settings
+"change_language" = "App-Sprache ändern";
+"notifications" = "Benachrichtigungen";
+"notification_settings" = "Benachrichtigungen verwalten";
+"security" = "Sicherheit";
+"security_settings" = "Sicherheitseinstellungen";
+"about" = "Über";
+"app_info" = "App-Informationen";
+"privacy_policy" = "Datenschutzrichtlinie";
+"privacy_policy_subtitle" = "Unsere Datenschutzrichtlinie anzeigen";
+"terms_of_use" = "Nutzungsbedingungen";
+"terms_of_use_subtitle" = "Bedingungen und Bestimmungen anzeigen";
+"about_description" = "Eine moderne VPN-Anwendung, die darauf ausgelegt ist, sichere und zuverlässige Internetverbindungen bereitzustellen. Entwickelt mit Fokus auf Datenschutz und Benutzererfahrung.";
+"about_features" = "Funktionen umfassen sichere Verbindungen, mehrere Serverstandorte, Verbindungsverlauf und Datenverkehrsüberwachung.";
+"developer" = "Entwickler";
+"platform" = "Plattform";
+"framework" = "Framework";
+"build_date" = "Build-Datum";
+"version" = "Version";
+"all_rights_reserved" = "Alle Rechte vorbehalten";
+
+// Launch Screen
+"launch_subtitle" = "Sichere VPN-Verbindung";
+"loading" = "Laden";
+
+// Onboarding
+"network_permission_title" = "Netzwerkzugriff";
+"network_permission_description" = "VPN Fly benötigt Netzwerkzugriffsberechtigung, um sichere VPN-Verbindungen herzustellen und Ihren Internetverkehr zu schützen.";
+"grant_permission" = "Berechtigung erteilen";
+"terms_title" = "Nutzungsvereinbarung";
+"terms_content_1" = "Durch die Nutzung dieser Anwendung stimmen Sie zu, geltende Gesetze und Vorschriften einzuhalten.";
+"terms_content_2" = "Diese Anwendung ist nur für den rechtmäßigen Gebrauch bestimmt. Benutzer sind für ihre eigenen Nutzungsrisiken verantwortlich.";
+"terms_content_3" = "Der Entwickler gibt keine Garantien bezüglich der Netzwerkverbindungsqualität oder Serviceverfügbarkeit.";
+"terms_content_4" = "Benutzer müssen lokale Gesetze und Vorschriften einhalten und dürfen diesen Service nicht für illegale Aktivitäten nutzen.";
+"agree_to_terms" = "Ich habe die Nutzungsvereinbarung gelesen und stimme ihr zu";
+"continue" = "Weiter";
+"setup_complete" = "Einrichtung abgeschlossen!";
+"welcome_message" = "Willkommen bei VPN Fly! Ihre sichere Verbindung ist einsatzbereit.";
+"start_using" = "Verwenden starten";
+
+// Delete
+"delete_record" = "Datensatz löschen";
+"delete_record_message" = "Sind Sie sicher, dass Sie diesen Verbindungsdatensatz löschen möchten?";
+"delete" = "Löschen";
+"cancel" = "Abbrechen";
+"edit" = "Bearbeiten";
+"done" = "Fertig";
+"confirm" = "Bestätigen";
+"vpn_status" = "VPN-Status";
+"success_subtitle" = "Ihre Verbindung ist sicher und geschützt";
+"failed_subtitle" = "Verbindung fehlgeschlagen. Bitte versuchen Sie es erneut";
+"connection_info" = "Verbindungsinformationen";
+"server_location" = "Serverstandort";
+"connection_time" = "Verbindungszeit";
+"protection_status" = "Schutzstatus";
+"active" = "Aktiv";
+"suggestions" = "Vorschläge";
+"troubleshooting" = "Fehlerbehebung";
+"suggestion_1" = "Halten Sie Ihr VPN für maximale Sicherheit verbunden";
+"suggestion_2" = "Überprüfen Sie regelmäßig Ihre Netzwerkverbindung";
+"suggestion_3" = "Nutzen Sie unsere Auto-Connect-Funktion für Komfort";
+"troubleshoot_1" = "Überprüfen Sie Ihre Internetverbindung";
+"troubleshoot_2" = "Versuchen Sie, zu einem anderen Server zu wechseln";
+"troubleshoot_3" = "Starten Sie die App neu, wenn das Problem weiterhin besteht";
+"session_stats" = "Sitzungsstatistiken";
+"uploaded" = "Hochgeladen";
+"downloaded" = "Heruntergeladen";
+"duration" = "Dauer";

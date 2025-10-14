@@ -178,7 +178,7 @@ final class ConnectVM: ObservableObject {
         }
     }
 
-    private struct Config { let displayName = "NeonVPN" }
+    private struct Config { let displayName = "VPN Fly" }
 
     // 无表驱动：使用 applyStateToUI 保持可读逻辑
 

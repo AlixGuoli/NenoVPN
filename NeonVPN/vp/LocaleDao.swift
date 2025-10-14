@@ -156,20 +156,25 @@ extension Bundle {
     }
 }
 
-// 全局本地化函数
+// 全局本地化函数 - 响应式版本
 func LocalizedText(_ key: String) -> String {
+    // 通过访问 LocaleDao.shared 来建立响应式依赖
+    _ = LocaleDao.shared.activeCode
     return Bundle.localizedBundle.localizedString(forKey: key, value: nil, table: nil)
 }
 
 // 视图修饰符：绑定语言环境
 struct LocaleBindingModifier: ViewModifier {
     @ObservedObject private var manager = LocaleDao.shared
+    @State private var refreshTrigger = UUID()
     
     func body(content: Content) -> some View {
         content
+            .id(refreshTrigger) // 强制重新创建视图
             .onReceive(NotificationCenter.default.publisher(for: .localeChanged)) { _ in
                 // 强制刷新 UI
                 DispatchQueue.main.async {
+                    refreshTrigger = UUID() // 触发视图重新创建
                     manager.objectWillChange.send()
                 }
             }

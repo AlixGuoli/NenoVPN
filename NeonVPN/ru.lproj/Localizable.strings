@@ -1,0 +1,153 @@
+/* 
+  Localizable.strings
+  NeonVPN
+
+  Created by Stephen Schaaf on 2025/9/19.
+*/
+
+// Main UI
+"app_title" = "VPN Fly";
+"connect_button" = "Подключить";
+"disconnect_button" = "Отключить";
+"connecting_status" = "Подключение...";
+"connected_status" = "Подключено";
+"disconnected_status" = "Отключено";
+"failed_status" = "Ошибка подключения";
+
+// Result Page
+"connection_success" = "Подключение успешно";
+"connection_failed" = "Ошибка подключения";
+"got_it" = "Понятно";
+"back" = "Назад";
+
+// Language Settings
+"language_settings" = "Настройки языка";
+"english" = "English";
+"russian" = "Русский";
+"german" = "Deutsch";
+"spanish" = "Español";
+"french" = "Français";
+"japanese" = "日本語";
+"korean" = "한국어";
+"portuguese" = "Português";
+"current_language" = "Текущий язык";
+
+// New UI Elements
+"secure_connection" = "Безопасное подключение";
+"encrypted" = "Зашифровано";
+"connection_time" = "Время подключения";
+"upload" = "Загрузка";
+"download" = "Скачивание";
+"servers_title" = "Серверы";
+"servers_subtitle" = "Все локации";
+"settings_title" = "Настройки";
+"settings_subtitle" = "Предпочтения";
+"auto_node" = "Авто";
+"recommended" = "Рекомендуется";
+
+// Traffic Monitor
+"network_type" = "Тип сети";
+"connected" = "Подключено";
+"disconnected" = "Отключено";
+"data_usage" = "Использование данных";
+"data_used" = "Использовано данных";
+"reset_data" = "Сбросить данные";
+"simulate_activity" = "Симулировать активность";
+
+// Traffic Stats
+"traffic_stats" = "Статистика трафика";
+"today" = "Сегодня";
+"this_week" = "На этой неделе";
+"this_month" = "В этом месяце";
+"current_network" = "Текущая сеть";
+"total" = "Всего";
+"usage_history" = "История использования";
+"simulate_traffic" = "Симулировать трафик";
+"reset_all" = "Сбросить все";
+"accuracy_notice" = "Уведомление о точности";
+"accuracy_description" = "Данные трафика оцениваются на основе паттернов сетевой активности. Фактическое использование может отличаться из-за ограничений системы iOS.";
+"status_ready" = "Готов";
+"status_negotiating" = "Согласование";
+"status_protected" = "Защищено";
+"status_retry" = "Нажмите для повтора";
+"tap_to_connect" = "Нажмите для подключения";
+
+// Tab Navigation
+"home" = "Главная";
+"history" = "История";
+
+// History
+"no_history" = "Нет истории подключений";
+"history_description" = "Ваша история подключений появится здесь";
+"clear_all" = "Очистить все";
+"failed" = "Неудачно";
+"connected_at" = "Подключено в";
+
+// Settings
+"change_language" = "Изменить язык приложения";
+"notifications" = "Уведомления";
+"notification_settings" = "Управление уведомлениями";
+"security" = "Безопасность";
+"security_settings" = "Настройки безопасности";
+"about" = "О приложении";
+"app_info" = "Информация о приложении";
+"privacy_policy" = "Политика конфиденциальности";
+"privacy_policy_subtitle" = "Просмотреть нашу политику конфиденциальности";
+"terms_of_use" = "Условия использования";
+"terms_of_use_subtitle" = "Просмотреть условия и положения";
+"about_description" = "Современное VPN-приложение, предназначенное для обеспечения безопасного и надежного интернет-соединения. Создано с учетом конфиденциальности и пользовательского опыта.";
+"about_features" = "Функции включают безопасные подключения, несколько серверных локаций, историю подключений и мониторинг трафика.";
+"developer" = "Разработчик";
+"platform" = "Платформа";
+"framework" = "Фреймворк";
+"build_date" = "Дата сборки";
+"version" = "Версия";
+"all_rights_reserved" = "Все права защищены";
+
+// Launch Screen
+"launch_subtitle" = "Безопасное VPN-подключение";
+"loading" = "Загрузка";
+
+// Onboarding
+"network_permission_title" = "Доступ к сети";
+"network_permission_description" = "VPN Fly требует разрешение на доступ к сети для установления безопасных VPN-подключений и защиты вашего интернет-трафика.";
+"grant_permission" = "Предоставить разрешение";
+"terms_title" = "Пользовательское соглашение";
+"terms_content_1" = "Используя это приложение, вы соглашаетесь соблюдать применимые законы и правила.";
+"terms_content_2" = "Это приложение предназначено только для законного использования. Пользователи несут ответственность за риски своего использования.";
+"terms_content_3" = "Разработчик не дает гарантий относительно качества сетевого подключения или доступности сервиса.";
+"terms_content_4" = "Пользователи должны соблюдать местные законы и правила и не могут использовать этот сервис для незаконной деятельности.";
+"agree_to_terms" = "Я прочитал и согласен с Пользовательским соглашением";
+"continue" = "Продолжить";
+"setup_complete" = "Настройка завершена!";
+"welcome_message" = "Добро пожаловать в VPN Fly! Ваше безопасное подключение готово к использованию.";
+"start_using" = "Начать использование";
+
+// Delete
+"delete_record" = "Удалить запись";
+"delete_record_message" = "Вы уверены, что хотите удалить эту запись подключения?";
+"delete" = "Удалить";
+"cancel" = "Отмена";
+"edit" = "Редактировать";
+"done" = "Готово";
+"confirm" = "Подтвердить";
+"vpn_status" = "Статус VPN";
+"success_subtitle" = "Ваше подключение безопасно и защищено";
+"failed_subtitle" = "Подключение не удалось. Пожалуйста, попробуйте снова";
+"connection_info" = "Информация о подключении";
+"server_location" = "Расположение сервера";
+"connection_time" = "Время подключения";
+"protection_status" = "Статус защиты";
+"active" = "Активно";
+"suggestions" = "Предложения";
+"troubleshooting" = "Устранение неполадок";
+"suggestion_1" = "Держите VPN подключенным для максимальной безопасности";
+"suggestion_2" = "Регулярно проверяйте ваше сетевое подключение";
+"suggestion_3" = "Используйте нашу функцию автоподключения для удобства";
+"troubleshoot_1" = "Проверьте ваше интернет-подключение";
+"troubleshoot_2" = "Попробуйте переключиться на другой сервер";
+"troubleshoot_3" = "Перезапустите приложение, если проблема сохраняется";
+"session_stats" = "Статистика сессии";
+"uploaded" = "Загружено";
+"downloaded" = "Скачано";
+"duration" = "Продолжительность";

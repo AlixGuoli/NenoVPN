@@ -42,23 +42,19 @@ struct LaunchView: View {
                             ))
                             .frame(width: 120, height: 120)
                             .blur(radius: 8)
-                        
-                        // 主图标
-                        Circle()
-                            .fill(LinearGradient(
-                                colors: [Color.accentColor.opacity(0.4), Color.accentColor.opacity(0.2)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ))
+
+                        // 主图标（使用 Assets 中的 logo，带圆角）
+                        Image("logo")
+                            .resizable()
+                            .renderingMode(.original)
+                            .scaledToFit()
                             .frame(width: 100, height: 100)
+                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                             .overlay(
-                                Circle()
-                                    .stroke(Color.accentColor.opacity(0.6), lineWidth: 2)
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .stroke(Color.white.opacity(0.08), lineWidth: 0.5)
                             )
-                        
-                        Image(systemName: "shield.checkered")
-                            .font(.system(size: 40, weight: .medium))
-                            .foregroundColor(.accentColor)
+                            .shadow(color: Color.black.opacity(0.25), radius: 12, x: 0, y: 5)
                     }
                     
                     // 应用名称
@@ -92,23 +88,26 @@ struct LaunchView: View {
                         }
                         
                         // 进度条背景
-                        ZStack(alignment: .leading) {
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.white.opacity(0.1))
-                                .frame(height: 6)
-                            
-                            // 进度条填充
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(
-                                    LinearGradient(
-                                        colors: [Color.accentColor, Color.accentColor.opacity(0.8)],
-                                        startPoint: .leading,
-                                        endPoint: .trailing
+                        GeometryReader { geometry in
+                            ZStack(alignment: .leading) {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.white.opacity(0.1))
+                                    .frame(height: 6)
+                                
+                                // 进度条填充
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [Color.accentColor, Color.accentColor.opacity(0.8)],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
                                     )
-                                )
-                                .frame(width: CGFloat(progress) * 2.8, height: 6) // 280px max width
-                                .animation(.easeInOut(duration: 0.3), value: progress)
+                                    .frame(width: geometry.size.width * (progress / 100.0), height: 6)
+                                    .animation(.easeInOut(duration: 0.3), value: progress)
+                            }
                         }
+                        .frame(height: 6)
                     }
                     .padding(.horizontal, 40)
                 }
@@ -116,14 +115,15 @@ struct LaunchView: View {
                 Spacer()
             }
         }
+        .bindLocale()
         .onAppear {
             startLoading()
         }
     }
     
     private func startLoading() {
-        // 3秒内从0到100
-        let duration: TimeInterval = 3.0
+        // 2秒内从0到100
+        let duration: TimeInterval = 2.0
         let steps = 100
         let stepDuration = duration / Double(steps)
         

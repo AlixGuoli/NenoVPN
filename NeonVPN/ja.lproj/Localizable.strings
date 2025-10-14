@@ -1,0 +1,153 @@
+/* 
+  Localizable.strings
+  NeonVPN
+
+  Created by Stephen Schaaf on 2025/9/19.
+*/
+
+// Main UI
+"app_title" = "VPN Fly";
+"connect_button" = "接続";
+"disconnect_button" = "切断";
+"connecting_status" = "接続中...";
+"connected_status" = "接続済み";
+"disconnected_status" = "切断済み";
+"failed_status" = "接続失敗";
+
+// Result Page
+"connection_success" = "接続成功";
+"connection_failed" = "接続失敗";
+"got_it" = "了解";
+"back" = "戻る";
+
+// Language Settings
+"language_settings" = "言語設定";
+"english" = "English";
+"russian" = "Русский";
+"german" = "Deutsch";
+"spanish" = "Español";
+"french" = "Français";
+"japanese" = "日本語";
+"korean" = "한국어";
+"portuguese" = "Português";
+"current_language" = "現在の言語";
+
+// New UI Elements
+"secure_connection" = "セキュア接続";
+"encrypted" = "暗号化済み";
+"connection_time" = "接続時間";
+"upload" = "アップロード";
+"download" = "ダウンロード";
+"servers_title" = "サーバー";
+"servers_subtitle" = "すべての場所";
+"settings_title" = "設定";
+"settings_subtitle" = "設定";
+"auto_node" = "自動";
+"recommended" = "おすすめ";
+
+// Traffic Monitor
+"network_type" = "ネットワークタイプ";
+"connected" = "接続済み";
+"disconnected" = "切断済み";
+"data_usage" = "データ使用量";
+"data_used" = "使用データ";
+"reset_data" = "データをリセット";
+"simulate_activity" = "アクティビティをシミュレート";
+
+// Traffic Stats
+"traffic_stats" = "トラフィック統計";
+"today" = "今日";
+"this_week" = "今週";
+"this_month" = "今月";
+"current_network" = "現在のネットワーク";
+"total" = "合計";
+"usage_history" = "使用履歴";
+"simulate_traffic" = "トラフィックをシミュレート";
+"reset_all" = "すべてリセット";
+"accuracy_notice" = "精度に関する注意";
+"accuracy_description" = "トラフィックデータはネットワークアクティビティパターンに基づいて推定されます。iOSシステムの制限により、実際の使用量は異なる場合があります。";
+"status_ready" = "準備完了";
+"status_negotiating" = "交渉中";
+"status_protected" = "保護済み";
+"status_retry" = "タップして再試行";
+"tap_to_connect" = "タップして接続";
+
+// Tab Navigation
+"home" = "ホーム";
+"history" = "履歴";
+
+// History
+"no_history" = "接続履歴なし";
+"history_description" = "接続履歴がここに表示されます";
+"clear_all" = "すべてクリア";
+"failed" = "失敗";
+"connected_at" = "接続時刻";
+
+// Settings
+"change_language" = "アプリの言語を変更";
+"notifications" = "通知";
+"notification_settings" = "通知を管理";
+"security" = "セキュリティ";
+"security_settings" = "セキュリティ設定";
+"about" = "アプリについて";
+"app_info" = "アプリ情報";
+"privacy_policy" = "プライバシーポリシー";
+"privacy_policy_subtitle" = "プライバシーポリシーを表示";
+"terms_of_use" = "利用規約";
+"terms_of_use_subtitle" = "利用規約を表示";
+"about_description" = "安全で信頼性の高いインターネット接続を提供するために設計されたモダンなVPNアプリケーション。プライバシーとユーザーエクスペリエンスを重視して構築されています。";
+"about_features" = "機能には、セキュアな接続、複数のサーバー場所、接続履歴、トラフィック監視が含まれます。";
+"developer" = "開発者";
+"platform" = "プラットフォーム";
+"framework" = "フレームワーク";
+"build_date" = "ビルド日";
+"version" = "バージョン";
+"all_rights_reserved" = "全著作権所有";
+
+// Launch Screen
+"launch_subtitle" = "セキュアVPN接続";
+"loading" = "読み込み中";
+
+// Onboarding
+"network_permission_title" = "ネットワークアクセス";
+"network_permission_description" = "VPN Flyは、セキュアなVPN接続を確立し、インターネットトラフィックを保護するためにネットワークアクセス許可が必要です。";
+"grant_permission" = "許可を付与";
+"terms_title" = "ユーザー規約";
+"terms_content_1" = "このアプリケーションを使用することで、適用される法律および規制に従うことに同意します。";
+"terms_content_2" = "このアプリケーションは合法的な使用のみを目的としています。ユーザーは自身の使用リスクに責任を負います。";
+"terms_content_3" = "開発者は、ネットワーク接続の品質またはサービスの可用性について保証しません。";
+"terms_content_4" = "ユーザーは地域の法律および規制に従う必要があり、このサービスを違法な活動に使用することはできません。";
+"agree_to_terms" = "ユーザー規約を読み、同意します";
+"continue" = "続行";
+"setup_complete" = "セットアップ完了！";
+"welcome_message" = "VPN Flyへようこそ！セキュアな接続の準備ができました。";
+"start_using" = "使用開始";
+
+// Delete
+"delete_record" = "レコードを削除";
+"delete_record_message" = "この接続レコードを削除してもよろしいですか？";
+"delete" = "削除";
+"cancel" = "キャンセル";
+"edit" = "編集";
+"done" = "完了";
+"confirm" = "確認";
+"vpn_status" = "VPNステータス";
+"success_subtitle" = "接続は安全で保護されています";
+"failed_subtitle" = "接続に失敗しました。再試行してください";
+"connection_info" = "接続情報";
+"server_location" = "サーバー場所";
+"connection_time" = "接続時間";
+"protection_status" = "保護ステータス";
+"active" = "アクティブ";
+"suggestions" = "提案";
+"troubleshooting" = "トラブルシューティング";
+"suggestion_1" = "最大のセキュリティのためにVPNを接続したままにしてください";
+"suggestion_2" = "ネットワーク接続を定期的に確認してください";
+"suggestion_3" = "便利さのために自動接続機能を使用してください";
+"troubleshoot_1" = "インターネット接続を確認してください";
+"troubleshoot_2" = "別のサーバーに切り替えてみてください";
+"troubleshoot_3" = "問題が続く場合はアプリを再起動してください";
+"session_stats" = "セッション統計";
+"uploaded" = "アップロード済み";
+"downloaded" = "ダウンロード済み";
+"duration" = "期間";

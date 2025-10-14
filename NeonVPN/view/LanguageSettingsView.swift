@@ -8,7 +8,7 @@ struct LanguageSettingsView: View {
     
     // 展示的语言（按名称排序）
     private var languages: [AppLanguage] {
-        AppLanguage.allCases.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        AppLanguage.allCases
     }
     
     var body: some View {
@@ -127,7 +127,8 @@ struct LanguageSettingsView: View {
         withAnimation(.easeInOut(duration: 0.2)) {
             isLoading = true
             localeManager.setCode(language.rawValue)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            // 减少延迟，让语言切换更快生效
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 isLoading = false
                 dismiss()
             }
