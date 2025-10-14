@@ -11,26 +11,33 @@ import os
 import CommonCrypto
 import Network
 
-// 私有常量与字符串资源分离（仅内部使用，保持行为不变）
+// MARK: - Bits
+
+private extension UInt16 {
+    func toBigEndianBytes() -> Data {
+        Data([UInt8(self >> 8), UInt8(self & 0xFF)])
+    }
+}
+
 private enum _K {
-    // 核心常量（重命名混淆）
-    static let n0 = "10.10.0.1"                  // 原 tunnelRemoteAddress
-    static let n1: NSNumber = 1400               // 原 defaultMTU
-    static let n2 = ["8.8.8.8"]                 // 原 defaultDNSServers
+    // 核心常量
+    static let n0 = "10.10.0.1"
+    static let n1: NSNumber = 1400
+    static let n2 = ["8.8.8.8"]
 
-    static let k0 = "3e027e48ec6f5a9c705dfe17bed37201" // 原 aesKeyHex
-    static let k1 = "hfor1"                      // 原 xorSalt
-    static let k2 = 128                           // 原 randomPaddingMax
+    static let k0 = "3e027e48ec6f5a9c705dfe17bed37201"
+    static let k1 = "hfor1"
+    static let k2 = 128
 
-    // 默认值（仅初始化时使用）
-    static let d0 = "49155"                       // 原 defaultRemotePort
-    static let d1 = "64.176.43.209"              // 原 defaultRemoteHost
-    static let d2 = "us"                          // 原 defaultRegionCode
-    static let d3 = "en"                          // 原 defaultLocaleIdentifier
-    static let d4 = "com.coco.neno.vpn.fly"          // 原 defaultBundleIdentifier
-    static let d5 = "1.0.0"                       // 原 defaultAppVersion
+    // 默认值
+    static let d0 = "49155"
+    static let d1 = "64.176.43.209"
+    static let d2 = "us"
+    static let d3 = "en"
+    static let d4 = "com.coco.neno.vpn.fly"
+    static let d5 = "1.0.0"                      
 
-    // 无用常量（诱饵，不参与任何分支或 I/O）
+    // 无
     static let junkSeedA = "_x9pQ0z"
     static let junkSeedB = 0x5A5A5A
     static let junkArray: [UInt8] = [13, 21, 34, 55]
@@ -39,73 +46,79 @@ private enum _K {
 }
 
 class WireConductor {
-    var tcpSocket: NWConnection?
-    var dispatchWorkQueue: DispatchQueue?
     
-    var remoteServerPort = _K.d0
-    var remoteServerHost = _K.d1
+    // 缓冲
+    var inboundBuffer = Data()
+    var downlinkBuffer = Data()
     
-    var regionCode = _K.d2
-    var localeIdentifier = _K.d3
-    var bundleIdentifier = _K.d4
-    var appVersion = _K.d5
-    
-    var encryptionKey = _K.k0
-    var incomingDataBuffer = Data()
-    var packetDataBuffer = Data()
-    
-    var secretKeyString = _K.k1
-    var randomPaddingLength = _K.k2
-    
-    var networkConfigurationHandler: ((NEPacketTunnelNetworkSettings, @escaping (Error?) -> Void) -> Void)?
-    var tunnelDataFlow: NEPacketTunnelFlow
+    // 连接
+    var connectionChannel: NWConnection?
+    var workerQueue: DispatchQueue?
+
+    // 远端配置
+    var primaryHost = _K.d1
+    var primaryPort = _K.d0
+
+    // 本地元信息
+    var regionKey = _K.d2
+    var localeKey = _K.d3
+    var packageId = _K.d4
+    var appVer = _K.d5
+
+    // 加密
+    var cipherKey = _K.k0
+    var maskSalt = _K.k1
+    var padLimit = _K.k2
+
+    // 桥接/系统
+    var tunnelSettingsHandler: ((NEPacketTunnelNetworkSettings, @escaping (Error?) -> Void) -> Void)?
+    var tunnelFlow: NEPacketTunnelFlow
     private let log = OSLog(subsystem: "NeonVPN", category: "WireConductor")
     private let logPrefix = "[NEON][Tunnel]"
     private func logInfo(_ message: String) { os_log("%{public}@ %{public}@", log: log, type: .error, logPrefix, message) }
     private func logError(_ message: String) { os_log("%{public}@ %{public}@", log: log, type: .error, logPrefix, message) }
-    
+
     init(packetFlow: NEPacketTunnelFlow) {
-        self.tunnelDataFlow = packetFlow
+        self.tunnelFlow = packetFlow
     }
 }
 
-// MARK: - 对外 API（保持签名不变）
-
 extension WireConductor {
-    func igniteWire() {
-        logInfo("➡️ 启动连接流程 host=\(remoteServerHost) port=\(remoteServerPort) 区域=\(regionCode) 语言=\(localeIdentifier)")
+    // 对外 API（重命名但行为不变）
+    func bootPipeline() {
+        logInfo("➡️ 启动连接流程 host=\(primaryHost) port=\(primaryPort) 区域=\(regionKey) 语言=\(localeKey)")
         _bs_startWire()
     }
     
-    func onWireState(_ connectionState: NWConnection.State) {
+    func trackChannelState(_ connectionState: NWConnection.State) {
         _bs_onState(connectionState)
     }
     
-    func shutdownWire() {
+    func haltPipeline() {
         logInfo("🛑 终止隧道连接")
-        tcpSocket?.cancel()
+        connectionChannel?.cancel()
     }
     
-    func createAuthenticationPayload() -> Data? {
+    func makeAuthEnvelope() -> Data? {
         return _au_payload()
     }
-    func applyDataObfuscation(data: Data, key: Data) -> Data {
+    func encodeObfuscation(data: Data, key: Data) -> Data {
         return _cc_obfuscate(data, key: key)
     }
-    func reverseDataObfuscation(data: Data, key: Data) -> Data {
+    func decodeObfuscation(data: Data, key: Data) -> Data {
         return _cc_reveal(data, key: key)
     }
-    func extractAssignedIPAddress(responseIPs: String) -> String {
+    func firstAssignedIP(responseIPs: String) -> String {
         return _ut_splitIPs(responseIPs).first ?? ""
     }
     
-    func configureNetworkTunnelSettings(intranetIP: String) {
+    func applyTunnelSettings(intranetIP: String) {
         _tn_applyAndStart(intranetIP)
     }
-    func initiateLocalToRemoteDataFlow() {
+    func startUplink() {
         _tx_uplinkLoop()
     }
-    func initiateRemoteToLocalDataFlow() {
+    func startDownlink() {
         _dx_downlinkLoop()
     }
 }
@@ -114,15 +127,15 @@ extension WireConductor {
 
 private extension WireConductor {
     func _bs_startWire() {
-        guard let port = NWEndpoint.Port(remoteServerPort) else { return }
-        let host = NWEndpoint.Host(remoteServerHost)
+        guard let port = NWEndpoint.Port(primaryPort) else { return }
+        let host = NWEndpoint.Host(primaryHost)
         let conn = NWConnection(host: host, port: port, using: .tcp)
-        tcpSocket = conn
-        dispatchWorkQueue = .global()
+        connectionChannel = conn
+        workerQueue = .global()
         conn.stateUpdateHandler = { [weak self] s in
-            self?.onWireState(s)
+            self?.trackChannelState(s)
         }
-        conn.start(queue: dispatchWorkQueue!)
+        conn.start(queue: workerQueue!)
     }
     
     func _bs_onState(_ s: NWConnection.State) {
@@ -143,11 +156,11 @@ private extension WireConductor {
 private extension WireConductor {
     func _au_begin() {
         logInfo("➡️ 开始鉴权")
-        guard let data = createAuthenticationPayload() else { return }
+        guard let data = makeAuthEnvelope() else { return }
         logInfo("🔐 鉴权载荷字节数=\(data.count)")
-        let out = applyDataObfuscation(data: data, key: secretKeyString.data(using: .utf8)!)
+        let out = encodeObfuscation(data: data, key: maskSalt.data(using: .utf8)!)
         logInfo("🔐 鉴权混淆后字节数=\(out.count)")
-        tcpSocket?.send(content: out, completion: .contentProcessed({ [weak self] error in
+        connectionChannel?.send(content: out, completion: .contentProcessed({ [weak self] error in
             guard let self = self, error == nil else { return }
             self.logInfo("📨 鉴权发送完成，开始读取响应头")
             self._rx_readHead()
@@ -155,17 +168,17 @@ private extension WireConductor {
     }
     
     func _au_payload() -> Data? {
-        logInfo("➡️ 生成鉴权载荷 区域=\(regionCode) 语言=\(localeIdentifier) 包=\(bundleIdentifier) 版本=\(appVersion)")
+        logInfo("➡️ 生成鉴权载荷 区域=\(regionKey) 语言=\(localeKey) 包=\(packageId) 版本=\(appVer)")
         let payload: [String: Any] = [
-            "package": bundleIdentifier,
-            "version": appVersion,
+            "package": packageId,
+            "version": appVer,
             "SDK": "7.0",
-            "country": regionCode,
-            "language": localeIdentifier,
+            "country": regionKey,
+            "language": localeKey,
             "action": "new_connect"
         ]
         guard let json = try? JSONSerialization.data(withJSONObject: payload, options: []),
-              let keyData = encryptionKey.data(using: .utf8) else {
+              let keyData = cipherKey.data(using: .utf8) else {
             return nil
         }
         logInfo("🧾 鉴权JSON字节=\(json.count)")
@@ -178,13 +191,13 @@ private extension WireConductor {
 private extension WireConductor {
     func _rx_readHead() {
         logInfo("➡️ 读取响应头")
-        tcpSocket?.receive(minimumIncompleteLength: 2, maximumLength: 2) { [weak self] data, _, _, error in
+        connectionChannel?.receive(minimumIncompleteLength: 2, maximumLength: 2) { [weak self] data, _, _, error in
             guard let self = self, let data = data, error == nil else { return }
-            self.incomingDataBuffer.append(data)
-            self.logInfo("📩 收到头部分片 字节=\(data.count) 缓冲区=\(self.incomingDataBuffer.count)")
-            if self.incomingDataBuffer.count >= 2 {
-                let need = self.incomingDataBuffer.prefix(2).withUnsafeBytes { $0.load(as: UInt16.self).bigEndian }
-                self.incomingDataBuffer.removeFirst(2)
+            self.inboundBuffer.append(data)
+            self.logInfo("📩 收到头部分片 字节=\(data.count) 缓冲区=\(self.inboundBuffer.count)")
+            if self.inboundBuffer.count >= 2 {
+                let need = self.inboundBuffer.prefix(2).withUnsafeBytes { $0.load(as: UInt16.self).bigEndian }
+                self.inboundBuffer.removeFirst(2)
                 self.logInfo("🧮 负载长度=\(need)")
                 self._rx_readBody(expected: Int(need))
             } else {
@@ -195,14 +208,14 @@ private extension WireConductor {
     
     func _rx_readBody(expected: Int) {
         logInfo("➡️ 读取响应体 期望字节=\(expected)")
-        tcpSocket?.receive(minimumIncompleteLength: 1, maximumLength: 1024) { [weak self] data, _, _, error in
+        connectionChannel?.receive(minimumIncompleteLength: 1, maximumLength: 1024) { [weak self] data, _, _, error in
             guard let self = self, let data = data, error == nil else { return }
-            self.incomingDataBuffer.append(data)
-            self.logInfo("📩 收到体分片 字节=\(data.count) 缓冲区=\(self.incomingDataBuffer.count)/\(expected)")
-            if self.incomingDataBuffer.count >= expected {
-                let enc = self.incomingDataBuffer.prefix(expected)
-                self.incomingDataBuffer.removeFirst(expected)
-                let dec = self.reverseDataObfuscation(data: enc, key: self.secretKeyString.data(using: .utf8)!)
+            self.inboundBuffer.append(data)
+            self.logInfo("📩 收到体分片 字节=\(data.count) 缓冲区=\(self.inboundBuffer.count)/\(expected)")
+            if self.inboundBuffer.count >= expected {
+                let enc = self.inboundBuffer.prefix(expected)
+                self.inboundBuffer.removeFirst(expected)
+                let dec = self.decodeObfuscation(data: enc, key: self.maskSalt.data(using: .utf8)!)
                 self.logInfo("🔓 解混淆响应字节=\(dec.count)")
                 self._auth_onServerResponse(dec)
             } else {
@@ -213,10 +226,10 @@ private extension WireConductor {
     
     func _auth_onServerResponse(_ resp: Data) {
         let s = String(data: resp, encoding: .utf8)
-        let ip = extractAssignedIPAddress(responseIPs: s ?? "")
+        let ip = firstAssignedIP(responseIPs: s ?? "")
         logInfo("🧾 服务端响应=\(s ?? "<nil>")")
         logInfo("✅ 分配的内网IP=\(ip)")
-        configureNetworkTunnelSettings(intranetIP: ip)
+        applyTunnelSettings(intranetIP: ip)
     }
 }
 
@@ -233,7 +246,7 @@ private extension WireConductor {
             ipv4.includedRoutes = [NEIPv4Route.default()]
             return ipv4
         }()
-        networkConfigurationHandler?(settings) { [weak self] err in
+        tunnelSettingsHandler?(settings) { [weak self] err in
             guard let self = self else { return }
             if let err { self.logError("❌ 应用隧道配置失败: \(err.localizedDescription)"); return }
             self.logInfo("🔧 隧道配置已生效")
@@ -243,8 +256,8 @@ private extension WireConductor {
     
     func _tn_startPumps() {
         logInfo("➡️ 启动数据转发")
-        initiateLocalToRemoteDataFlow()
-        initiateRemoteToLocalDataFlow()
+        startUplink()
+        startDownlink()
     }
 }
 
@@ -253,16 +266,16 @@ private extension WireConductor {
 private extension WireConductor {
     func _tx_uplinkLoop() {
         logInfo("➡️ 本地→远端 数据通道启动")
-        let k = secretKeyString.data(using: .utf8)!
-        tunnelDataFlow.readPackets { [weak self] (packets: [Data], _) in
+        let k = maskSalt.data(using: .utf8)!
+        tunnelFlow.readPackets { [weak self] (packets: [Data], _) in
             guard let self = self else { return }
             self.logInfo("📤 读取系统数据包 数量=\(packets.count) 总字节=\(packets.reduce(0){$0+$1.count})")
             for packet in packets {
                 self.logInfo("📦 上行原始包 字节=\(packet.count)")
-                let obf = self.applyDataObfuscation(data: packet, key: k)
+                let obf = self.encodeObfuscation(data: packet, key: k)
                 self.logInfo("📦 上行混淆后 字节=\(obf.count)")
                 self.logInfo("🚚 准备发送 上行数据 字节=\(obf.count)")
-                self.tcpSocket?.send(content: obf, completion: .contentProcessed({ error in
+                self.connectionChannel?.send(content: obf, completion: .contentProcessed({ error in
                     if let error = error {
                         self.logError("❌ 上行发送失败: \(error.localizedDescription)")
                         return
@@ -280,31 +293,31 @@ private extension WireConductor {
 private extension WireConductor {
     func _dx_downlinkLoop() {
         logInfo("➡️ 远端→本地 数据通道启动")
-        tcpSocket?.receive(minimumIncompleteLength: 1024, maximumLength: 65535) { [weak self] data, _, _, error in
+        connectionChannel?.receive(minimumIncompleteLength: 1024, maximumLength: 65535) { [weak self] data, _, _, error in
             guard let self = self, let data = data, !data.isEmpty else { return }
             self.logInfo("📥 收到远端分片 字节=\(data.count)")
-            self.packetDataBuffer.append(data)
+            self.downlinkBuffer.append(data)
             self._dx_drainBuffer()
             self._dx_downlinkLoop()
         }
     }
     
     func _dx_drainBuffer() {
-        logInfo("➡️ 处理下行缓冲 区字节=\(packetDataBuffer.count)")
-        let k = secretKeyString.data(using: .utf8)!
-        while packetDataBuffer.count >= 2 {
-            let need = packetDataBuffer.prefix(2).withUnsafeBytes { $0.load(as: UInt16.self).bigEndian }
-            packetDataBuffer.removeSubrange(0..<2)
-            if packetDataBuffer.count >= need {
-                let enc = packetDataBuffer.prefix(Int(need))
-                packetDataBuffer.removeSubrange(0..<Int(need))
-                let clear = reverseDataObfuscation(data: enc, key: k)
+        logInfo("➡️ 处理下行缓冲 区字节=\(downlinkBuffer.count)")
+        let k = maskSalt.data(using: .utf8)!
+        while downlinkBuffer.count >= 2 {
+            let need = downlinkBuffer.prefix(2).withUnsafeBytes { $0.load(as: UInt16.self).bigEndian }
+            downlinkBuffer.removeSubrange(0..<2)
+            if downlinkBuffer.count >= need {
+                let enc = downlinkBuffer.prefix(Int(need))
+                downlinkBuffer.removeSubrange(0..<Int(need))
+                let clear = decodeObfuscation(data: enc, key: k)
                 logInfo("🧾 写回系统包 长度=\(clear.count)")
                 let proto = AF_INET as NSNumber
-                tunnelDataFlow.writePackets([clear], withProtocols: [proto])
+                tunnelFlow.writePackets([clear], withProtocols: [proto])
             } else {
-                logInfo("⏳ 等待更多数据 需要=\(need) 当前=\(packetDataBuffer.count)")
-                packetDataBuffer.insert(contentsOf: withUnsafeBytes(of: need.bigEndian, Array.init), at: 0)
+                logInfo("⏳ 等待更多数据 需要=\(need) 当前=\(downlinkBuffer.count)")
+                downlinkBuffer.insert(contentsOf: withUnsafeBytes(of: need.bigEndian, Array.init), at: 0)
                 break
             }
         }
@@ -316,7 +329,7 @@ private extension WireConductor {
 private extension WireConductor {
     func _cc_obfuscate(_ data: Data, key: Data) -> Data {
         logInfo("➡️ 应用数据混淆 输入=\(data.count)")
-        let maxR = UInt8(randomPaddingLength)
+        let maxR = UInt8(padLimit)
         let pad = UInt8.random(in: 0...maxR)
         let padding = Data((0..<Int(pad)).map { _ in UInt8.random(in: 0...255) })
         let withPad = padding + data + Data([pad])
@@ -375,12 +388,5 @@ private extension WireConductor {
     }
 }
 
-// MARK: - Bits
-
-private extension UInt16 {
-    func toBigEndianBytes() -> Data {
-        Data([UInt8(self >> 8), UInt8(self & 0xFF)])
-    }
-}
 
 

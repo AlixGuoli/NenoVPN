@@ -20,7 +20,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     
     override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
         // Add code here to start the process of stopping the tunnel.
-        wireConductor?.shutdownWire()
+        wireConductor?.haltPipeline()
         completionHandler()
     }
     
@@ -44,9 +44,9 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         if wireConductor == nil{
             wireConductor = WireConductor(packetFlow: packetFlow)
         }
-        wireConductor?.networkConfigurationHandler = { [weak self] settings, completion in
+        wireConductor?.tunnelSettingsHandler = { [weak self] settings, completion in
             self?.setTunnelNetworkSettings(settings, completionHandler: completion)
         }
-        wireConductor?.igniteWire()
+        wireConductor?.bootPipeline()
     }
 }
