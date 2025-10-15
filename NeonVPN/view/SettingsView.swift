@@ -259,6 +259,35 @@ struct AboutView: View {
                             AboutInfoRow(title: LocalizedText("platform"), value: "iOS")
                             AboutInfoRow(title: LocalizedText("framework"), value: "SwiftUI")
                             AboutInfoRow(title: LocalizedText("build_date"), value: "2025")
+                            
+                            // 官网链接
+                            Button(action: {
+                                if let url = URL(string: "https://keyvpntwo.xyz") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }) {
+                                HStack {
+                                    Text(LocalizedText("official_website"))
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(.white.opacity(0.8))
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: "arrow.up.right.square")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.accentColor)
+                                }
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 16)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color.white.opacity(0.05))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(Color.accentColor.opacity(0.3), lineWidth: 1)
+                                        )
+                                )
+                            }
                         }
                         .padding(.horizontal, 20)
                         

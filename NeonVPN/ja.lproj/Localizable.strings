@@ -102,6 +102,7 @@
 "framework" = "フレームワーク";
 "build_date" = "ビルド日";
 "version" = "バージョン";
+"official_website" = "公式ウェブサイト";
 "all_rights_reserved" = "全著作権所有";
 
 // Launch Screen

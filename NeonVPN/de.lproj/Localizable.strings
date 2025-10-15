@@ -102,6 +102,7 @@
 "framework" = "Framework";
 "build_date" = "Build-Datum";
 "version" = "Version";
+"official_website" = "Offizielle Website";
 "all_rights_reserved" = "Alle Rechte vorbehalten";
 
 // Launch Screen

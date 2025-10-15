@@ -102,6 +102,7 @@
 "framework" = "프레임워크";
 "build_date" = "빌드 날짜";
 "version" = "버전";
+"official_website" = "공식 웹사이트";
 "all_rights_reserved" = "모든 권리 보유";
 
 // Launch Screen

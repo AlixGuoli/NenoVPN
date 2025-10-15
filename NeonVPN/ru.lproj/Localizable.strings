@@ -102,6 +102,7 @@
 "framework" = "Фреймворк";
 "build_date" = "Дата сборки";
 "version" = "Версия";
+"official_website" = "Официальный сайт";
 "all_rights_reserved" = "Все права защищены";
 
 // Launch Screen
