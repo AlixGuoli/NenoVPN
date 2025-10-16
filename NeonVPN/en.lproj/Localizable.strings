@@ -110,6 +110,23 @@
 "loading" = "Loading";
 
 // Onboarding
+// 隐私保护与数据使用声明
+"privacy_protection_title" = "Privacy Policy &\nData Collection Notice";
+"privacy_protection_preamble" = "To ensure you have a high-quality VPN usage experience, we only collect the essential data. The information we gather includes the following categories:";
+"privacy_info_title" = "Device-related information:";
+"privacy_info_body" = "We gather device-related details including operating system version, hardware specifications, and language preferences. These data help us optimize network performance and improve service quality in a targeted manner.";
+"privacy_records_title" = "Connection records:";
+"privacy_records_body" = "We analyze and process connection logs in an anonymous manner. By analyzing these data, we can continuously improve our services and gain a deep understanding of the performance of applications, thereby ensuring that you can reliably access various websites and applications.";
+"privacy_duration_title" = "Usage duration and bandwidth data:";
+"privacy_duration_body" = "We will collect data on the overall bandwidth usage and session length. These data are crucial for maintaining the integrity and performance of the service, which can help us allocate resources rationally and ensure the stable operation of the service.";
+"privacy_adservice_title" = "Advertising service data:";
+"privacy_adservice_body" = "Some advertising services may collect data in accordance with their own privacy policies.";
+"privacy_policy_footer" = "To learn more, please read our";
+"privacy_policy_link" = "Privacy Policy";
+"agree_to_privacy" = "I acknowledge and accept the Privacy Policy & Data Collection Notice";
+"accept_continue" = "Accept & Continue";
+"not_now" = "Not Now";
+
 "network_permission_title" = "Network Access";
 "network_permission_description" = "VPN Fly needs network access permission to establish secure VPN connections and protect your internet traffic.";
 "grant_permission" = "Grant Permission";

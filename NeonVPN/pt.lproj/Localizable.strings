@@ -110,6 +110,23 @@
 "loading" = "Carregando";
 
 // Onboarding
+// 隐私保护与数据使用声明
+"privacy_protection_title" = "Política de Privacidade &\nAviso de Coleta de Dados";
+"privacy_protection_preamble" = "Para garantir que você tenha uma experiência de uso VPN de alta qualidade, coletamos apenas os dados essenciais. As informações que coletamos incluem as seguintes categorias:";
+"privacy_info_title" = "Informações relacionadas ao dispositivo:";
+"privacy_info_body" = "Coletamos detalhes relacionados ao dispositivo, incluindo a versão do sistema operacional, especificações de hardware e preferências de idioma. Esses dados nos ajudam a otimizar o desempenho da rede e fornecer melhor serviço.";
+"privacy_records_title" = "Registros de conexão:";
+"privacy_records_body" = "Analisamos e processamos logs de conexão de forma anônima. Ao analisar esses dados, podemos melhorar continuamente nossos serviços e obter uma compreensão profunda do desempenho das aplicações, garantindo assim que você possa acessar de forma confiável vários sites e aplicações.";
+"privacy_duration_title" = "Dados de duração de uso e largura de banda:";
+"privacy_duration_body" = "Coletaremos dados sobre o uso geral da largura de banda e duração da sessão. Esses dados são cruciais para manter a integridade e o desempenho do serviço, o que nos ajuda a alocar recursos de forma racional e garantir o funcionamento estável do serviço.";
+"privacy_adservice_title" = "Dados de serviços publicitários:";
+"privacy_adservice_body" = "Alguns serviços publicitários podem coletar dados de acordo com suas próprias políticas de privacidade.";
+"privacy_policy_footer" = "Para saber mais, leia nossa";
+"privacy_policy_link" = "Política de Privacidade";
+"agree_to_privacy" = "Confirmo e aceito a Política de Privacidade e o Aviso de Coleta de Dados";
+"accept_continue" = "Aceitar e Continuar";
+"not_now" = "Agora não";
+
 "network_permission_title" = "Acesso à rede";
 "network_permission_description" = "O VPN Fly precisa de permissão de acesso à rede para estabelecer conexões VPN seguras e proteger seu tráfego de internet.";
 "grant_permission" = "Conceder permissão";

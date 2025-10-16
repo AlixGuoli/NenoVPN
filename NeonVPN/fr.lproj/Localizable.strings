@@ -110,6 +110,23 @@
 "loading" = "Chargement";
 
 // Onboarding
+// 隐私保护与数据使用声明
+"privacy_protection_title" = "Politique de Confidentialité &\nAvis de Collecte de Données";
+"privacy_protection_preamble" = "Pour vous assurer une expérience d'utilisation VPN de haute qualité, nous ne collectons que les données essentielles. Les informations que nous collectons incluent les catégories suivantes:";
+"privacy_info_title" = "Informations liées à l'appareil:";
+"privacy_info_body" = "Nous collectons des détails liés à l'appareil incluant la version du système d'exploitation, les spécifications matérielles et les préférences linguistiques. Ces données nous aident à optimiser les performances du réseau et à fournir un meilleur service.";
+"privacy_records_title" = "Enregistrements de connexion:";
+"privacy_records_body" = "Nous analysons et traitons les journaux de connexion de manière anonyme. En analysant ces données, nous pouvons améliorer continuellement nos services et acquérir une compréhension approfondie des performances des applications, garantissant ainsi que vous puissiez accéder de manière fiable à divers sites web et applications.";
+"privacy_duration_title" = "Données de durée d'utilisation et de bande passante:";
+"privacy_duration_body" = "Nous collecterons des données sur l'utilisation globale de la bande passante et la durée de session. Ces données sont cruciales pour maintenir l'intégrité et les performances du service, ce qui nous aide à allouer les ressources de manière rationnelle et à assurer le fonctionnement stable du service.";
+"privacy_adservice_title" = "Données de services publicitaires:";
+"privacy_adservice_body" = "Certains services publicitaires peuvent collecter des données conformément à leurs propres politiques de confidentialité.";
+"privacy_policy_footer" = "Pour en savoir plus, veuillez lire notre";
+"privacy_policy_link" = "Politique de Confidentialité";
+"agree_to_privacy" = "Je confirme et accepte la Politique de Confidentialité et l'Avis de Collecte de Données";
+"accept_continue" = "Accepter et Continuer";
+"not_now" = "Pas maintenant";
+
 "network_permission_title" = "Accès au réseau";
 "network_permission_description" = "VPN Fly a besoin d'une autorisation d'accès au réseau pour établir des connexions VPN sécurisées et protéger votre trafic Internet.";
 "grant_permission" = "Accorder l'autorisation";

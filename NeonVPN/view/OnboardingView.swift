@@ -33,53 +33,46 @@ struct OnboardingView: View {
                 .padding(.top, 20)
                 .padding(.bottom, 40)
                 
-                // 页面内容
-                TabView(selection: $currentPage) {
-                    // 页面1：网络权限
-                    NetworkPermissionPage(
-                        hasPermission: $hasNetworkPermission,
-                        onNext: { 
-                            if hasNetworkPermission {
-                                withAnimation(.easeInOut(duration: 0.5)) {
-                                    currentPage = 1
+                // 页面内容（自定义切换动画，无滑动）
+                ZStack {
+                    if currentPage == 0 {
+                        PrivacyProtectionPage(
+                            hasAgreed: $hasAgreedToTerms,
+                            onNext: {
+                                if hasAgreedToTerms {
+                                    withAnimation(.easeInOut(duration: 0.35)) { currentPage = 1 }
+                                }
+                            },
+                            onboardingManager: onboardingManager
+                        )
+                        .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
+                                                removal: .move(edge: .leading).combined(with: .opacity)))
+                    }
+                    if currentPage == 1 {
+                        NetworkPermissionPage(
+                            hasPermission: $hasNetworkPermission,
+                            onNext: {
+                                if hasNetworkPermission {
+                                    withAnimation(.easeInOut(duration: 0.35)) { currentPage = 2 }
                                 }
                             }
-                        }
-                    )
-                    .tag(0)
-                    
-                    // 页面2：用户协议
-                    TermsAgreementPage(
-                        hasAgreed: $hasAgreedToTerms,
-                        onNext: { 
-                            if hasAgreedToTerms {
-                                withAnimation(.easeInOut(duration: 0.5)) {
-                                    currentPage = 2
+                        )
+                        .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
+                                                removal: .move(edge: .leading).combined(with: .opacity)))
+                    }
+                    if currentPage == 2 {
+                        CompletionPage(
+                            onComplete: {
+                                isComplete = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    onboardingManager.completeOnboarding()
                                 }
                             }
-                        }
-                    )
-                    .tag(1)
-                    
-                    // 页面3：完成
-                    CompletionPage(
-                        onComplete: {
-                            isComplete = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                onboardingManager.completeOnboarding()
-                            }
-                        }
-                    )
-                    .tag(2)
+                        )
+                        .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
+                                                removal: .move(edge: .leading).combined(with: .opacity)))
+                    }
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .animation(.easeInOut(duration: 0.5), value: currentPage)
-                .gesture(
-                    // 禁用滑动手势，防止意外滑动
-                    DragGesture()
-                        .onChanged { _ in }
-                        .onEnded { _ in }
-                )
             }
         }
         .bindLocale()
@@ -88,6 +81,188 @@ struct OnboardingView: View {
         }
     }
     
+}
+
+// MARK: - 隐私保护与数据使用声明页面
+struct PrivacyProtectionPage: View {
+    @Binding var hasAgreed: Bool
+    let onNext: () -> Void
+    @ObservedObject var onboardingManager: OnboardingManager
+    @ObservedObject private var localeManager = LocaleDao.shared
+    @State private var isRequesting = false
+    
+    var body: some View {
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                // 标题区域
+                VStack(spacing: 12) {
+                    Text(LocalizedText("privacy_protection_title"))
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+                    
+                    Text(LocalizedText("privacy_protection_preamble"))
+                        .font(.system(size: 16))
+                        .foregroundColor(.white.opacity(0.8))
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(4)
+                        .padding(.horizontal, 24)
+                }
+                .padding(.top, 20)
+                .padding(.bottom, 24)
+                
+                // 内容区域
+                ScrollView {
+                    VStack(spacing: 16) {
+                        // 数据收集说明
+                        VStack(spacing: 12) {
+                            PrivacyInfoRow(
+                                title: LocalizedText("privacy_info_title"),
+                                content: LocalizedText("privacy_info_body")
+                            )
+                            
+                            PrivacyInfoRow(
+                                title: LocalizedText("privacy_records_title"),
+                                content: LocalizedText("privacy_records_body")
+                            )
+                            
+                            PrivacyInfoRow(
+                                title: LocalizedText("privacy_duration_title"),
+                                content: LocalizedText("privacy_duration_body")
+                            )
+                            
+                            PrivacyInfoRow(
+                                title: LocalizedText("privacy_adservice_title"),
+                                content: LocalizedText("privacy_adservice_body")
+                            )
+                        }
+                        .padding(.horizontal, 24)
+                        
+                        // 隐私政策链接
+                        HStack {
+                            Text(LocalizedText("privacy_policy_footer"))
+                                .font(.system(size: 14))
+                                .foregroundColor(.white.opacity(0.6))
+                            
+                            Button(action: {
+                                if let url = URL(string: "https://keyvpntwo.xyz/p.html") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }) {
+                                Text(LocalizedText("privacy_policy_link"))
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundColor(.accentColor)
+                                    .underline()
+                            }
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.top, 8)
+                    }
+                    .padding(.bottom, 20)
+                }
+                .frame(maxHeight: geometry.size.height * 0.5)
+                
+                Spacer()
+                
+                // 底部操作区域
+                VStack(spacing: 16) {
+                    // 同意选项
+                    HStack(spacing: 12) {
+                        Button(action: {
+                            hasAgreed.toggle()
+                        }) {
+                            Image(systemName: hasAgreed ? "checkmark.square.fill" : "square")
+                                .font(.system(size: 20))
+                                .foregroundColor(hasAgreed ? .accentColor : .white.opacity(0.6))
+                        }
+                        
+                        Text(LocalizedText("agree_to_privacy"))
+                            .font(.system(size: 14))
+                            .foregroundColor(.white.opacity(0.9))
+                            .multilineTextAlignment(.leading)
+                        
+                        Spacer()
+                    }
+                    .padding(.horizontal, 24)
+                    
+                    // 按钮组
+                    VStack(spacing: 12) {
+                        // 接受并继续按钮
+                        Button(action: {
+                            if hasAgreed {
+                                isRequesting = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                    isRequesting = false
+                                    onNext()
+                                }
+                            }
+                        }) {
+                            HStack {
+                                if isRequesting {
+                                    ProgressView()
+                                        .tint(.white)
+                                        .scaleEffect(0.8)
+                                }
+                                Text(LocalizedText("accept_continue"))
+                                    .font(.system(size: 17, weight: .semibold))
+                                    .foregroundColor(.white)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(hasAgreed ? Color.accentColor : Color.white.opacity(0.2))
+                            )
+                        }
+                        .disabled(!hasAgreed || isRequesting)
+                        
+                        // 暂不按钮
+                        Button(action: {
+                            exit(0)
+                        }) {
+                            Text(LocalizedText("not_now"))
+                                .font(.system(size: 16))
+                                .foregroundColor(.white.opacity(0.7))
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                }
+                .padding(.bottom, 30)
+            }
+        }
+    }
+}
+
+// MARK: - 隐私信息行
+struct PrivacyInfoRow: View {
+    let title: String
+    let content: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.white)
+            
+            Text(content)
+                .font(.system(size: 14))
+                .foregroundColor(.white.opacity(0.8))
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white.opacity(0.08))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.white.opacity(0.15), lineWidth: 1)
+                )
+        )
+    }
 }
 
 // MARK: - 网络权限页面

@@ -110,6 +110,23 @@
 "loading" = "Cargando";
 
 // Onboarding
+// 隐私保护与数据使用声明
+"privacy_protection_title" = "Política de Privacidad &\nAviso de Recopilación de Datos";
+"privacy_protection_preamble" = "Para asegurar que tengas una experiencia de uso VPN de alta calidad, solo recopilamos los datos esenciales. La información que recopilamos incluye las siguientes categorías:";
+"privacy_info_title" = "Información relacionada con el dispositivo:";
+"privacy_info_body" = "Recopilamos detalles relacionados con el dispositivo incluyendo la versión del sistema operativo, especificaciones de hardware y preferencias de idioma. Estos datos nos ayudan a optimizar el rendimiento de la red y proporcionar mejor servicio.";
+"privacy_records_title" = "Registros de conexión:";
+"privacy_records_body" = "Analizamos y procesamos los registros de conexión de forma anónima. Al analizar estos datos, podemos mejorar continuamente nuestros servicios y obtener una comprensión profunda del rendimiento de las aplicaciones, asegurando así que puedas acceder de manera confiable a varios sitios web y aplicaciones.";
+"privacy_duration_title" = "Datos de duración de uso y ancho de banda:";
+"privacy_duration_body" = "Recopilaremos datos sobre el uso general del ancho de banda y la duración de la sesión. Estos datos son cruciales para mantener la integridad y el rendimiento del servicio, lo que nos ayuda a asignar recursos de manera racional y asegurar el funcionamiento estable del servicio.";
+"privacy_adservice_title" = "Datos de servicios publicitarios:";
+"privacy_adservice_body" = "Algunos servicios publicitarios pueden recopilar datos de acuerdo con sus propias políticas de privacidad.";
+"privacy_policy_footer" = "Para obtener más información, lea nuestra";
+"privacy_policy_link" = "Política de Privacidad";
+"agree_to_privacy" = "Confirmo y acepto la Política de Privacidad y el Aviso de Recopilación de Datos";
+"accept_continue" = "Aceptar y Continuar";
+"not_now" = "Ahora no";
+
 "network_permission_title" = "Acceso a la red";
 "network_permission_description" = "VPN Fly necesita permiso de acceso a la red para establecer conexiones VPN seguras y proteger tu tráfico de Internet.";
 "grant_permission" = "Otorgar permiso";

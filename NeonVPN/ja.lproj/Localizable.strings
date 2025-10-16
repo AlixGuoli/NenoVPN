@@ -110,6 +110,23 @@
 "loading" = "読み込み中";
 
 // Onboarding
+// 隐私保护与数据使用声明
+"privacy_protection_title" = "プライバシーポリシー &\nデータ収集通知";
+"privacy_protection_preamble" = "高品質なVPN使用体験を提供するため、必要なデータのみを収集します。収集される情報は以下のカテゴリを含みます：";
+"privacy_info_title" = "デバイス関連情報：";
+"privacy_info_body" = "オペレーティングシステムのバージョン、ハードウェア仕様、言語設定など、デバイス関連の詳細情報を収集します。これらのデータは、ネットワークパフォーマンスの最適化とより良いサービスの提供に役立ちます。";
+"privacy_records_title" = "接続記録：";
+"privacy_records_body" = "接続ログを匿名で分析・処理します。これらのデータを分析することで、サービスを継続的に改善し、アプリケーションのパフォーマンスを深く理解し、様々なウェブサイトやアプリケーションへの信頼性の高いアクセスを保証します。";
+"privacy_duration_title" = "使用時間と帯域幅データ：";
+"privacy_duration_body" = "全体的な帯域幅使用量とセッション時間のデータを収集します。これらのデータは、サービスの整合性とパフォーマンスを維持するために重要であり、リソースを合理的に割り当て、サービスの安定した運用を確保するのに役立ちます。";
+"privacy_adservice_title" = "広告サービスデータ：";
+"privacy_adservice_body" = "一部の広告サービスは、独自のプライバシーポリシーに従ってデータを収集する場合があります。";
+"privacy_policy_footer" = "詳細については、当社の";
+"privacy_policy_link" = "プライバシーポリシー";
+"agree_to_privacy" = "プライバシーポリシーとデータ収集通知を確認し、同意します";
+"accept_continue" = "同意して続行";
+"not_now" = "今はしない";
+
 "network_permission_title" = "ネットワークアクセス";
 "network_permission_description" = "VPN Flyは、セキュアなVPN接続を確立し、インターネットトラフィックを保護するためにネットワークアクセス許可が必要です。";
 "grant_permission" = "許可を付与";

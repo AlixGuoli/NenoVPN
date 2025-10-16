@@ -110,6 +110,23 @@
 "loading" = "로딩 중";
 
 // Onboarding
+// 隐私保护与数据使用声明
+"privacy_protection_title" = "개인정보 보호 정책 &\n데이터 수집 고지";
+"privacy_protection_preamble" = "고품질 VPN 사용 경험을 제공하기 위해 필요한 데이터만 수집합니다. 수집되는 정보는 다음 카테고리를 포함합니다:";
+"privacy_info_title" = "기기 관련 정보:";
+"privacy_info_body" = "운영 체제 버전, 하드웨어 사양, 언어 설정 등 기기 관련 세부 정보를 수집합니다. 이러한 데이터는 네트워크 성능 최적화와 더 나은 서비스 제공에 도움이 됩니다.";
+"privacy_records_title" = "연결 기록:";
+"privacy_records_body" = "연결 로그를 익명으로 분석하고 처리합니다. 이러한 데이터를 분석함으로써 서비스를 지속적으로 개선하고 애플리케이션의 성능에 대한 깊은 이해를 얻어 다양한 웹사이트와 애플리케이션에 안정적으로 액세스할 수 있도록 보장합니다.";
+"privacy_duration_title" = "사용 시간 및 대역폭 데이터:";
+"privacy_duration_body" = "전체 대역폭 사용량과 세션 길이에 대한 데이터를 수집합니다. 이러한 데이터는 서비스의 무결성과 성능을 유지하는 데 중요하며, 리소스를 합리적으로 할당하고 서비스의 안정적인 운영을 보장하는 데 도움이 됩니다.";
+"privacy_adservice_title" = "광고 서비스 데이터:";
+"privacy_adservice_body" = "일부 광고 서비스는 자체 개인정보 보호 정책에 따라 데이터를 수집할 수 있습니다.";
+"privacy_policy_footer" = "자세한 내용은 당사의";
+"privacy_policy_link" = "개인정보 보호 정책";
+"agree_to_privacy" = "개인정보 보호 정책 및 데이터 수집 고지를 확인하고 동의합니다";
+"accept_continue" = "동의하고 계속";
+"not_now" = "나중에";
+
 "network_permission_title" = "네트워크 액세스";
 "network_permission_description" = "VPN Fly는 안전한 VPN 연결을 설정하고 인터넷 트래픽을 보호하기 위해 네트워크 액세스 권한이 필요합니다.";
 "grant_permission" = "권한 부여";

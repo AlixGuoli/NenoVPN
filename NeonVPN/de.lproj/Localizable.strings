@@ -110,6 +110,24 @@
 "loading" = "Laden";
 
 // Onboarding
+// 隐私保护与数据使用声明
+"privacy_protection_title" = "Datenschutzrichtlinie &
+Datensammlungshinweis";
+"privacy_protection_preamble" = "Um Ihnen eine hochwertige VPN-Nutzungserfahrung zu bieten, sammeln wir nur die wesentlichen Daten. Die von uns gesammelten Informationen umfassen folgende Kategorien:";
+"privacy_info_title" = "Gerätebezogene Informationen:";
+"privacy_info_body" = "Wir sammeln gerätebezogene Details einschließlich Betriebssystemversion, Hardware-Spezifikationen und Spracheinstellungen. Diese Daten helfen uns, die Netzwerkleistung zu optimieren und besseren Service zu bieten.";
+"privacy_records_title" = "Verbindungsaufzeichnungen:";
+"privacy_records_body" = "Wir analysieren und verarbeiten Verbindungsprotokolle anonym. Durch die Analyse dieser Daten können wir unsere Dienste kontinuierlich verbessern und ein tiefes Verständnis für die Leistung von Anwendungen gewinnen, wodurch wir sicherstellen, dass Sie zuverlässig auf verschiedene Websites und Anwendungen zugreifen können.";
+"privacy_duration_title" = "Nutzungsdauer und Bandbreitendaten:";
+"privacy_duration_body" = "Wir sammeln Daten über die Gesamtbandbreitennutzung und Sitzungsdauer. Diese Daten sind entscheidend für die Aufrechterhaltung der Integrität und Leistung des Dienstes, was uns hilft, Ressourcen rational zuzuteilen und den stabilen Betrieb des Dienstes zu gewährleisten.";
+"privacy_adservice_title" = "Werbedienst-Daten:";
+"privacy_adservice_body" = "Einige Werbedienste können Daten gemäß ihren eigenen Datenschutzrichtlinien sammeln.";
+"privacy_policy_footer" = "Um mehr zu erfahren, lesen Sie bitte unsere";
+"privacy_policy_link" = "Datenschutzrichtlinie";
+"agree_to_privacy" = "Ich bestätige und akzeptiere die Datenschutzrichtlinie und den Datensammlungshinweis";
+"accept_continue" = "Akzeptieren & Fortfahren";
+"not_now" = "Nicht jetzt";
+
 "network_permission_title" = "Netzwerkzugriff";
 "network_permission_description" = "VPN Fly benötigt Netzwerkzugriffsberechtigung, um sichere VPN-Verbindungen herzustellen und Ihren Internetverkehr zu schützen.";
 "grant_permission" = "Berechtigung erteilen";
