@@ -169,3 +169,7 @@
 "uploaded" = "Téléchargé";
 "downloaded" = "Téléchargé";
 "duration" = "Durée";
+
+// Connecting Page
+"connecting_page_subtitle" = "Veuillez patienter pendant que nous établissons une connexion sécurisée";
+"cancel_connection" = "Annuler";

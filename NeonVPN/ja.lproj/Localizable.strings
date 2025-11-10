@@ -169,3 +169,7 @@
 "uploaded" = "アップロード済み";
 "downloaded" = "ダウンロード済み";
 "duration" = "期間";
+
+// Connecting Page
+"connecting_page_subtitle" = "安全な接続を確立するまでお待ちください";
+"cancel_connection" = "キャンセル";

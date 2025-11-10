@@ -11,6 +11,8 @@ final class ConnectVM: ObservableObject {
     // 结果页导航控制
     @Published var navigateToResult: Bool = false
     @Published var resultIsSuccess: Bool = false
+    // 连接页导航控制
+    @Published var showConnectingView: Bool = false
     // 连接时间统计
     @Published var connectionDuration: TimeInterval = 0
     @Published var formattedDuration: String = "00:00:00"
@@ -54,7 +56,7 @@ final class ConnectVM: ObservableObject {
             self.enableAndReload(mgr) { ok in
                 guard ok else { self.stage = .failed; return }
                 // 延迟 3 秒后再开始实际连接，用于展示"处理中"过程
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                     // 在3秒延迟后记录连接开始时间
                     let selectedServer = UserDefaults.standard.string(forKey: "selectedServerCode") ?? "auto"
                     let serverName = self.getServerDisplayName(for: selectedServer)
@@ -248,7 +250,11 @@ final class ConnectVM: ObservableObject {
         TrafficStatsManager.shared.simulateVPNTraffic()
         historyManager.recordConnectionSuccess() // 记录连接成功
         resultIsSuccess = true
+        // 先显示结果页，再关闭连接页，实现无缝衔接
         navigateToResult = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.showConnectingView = false
+        }
     }
     
     func notifyConnectFailed() {
@@ -266,13 +272,23 @@ final class ConnectVM: ObservableObject {
         NetworkMonitor.shared.stopVPNConnection()
         historyManager.recordConnectionFailure() // 记录连接失败
         resultIsSuccess = false
+        // 先显示结果页，再关闭连接页，实现无缝衔接
         navigateToResult = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.showConnectingView = false
+        }
     }
     
     // MARK: - 结果页管理
     
     func closeResultPage() {
         navigateToResult = false
+    }
+    
+    // MARK: - 连接页管理
+    
+    func closeConnectingView() {
+        showConnectingView = false
     }
     
     // MARK: - 辅助方法

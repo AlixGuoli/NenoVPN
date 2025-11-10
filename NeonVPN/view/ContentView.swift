@@ -13,46 +13,53 @@ struct ContentView: View {
     @StateObject private var globalConnectVM = ConnectVM()
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            // 主页
-            HomeView(viewModel: globalConnectVM)
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text(LocalizedText("home"))
-                }
-                .tag(0)
-            
-            // 流量监控
-            TrafficStatsView()
-                .tabItem {
-                    Image(systemName: "chart.bar.fill")
-                    Text(LocalizedText("traffic_stats"))
-                }
-                .tag(1)
-            
-            // 连接历史
-            HistoryView()
-                .tabItem {
-                    Image(systemName: "clock.fill")
-                    Text(LocalizedText("history"))
-                }
-                .tag(2)
-            
-            // 设置
-            SettingsView()
-                .tabItem {
-                    Image(systemName: "gearshape.fill")
-                    Text(LocalizedText("settings_title"))
-                }
-                .tag(3)
-        }
-        .accentColor(.accentColor)
-        .environmentObject(globalConnectVM)
-        .bindLocale()
-        .fullScreenCover(isPresented: $globalConnectVM.navigateToResult) {
-            ResultView(success: globalConnectVM.resultIsSuccess) {
-                globalConnectVM.closeResultPage()
+        NavigationStack {
+            TabView(selection: $selectedTab) {
+                // 主页
+                HomeView(viewModel: globalConnectVM)
+                    .tabItem {
+                        Image(systemName: "house.fill")
+                        Text(LocalizedText("home"))
+                    }
+                    .tag(0)
+                
+                // 流量监控
+                TrafficStatsView()
+                    .tabItem {
+                        Image(systemName: "chart.bar.fill")
+                        Text(LocalizedText("traffic_stats"))
+                    }
+                    .tag(1)
+                
+                // 连接历史
+                HistoryView()
+                    .tabItem {
+                        Image(systemName: "clock.fill")
+                        Text(LocalizedText("history"))
+                    }
+                    .tag(2)
+                
+                // 设置
+                SettingsView()
+                    .tabItem {
+                        Image(systemName: "gearshape.fill")
+                        Text(LocalizedText("settings_title"))
+                    }
+                    .tag(3)
             }
+            .accentColor(.accentColor)
+            .environmentObject(globalConnectVM)
+            .bindLocale()
+            .navigationDestination(isPresented: $globalConnectVM.showConnectingView) {
+                ConnectingView()
+                    .environmentObject(globalConnectVM)
+            }
+            .navigationDestination(isPresented: $globalConnectVM.navigateToResult) {
+                ResultView(success: globalConnectVM.resultIsSuccess) {
+                    globalConnectVM.closeResultPage()
+                }
+            }
+            
         }
     }
 }
@@ -69,67 +76,64 @@ struct HomeView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // 自定义增强背景（双层网格 + 柔光Blob）
-                EnhancedBackgroundView()
+        ZStack {
+            // 自定义增强背景（双层网格 + 柔光Blob）
+            EnhancedBackgroundView()
+            
+            ScrollView {
+            VStack(spacing: 0) {
+                // 顶部状态行
+                HStack(spacing: 12) {
+                    StatusCapsule(stage: viewModel.stage)
+                }
+                .padding(.top, 20)
+                .padding(.horizontal, 24)
+
+                // 顶部入口行（服务器）
+                CompactShortcutRow(
+                    serversAction: { showServers = true },
+                    settingsAction: { } // 移除设置入口，现在在Tab中
+                )
+                .onReceive(NotificationCenter.default.publisher(for: .selectedServerChanged)) { _ in
+                    // 触发刷新以更新副标题
+                }
+                .padding(.top, 8)
+                .padding(.horizontal, 24)
                 
-                ScrollView {
+                 // （入口已移至顶部信息行）
+
+                 // 中央连接区域
                 VStack(spacing: 0) {
-                    // 顶部状态行
-                    HStack(spacing: 12) {
-                        StatusCapsule(stage: viewModel.stage)
+                    // 连接状态卡片
+                        PremiumConnectionCard(
+                            stage: viewModel.stage,
+                            duration: viewModel.formattedDuration
+                        )
+                        
+                        // 连接按钮
+                        PremiumConnectionButton(
+                            stage: viewModel.stage,
+                            action: handleConnectionAction
+                        )
                     }
+                    .padding(.horizontal, 24)
                     .padding(.top, 20)
-                    .padding(.horizontal, 24)
-
-                    // 顶部入口行（服务器）
-                    CompactShortcutRow(
-                        serversAction: { showServers = true },
-                        settingsAction: { } // 移除设置入口，现在在Tab中
-                    )
-                    .onReceive(NotificationCenter.default.publisher(for: .selectedServerChanged)) { _ in
-                        // 触发刷新以更新副标题
-                    }
-                    .padding(.top, 8)
-                    .padding(.horizontal, 24)
                     
-                     // （入口已移至顶部信息行）
-
-                     // 中央连接区域
-                    VStack(spacing: 0) {
-                        // 连接状态卡片
-                            PremiumConnectionCard(
-                                stage: viewModel.stage,
-                                duration: viewModel.formattedDuration
-                            )
-                            
-                            // 连接按钮
-                            PremiumConnectionButton(
-                                stage: viewModel.stage,
-                                action: handleConnectionAction
-                            )
-                        }
+                    // 即时速率（上传/下载）卡片 - 仅在连接中模拟速率
+                    ConnectionSpeedView(stage: viewModel.stage)
+                        .frame(height: 64)
                         .padding(.horizontal, 24)
                         .padding(.top, 20)
-                        
-                        // 即时速率（上传/下载）卡片 - 仅在连接中模拟速率
-                        ConnectionSpeedView(stage: viewModel.stage)
-                            .frame(height: 64)
-                            .padding(.horizontal, 24)
-                            .padding(.top, 20)
 
-                        
-                        Spacer()
-                        .padding(.bottom, 30)
-                    }
+                    
+                    Spacer()
+                    .padding(.bottom, 30)
                 }
-                .fullScreenCover(isPresented: $showServers) {
-                    ServersView()
-                }
-                 // toolbar 移除，入口改为快捷卡片
             }
-            
+            .fullScreenCover(isPresented: $showServers) {
+                ServersView()
+            }
+             // toolbar 移除，入口改为快捷卡片
         }
         .bindLocale()
         .onAppear {
@@ -142,6 +146,8 @@ struct HomeView: View {
     private func handleConnectionAction() {
         switch viewModel.stage {
         case .disconnected, .failed:
+            // 先显示连接页，然后开始连接
+            viewModel.showConnectingView = true
             viewModel.beginSession()
         case .connected:
             viewModel.endSession()

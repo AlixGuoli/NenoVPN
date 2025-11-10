@@ -170,3 +170,7 @@
 "uploaded" = "Uploaded";
 "downloaded" = "Downloaded";
 "duration" = "Duration";
+
+// Connecting Page
+"connecting_page_subtitle" = "Please wait while we establish a secure connection";
+"cancel_connection" = "Cancel";

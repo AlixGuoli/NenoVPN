@@ -169,3 +169,7 @@
 "uploaded" = "업로드됨";
 "downloaded" = "다운로드됨";
 "duration" = "지속 시간";
+
+// Connecting Page
+"connecting_page_subtitle" = "보안 연결을 설정하는 동안 기다려 주세요";
+"cancel_connection" = "취소";

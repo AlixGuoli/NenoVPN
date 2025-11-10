@@ -170,3 +170,7 @@ Datensammlungshinweis";
 "uploaded" = "Hochgeladen";
 "downloaded" = "Heruntergeladen";
 "duration" = "Dauer";
+
+// Connecting Page
+"connecting_page_subtitle" = "Bitte warten Sie, während wir eine sichere Verbindung herstellen";
+"cancel_connection" = "Abbrechen";

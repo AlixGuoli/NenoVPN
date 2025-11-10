@@ -99,20 +99,20 @@ struct ResultView: View {
                 .padding(.horizontal, 24)
             }
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: onClose) {
-                    HStack(spacing: 6) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 16, weight: .medium))
-                        Text(LocalizedText("back"))
-                            .font(.system(size: 16, weight: .medium))
-                    }
-                    .foregroundColor(.white.opacity(0.8))
-                }
-            }
-        }
+        .navigationBarBackButtonHidden()
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                Button(action: onClose) {
+//                    HStack(spacing: 6) {
+//                        Image(systemName: "chevron.left")
+//                            .font(.system(size: 16, weight: .medium))
+//                        Text(LocalizedText("back"))
+//                            .font(.system(size: 16, weight: .medium))
+//                    }
+//                    .foregroundColor(.white.opacity(0.8))
+//                }
+//            }
+//        }
         .bindLocale()
         .onAppear {
             // 启动动画

@@ -172,8 +172,6 @@
 				FE003E5E2E7D47EB0071416A /* cocopacket */,
 			);
 			name = cocopacket;
-			packageProductDependencies = (
-			);
 			productName = cocopacket;
 			productReference = FE003E5B2E7D47EB0071416A /* cocopacket.appex */;
 			productType = "com.apple.product-type.app-extension";

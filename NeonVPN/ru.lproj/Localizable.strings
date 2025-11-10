@@ -169,3 +169,7 @@
 "uploaded" = "Загружено";
 "downloaded" = "Скачано";
 "duration" = "Продолжительность";
+
+// Connecting Page
+"connecting_page_subtitle" = "Пожалуйста, подождите, пока мы устанавливаем безопасное подключение";
+"cancel_connection" = "Отмена";

@@ -7,5 +7,6 @@ target 'NeonVPN' do
 
   # Pods for NeonVPN
   pod 'lottie-ios'
+  pod 'Alamofire'
 
 end
