@@ -1,12 +1,15 @@
 import SwiftUI
 
 struct LaunchView: View {
-    @State private var progress: Double = 0
-    @State private var isComplete = false
+    @StateObject private var viewModel = LaunchViewModel()
+    @EnvironmentObject private var launchManager: LaunchManager
     @ObservedObject private var localeManager = LocaleDao.shared
     
     var body: some View {
         ZStack {
+            Color(uiColor: UIColor.systemBackground)
+                .ignoresSafeArea()
+            
             // 背景渐变
             LinearGradient(
                 colors: [
@@ -82,7 +85,7 @@ struct LaunchView: View {
                             
                             Spacer()
                             
-                            Text("\(Int(progress))%")
+                            Text("\(Int(viewModel.progress))%")
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundColor(.accentColor)
                         }
@@ -103,8 +106,8 @@ struct LaunchView: View {
                                             endPoint: .trailing
                                         )
                                     )
-                                    .frame(width: geometry.size.width * (progress / 100.0), height: 6)
-                                    .animation(.easeInOut(duration: 0.3), value: progress)
+                                    .frame(width: geometry.size.width * (viewModel.progress / 100.0), height: 6)
+                                    .animation(.easeInOut(duration: 0.3), value: viewModel.progress)
                             }
                         }
                         .frame(height: 6)
@@ -117,28 +120,7 @@ struct LaunchView: View {
         }
         .bindLocale()
         .onAppear {
-            startLoading()
-        }
-    }
-    
-    private func startLoading() {
-        // 2秒内从0到100
-        let duration: TimeInterval = 2.0
-        let steps = 100
-        let stepDuration = duration / Double(steps)
-        
-        for i in 0...steps {
-            DispatchQueue.main.asyncAfter(deadline: .now() + stepDuration * Double(i)) {
-                withAnimation(.easeInOut(duration: 0.1)) {
-                    progress = Double(i)
-                }
-                
-                if i == steps {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        isComplete = true
-                    }
-                }
-            }
+            viewModel.begin(with: launchManager)
         }
     }
 }
@@ -194,4 +176,5 @@ class LaunchManager: ObservableObject {
 
 #Preview {
     LaunchView()
+        .environmentObject(LaunchManager())
 }

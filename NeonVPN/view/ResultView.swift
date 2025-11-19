@@ -1,8 +1,16 @@
 import SwiftUI
 
 struct ResultView: View {
-    let success: Bool
+    let resultType: ConnectVM.ResultType
     let onClose: () -> Void
+    
+    private var isSuccess: Bool {
+        resultType == .success
+    }
+    
+    private var isDisconnected: Bool {
+        resultType == .disconnected
+    }
     @ObservedObject private var localeManager = LocaleDao.shared
     @EnvironmentObject private var connectVM: ConnectVM
     @State private var animationPhase: Double = 0
@@ -12,9 +20,7 @@ struct ResultView: View {
         ZStack {
             // 背景渐变
             LinearGradient(
-                colors: success ? 
-                    [Color.green.opacity(0.1), Color.black] :
-                    [Color.red.opacity(0.1), Color.black],
+                colors: getGradientColors(),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -36,7 +42,7 @@ struct ResultView: View {
                                 .fill(
                                     RadialGradient(
                                         colors: [
-                                            (success ? Color.green : Color.red).opacity(0.3),
+                                            getStatusColor().opacity(0.3),
                                             Color.clear
                                         ],
                                         center: .center,
@@ -49,7 +55,7 @@ struct ResultView: View {
                                 .opacity(0.4 + sin(animationPhase * 0.8) * 0.2)
                             
                             // 主图标
-                            Image(success ? "success" : "failed")
+                            Image(getStatusIcon())
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 100, height: 100)
@@ -57,11 +63,11 @@ struct ResultView: View {
                         
                         // 状态文本
                         VStack(spacing: 8) {
-                            Text(success ? LocalizedText("connection_success") : LocalizedText("connection_failed"))
+                            Text(getStatusTitle())
                                 .font(.system(size: 28, weight: .bold))
                                 .foregroundColor(.white)
                             
-                            Text(success ? LocalizedText("success_subtitle") : LocalizedText("failed_subtitle"))
+                            Text(getStatusSubtitle())
                                 .font(.system(size: 16, weight: .medium))
                                 .foregroundColor(.white.opacity(0.7))
                                 .multilineTextAlignment(.center)
@@ -69,10 +75,10 @@ struct ResultView: View {
                     }
                     
                     // 连接信息卡片
-                    ConnectionInfoCard(success: success)
+                    ConnectionInfoCard(success: isSuccess)
                     
                     // 操作建议卡片
-                    ActionSuggestionCard(success: success)
+                    ActionSuggestionCard(success: isSuccess)
                     
                     // 关闭按钮
                     Button(action: onClose) {
@@ -126,6 +132,63 @@ struct ResultView: View {
                     showDetails = true
                 }
             }
+        }
+    }
+    
+    // MARK: - 辅助方法
+    
+    private func getGradientColors() -> [Color] {
+        switch resultType {
+        case .success:
+            return [Color.green.opacity(0.1), Color.black]
+        case .failed:
+            return [Color.red.opacity(0.1), Color.black]
+        case .disconnected:
+            return [Color.blue.opacity(0.1), Color.black]
+        }
+    }
+    
+    private func getStatusColor() -> Color {
+        switch resultType {
+        case .success:
+            return Color.green
+        case .failed:
+            return Color.red
+        case .disconnected:
+            return Color.blue
+        }
+    }
+    
+    private func getStatusIcon() -> String {
+        switch resultType {
+        case .success:
+            return "success"
+        case .failed:
+            return "failed"
+        case .disconnected:
+            return "success" // 使用成功图标，或者可以添加新的断开图标
+        }
+    }
+    
+    private func getStatusTitle() -> String {
+        switch resultType {
+        case .success:
+            return LocalizedText("connection_success")
+        case .failed:
+            return LocalizedText("connection_failed")
+        case .disconnected:
+            return "断开成功" // TODO: 添加到本地化文件
+        }
+    }
+    
+    private func getStatusSubtitle() -> String {
+        switch resultType {
+        case .success:
+            return LocalizedText("success_subtitle")
+        case .failed:
+            return LocalizedText("failed_subtitle")
+        case .disconnected:
+            return "VPN 连接已成功断开" // TODO: 添加到本地化文件
         }
     }
 }

@@ -4,15 +4,23 @@ import NetworkExtension
 final class ConnectVM: ObservableObject {
 
     enum Stage { case disconnected, connecting, connected, failed }
+    
+    enum ResultType {
+        case success    // 连接成功
+        case failed     // 连接失败
+        case disconnected  // 断开成功
+    }
 
     @Published var stage: Stage = .disconnected
     // 系统原始状态：仅记录，不直接用于 UI
     @Published var systemStatus: NEVPNStatus = .invalid
     // 结果页导航控制
     @Published var navigateToResult: Bool = false
-    @Published var resultIsSuccess: Bool = false
+    @Published var resultType: ResultType = .failed
     // 连接页导航控制
     @Published var showConnectingView: Bool = false
+    // 断开确认弹窗
+    @Published var showDisconnectConfirm: Bool = false
     // 连接时间统计
     @Published var connectionDuration: TimeInterval = 0
     @Published var formattedDuration: String = "00:00:00"
@@ -51,7 +59,12 @@ final class ConnectVM: ObservableObject {
         stage = .connecting
         userInitiated = true
         
-        loadOrCreateManager { [weak self] mgr in
+        Task {
+            // 第一步：获取服务配置
+            try? await loadService()
+            
+            // 继续连接逻辑
+            loadOrCreateManager { [weak self] mgr in
             guard let self = self, let mgr = mgr else { self?.stage = .failed; return }
             self.enableAndReload(mgr) { ok in
                 guard ok else { self.stage = .failed; return }
@@ -65,10 +78,10 @@ final class ConnectVM: ObservableObject {
                     do {
                         try mgr.connection.startVPNTunnel()
                     } catch {
-                        self.stage = .failed
-                        self.userInitiated = false
+                        debugPrint("[CONNECT] startVPNTunnel 失败: \(error)")
                     }
                 }
+            }
             }
         }
     }
@@ -79,11 +92,26 @@ final class ConnectVM: ObservableObject {
         guard let mgr = manager else { return }
         switch mgr.connection.status {
         case .connected, .connecting, .reasserting:
-            stage = .connecting // 过渡态，按钮禁用
-            mgr.connection.stopVPNTunnel()
+            // 显示确认弹窗
+            showDisconnectConfirm = true
         default:
             break
         }
+    }
+    
+    /// 确认断开连接
+    func confirmDisconnect() {
+        guard let mgr = manager else { return }
+        showDisconnectConfirm = false
+        stage = .connecting // 过渡态，按钮禁用
+        mgr.connection.stopVPNTunnel()
+        resultType = .disconnected
+        navigateToResult = true
+    }
+    
+    /// 取消断开连接
+    func cancelDisconnect() {
+        showDisconnectConfirm = false
     }
 
     // MARK: - Private
@@ -116,22 +144,38 @@ final class ConnectVM: ObservableObject {
         debugPrint("🟡 applyStateToUI: \(newState), userInitiated: \(userInitiated), navigateToResult: \(navigateToResult)")
         switch newState {
         case .connected:
-            // 若为用户主动触发，则由业务后续通知成功/失败，不立刻切 UI 成功
+            // 若为用户主动触发，先探测网络，再通知成功/失败
             if userInitiated {
-                debugPrint("🟡 手动连接")
-                notifyConnectSucceeded()
-                break
+                debugPrint("🟡 手动连接，开始探测网络")
+                checkConnectivity()
             } else {
                 debugPrint("🟡 自动连接")
                 stage = .connected
             }
         case .disconnected, .invalid:
             debugPrint("🟡 连接断开，navigateToResult: \(navigateToResult)")
-            stage = .disconnected
-            userInitiated = false
-            stopConnectionTimer()
-            NetworkMonitor.shared.stopVPNConnection()
-            historyManager.recordConnectionDisconnect() // 记录连接断开
+            if userInitiated {
+                // 用户主动连接失败，需要关闭连接页并弹出结果页
+                notifyConnectFailed()
+            } else if resultType == .disconnected {
+                // 用户手动断开，显示断开成功结果页
+                stage = .disconnected
+                userInitiated = false
+                stopConnectionTimer()
+                NetworkMonitor.shared.stopVPNConnection()
+                historyManager.recordConnectionDisconnect() // 记录连接断开
+                navigateToResult = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.showConnectingView = false
+                }
+            } else {
+                // 自动断开或其他情况
+                stage = .disconnected
+                userInitiated = false
+                stopConnectionTimer()
+                NetworkMonitor.shared.stopVPNConnection()
+                historyManager.recordConnectionDisconnect() // 记录连接断开
+            }
         case .connecting:
             stage = .connecting
         case .disconnecting, .reasserting:
@@ -142,45 +186,6 @@ final class ConnectVM: ObservableObject {
         }
     }
 
-    private func loadOrCreateManager(completion: @escaping (NETunnelProviderManager?) -> Void) {
-        NETunnelProviderManager.loadAllFromPreferences { [weak self] list, _ in
-            if let mgr = list?.first {
-                self?.manager = mgr
-                completion(mgr)
-                return
-            }
-            // 新建（按之前做法：不设置 providerBundleIdentifier）
-            let mgr = NETunnelProviderManager()
-            let proto = NETunnelProviderProtocol()
-            proto.serverAddress = self?.config.displayName
-            // 可选：传参给扩展（使用非直观键名）
-            // proto.providerConfiguration = ["x_cfg": ["p": "v1"]]
-
-            mgr.protocolConfiguration = proto
-            mgr.localizedDescription = self?.config.displayName
-            mgr.isEnabled = true
-            mgr.saveToPreferences { error in
-                guard error == nil else { completion(nil); return }
-                mgr.loadFromPreferences { error in
-                    guard error == nil else { completion(nil); return }
-                    self?.manager = mgr
-                    completion(mgr)
-                }
-            }
-        }
-    }
-
-    private func enableAndReload(_ mgr: NETunnelProviderManager, completion: @escaping (Bool) -> Void) {
-        mgr.isEnabled = true
-        mgr.saveToPreferences { error in
-            guard error == nil else { completion(false); return }
-            mgr.loadFromPreferences { error in
-                completion(error == nil)
-            }
-        }
-    }
-
-    private struct Config { let displayName = "VPN Fly" }
 
     // 无表驱动：使用 applyStateToUI 保持可读逻辑
 
@@ -249,7 +254,7 @@ final class ConnectVM: ObservableObject {
         NetworkMonitor.shared.startVPNConnection()
         TrafficStatsManager.shared.simulateVPNTraffic()
         historyManager.recordConnectionSuccess() // 记录连接成功
-        resultIsSuccess = true
+        resultType = .success
         // 先显示结果页，再关闭连接页，实现无缝衔接
         navigateToResult = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -271,7 +276,7 @@ final class ConnectVM: ObservableObject {
         stopConnectionTimer()
         NetworkMonitor.shared.stopVPNConnection()
         historyManager.recordConnectionFailure() // 记录连接失败
-        resultIsSuccess = false
+        resultType = .failed
         // 先显示结果页，再关闭连接页，实现无缝衔接
         navigateToResult = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -305,6 +310,134 @@ final class ConnectVM: ObservableObject {
         case "ca": return "Canada"
         case "au": return "Australia"
         default: return "Unknown"
+        }
+    }
+}
+
+// MARK: - VPN 配置管理
+extension ConnectVM {
+    private func loadOrCreateManager(completion: @escaping (NETunnelProviderManager?) -> Void) {
+        NETunnelProviderManager.loadAllFromPreferences { [weak self] list, _ in
+            if let mgr = list?.first {
+                self?.manager = mgr
+                completion(mgr)
+                return
+            }
+            // 新建（按之前做法：不设置 providerBundleIdentifier）
+            let mgr = NETunnelProviderManager()
+            let proto = NETunnelProviderProtocol()
+            proto.serverAddress = self?.config.displayName
+            // 可选：传参给扩展（使用非直观键名）
+            // proto.providerConfiguration = ["x_cfg": ["p": "v1"]]
+
+            mgr.protocolConfiguration = proto
+            mgr.localizedDescription = self?.config.displayName
+            mgr.isEnabled = true
+            mgr.saveToPreferences { error in
+                guard error == nil else { completion(nil); return }
+                mgr.loadFromPreferences { error in
+                    guard error == nil else { completion(nil); return }
+                    self?.manager = mgr
+                    completion(mgr)
+                }
+            }
+        }
+    }
+
+    private func enableAndReload(_ mgr: NETunnelProviderManager, completion: @escaping (Bool) -> Void) {
+        mgr.isEnabled = true
+        mgr.saveToPreferences { error in
+            guard error == nil else { completion(false); return }
+            mgr.loadFromPreferences { error in
+                completion(error == nil)
+            }
+        }
+    }
+    
+    private struct Config { let displayName = "VPN Fly" }
+}
+
+// MARK: - 服务配置扩展
+private extension ConnectVM {
+    /// 加载服务配置
+    func loadService() async throws {
+        var encryptedConfig = await NetCenter.shared.getServiceEndpoint()
+        //encryptedConfig = nil
+        if encryptedConfig == nil || encryptedConfig?.isEmpty == true {
+            debugPrint("[CONNECT] 请求服务配置失败，尝试从 UserDefaults 读取")
+            encryptedConfig = ServiceVault.shared.load()
+            
+            if encryptedConfig == nil || encryptedConfig?.isEmpty == true {
+                debugPrint("[CONNECT] !!! UserDefaults 中也没有服务配置")
+                return
+            }
+            
+            debugPrint("[CONNECT] 使用 UserDefaults 中的服务配置")
+            ServiceVault.shared.currentConfig = encryptedConfig!
+            ServiceVault.shared.isFromRequest = false
+        } else {
+            debugPrint("[CONNECT] 使用请求到的服务配置")
+            ServiceVault.shared.currentConfig = encryptedConfig!
+            ServiceVault.shared.isFromRequest = true
+        }
+        
+        guard let payload = encryptedConfig else {
+            debugPrint("[CONNECT] !!! 服务配置为空")
+            return
+        }
+        
+        guard let decryptedConfig = NetProfile.Sec.reveal(payload) else {
+            debugPrint("[CONNECT] !!! 服务配置解密失败")
+            return
+        }
+        
+        debugPrint("[CONNECT] 解密后的服务配置: \(decryptedConfig)")
+        
+        // 解析配置，提取节点信息
+        parseNetConfig(input: decryptedConfig, isValid: ServiceVault.shared.isFromRequest)
+        
+        // 保存到 Group，供 PacketTunnel 使用
+        try await ConnectConfigHandler.shared.savedGroupServiceConfig(serviceConfig: decryptedConfig)
+    }
+    
+    /// 解析服务配置，提取节点
+    func parseNetConfig(input: String?, isValid: Bool) {
+        guard let data = input?.data(using: .utf8) else { return }
+        
+        do {
+            let parsed = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+            let bounds = parsed?["outbounds"] as? [[String: Any]]
+            
+            bounds?.forEach { bound in
+                let config = bound["settings"] as? [String: Any]
+                let nodes = config?["vnext"] as? [[String: Any]]
+                
+                nodes?.forEach { node in
+                    if let ip = node["address"] as? String {
+                        let finalIp = isValid ? ip : "f\(ip)"
+                        ServiceVault.shared.ipService = finalIp
+                    }
+                }
+            }
+        } catch {
+            debugPrint("[CONNECT] 解析服务配置失败: \(error)")
+        }
+    }
+    
+    /// 检查网络连通性
+    func checkConnectivity() {
+        Task {
+            let isConnected = await NetCenter.shared.checkConnectivity()
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                if isConnected {
+                    debugPrint("[CONNECT] 网络探测成功")
+                    self.notifyConnectSucceeded()
+                } else {
+                    debugPrint("[CONNECT] 网络探测失败")
+                    self.notifyConnectFailed()
+                }
+            }
         }
     }
 }

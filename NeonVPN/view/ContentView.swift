@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedTab = 0
     @ObservedObject private var localeManager = LocaleDao.shared
-    @StateObject private var globalConnectVM = ConnectVM()
+    @EnvironmentObject private var globalConnectVM: ConnectVM
 
     var body: some View {
         NavigationStack {
@@ -55,8 +55,20 @@ struct ContentView: View {
                     .environmentObject(globalConnectVM)
             }
             .navigationDestination(isPresented: $globalConnectVM.navigateToResult) {
-                ResultView(success: globalConnectVM.resultIsSuccess) {
+                ResultView(resultType: globalConnectVM.resultType) {
                     globalConnectVM.closeResultPage()
+                }
+            }
+            .overlay {
+                if globalConnectVM.showDisconnectConfirm {
+                    DisconnectConfirmView(
+                        onConfirm: {
+                            globalConnectVM.confirmDisconnect()
+                        },
+                        onCancel: {
+                            globalConnectVM.cancelDisconnect()
+                        }
+                    )
                 }
             }
             
@@ -1165,4 +1177,5 @@ private struct SpeedTile: View {
 
 #Preview {
     ContentView()
+        .environmentObject(ConnectVM())
 }
