@@ -74,8 +74,11 @@ final class AdmobInterstitialService: NSObject {
             onAdFailed?()
             return
         }
+        let adUnitID = ad.adUnitID
         presentingAd = ad
         interstitial = nil
+        // 上报展示广告
+        ReportCat.shared.reportAd(moment: ReportCat.E_AD_SHOW, key: adUnitID, adMoment: moment)
         ad.present(from: controller)
     }
     
@@ -109,6 +112,9 @@ final class AdmobInterstitialService: NSObject {
         let unitID = availableKeys[index]
         debugPrint("[ADS] [AdMob] 开始加载: \(unitID)")
         
+        // 上报开始加载
+        ReportCat.shared.reportAd(moment: ReportCat.E_AD_START, adMoment: moment)
+        
         let request = Request()
         InterstitialAd.load(with: unitID, request: request) { [weak self] ad, error in
             DispatchQueue.main.async {
@@ -118,6 +124,8 @@ final class AdmobInterstitialService: NSObject {
                     ad.fullScreenContentDelegate = self
                     self.isLoading = false
                     self.loadTimestamp = nil
+                    // 上报加载成功
+                    ReportCat.shared.reportAd(moment: ReportCat.E_AD_SUCCESS, key: unitID, adMoment: moment)
                     self.onAdReady?()
                     debugPrint("[ADS] [AdMob] 加载成功: \(unitID)")
                 } else {

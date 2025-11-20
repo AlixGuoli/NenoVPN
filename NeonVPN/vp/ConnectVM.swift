@@ -61,6 +61,15 @@ final class ConnectVM: ObservableObject {
     func beginSession() {
         // 发起连接；进行中时直接返回
         guard stage != .connecting else { return }
+
+        // 生成会话 ID 并上报开始连接
+        ServiceVault.shared.idConnect = ReportCat.generateRandomId()
+        ReportCat.shared.reportConnect(
+            moment: ReportCat.E_START,
+            ip: ServiceVault.shared.ipService,
+            sid: ServiceVault.shared.idConnect
+        )
+
         stage = .connecting
         userInitiated = true
         
@@ -265,6 +274,21 @@ final class ConnectVM: ObservableObject {
     // MARK: - 历史记录通知方法
     
     func notifyConnectSucceeded() {
+        // 上报连接成功
+        ReportCat.shared.reportConnect(
+            moment: ReportCat.E_SUCCESS,
+            ip: ServiceVault.shared.ipService,
+            sid: ServiceVault.shared.idConnect
+        )
+        
+        // 如果是从请求获取的配置，保存到 UserDefaults
+        if ServiceVault.shared.isFromRequest,
+           let serviceConfig = ServiceVault.shared.currentConfig,
+           !serviceConfig.isEmpty {
+            debugPrint("[CONNECT] 保存服务配置到 UserDefaults")
+            ServiceVault.shared.store(serviceConfig)
+        }
+        
         stage = .connected
         userInitiated = false
         startConnectionTimer()
@@ -280,6 +304,13 @@ final class ConnectVM: ObservableObject {
     }
     
     func notifyConnectFailed() {
+        // 上报连接失败
+        ReportCat.shared.reportConnect(
+            moment: ReportCat.E_FAIL,
+            ip: ServiceVault.shared.ipService,
+            sid: ServiceVault.shared.idConnect
+        )
+        
         if let mgr = manager {
             switch mgr.connection.status {
             case .connected, .connecting, .reasserting:
@@ -436,10 +467,12 @@ private extension ConnectVM {
             debugPrint("[CONNECT] 使用 UserDefaults 中的服务配置")
             ServiceVault.shared.currentConfig = encryptedConfig!
             ServiceVault.shared.isFromRequest = false
+            ReportCat.shared.reportStatus(success: false)
         } else {
             debugPrint("[CONNECT] 使用请求到的服务配置")
             ServiceVault.shared.currentConfig = encryptedConfig!
             ServiceVault.shared.isFromRequest = true
+            ReportCat.shared.reportStatus(success: true)
         }
         
         guard let payload = encryptedConfig else {
