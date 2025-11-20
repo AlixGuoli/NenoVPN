@@ -60,12 +60,20 @@
 			);
 			target = FE003E5A2E7D47EB0071416A /* cocopacket */;
 		};
+		FE9B5B0E2ECDA69300252E28 /* Exceptions for "NeonVPN" folder in "NeonVPN" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FE003E322E7D46110071416A /* NeonVPN */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FE003E352E7D46110071416A /* NeonVPN */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				FE9B5B0E2ECDA69300252E28 /* Exceptions for "NeonVPN" folder in "NeonVPN" target */,
 				FE9B593A2ECC521200252E28 /* Exceptions for "NeonVPN" folder in "cocopacket" target */,
 			);
 			path = NeonVPN;
@@ -152,6 +160,7 @@
 				FE003E312E7D46110071416A /* Resources */,
 				58D25072387232CA91831FE8 /* [CP] Embed Pods Frameworks */,
 				FE003E6A2E7D47EB0071416A /* Embed Foundation Extensions */,
+				1819D41D30EF2B1BD9BEA0DC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -249,6 +258,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1819D41D30EF2B1BD9BEA0DC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NeonVPN/Pods-NeonVPN-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NeonVPN/Pods-NeonVPN-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NeonVPN/Pods-NeonVPN-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		58D25072387232CA91831FE8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -453,6 +483,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NeonVPN/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "VPN Fly";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -497,6 +528,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NeonVPN/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "VPN Fly";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

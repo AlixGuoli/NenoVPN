@@ -73,6 +73,11 @@ struct ContentView: View {
             }
             
         }
+        .onChange(of: globalConnectVM.navigateToResult) { newValue in
+            if newValue {
+                globalConnectVM.showAdForResultIfNeeded()
+            }
+        }
     }
 }
 

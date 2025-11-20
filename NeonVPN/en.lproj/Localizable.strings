@@ -174,3 +174,14 @@
 // Connecting Page
 "connecting_page_subtitle" = "Please wait while we establish a secure connection";
 "cancel_connection" = "Cancel";
+
+// Disconnect Dialog & Result
+"disconnect_confirm_title" = "Disconnect";
+"disconnect_confirm_message" = "Are you sure you want to disconnect the VPN?";
+"disconnect_confirm_button" = "Disconnect";
+"disconnect_success_title" = "Disconnected";
+"disconnect_success_subtitle" = "VPN connection has been disconnected successfully";
+
+// Ad Skip Button
+"Skip_Ad" = "Skip Ad";
+"Skip_Ad_Time" = "Skip Ad %ldS";

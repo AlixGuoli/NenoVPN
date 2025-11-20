@@ -177,7 +177,7 @@ struct ResultView: View {
         case .failed:
             return LocalizedText("connection_failed")
         case .disconnected:
-            return "断开成功" // TODO: 添加到本地化文件
+            return LocalizedText("disconnect_success_title")
         }
     }
     
@@ -188,7 +188,7 @@ struct ResultView: View {
         case .failed:
             return LocalizedText("failed_subtitle")
         case .disconnected:
-            return "VPN 连接已成功断开" // TODO: 添加到本地化文件
+            return LocalizedText("disconnect_success_subtitle")
         }
     }
 }

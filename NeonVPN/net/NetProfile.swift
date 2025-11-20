@@ -32,6 +32,7 @@ final class NetProfile {
     }
     
     var packageId: String {
+        /// 测试
         return "CatVPN.CatVPN"
         //return Bundle.main.bundleIdentifier ?? "com.coco.neon.vpn.fly"
     }
@@ -41,6 +42,8 @@ final class NetProfile {
     }
     
     var region: String {
+        /// 测试
+        return "ru"
         return (Locale.current.region?.identifier ?? "us").lowercased()
     }
     
@@ -49,12 +52,12 @@ final class NetProfile {
     }
     
     // MARK: - 接口路径
-    
+    /// 测试
     enum API {
-        static let configPolicy = "mesh/config/policy"
-        static let adsProxy = "mesh/ads/proxy"
-        static let serviceEndpoint = "mesh/service/endpoint"
-        static let groupTopology = "mesh/group/topology"
+        static let configPolicy = "/mesh/config/policy"
+        static let adsProxy = "/mesh/ads/proxy"
+        static let serviceEndpoint = "/mesh/service/endpoint"
+        static let groupTopology = "/mesh/group/topology"
     }
     
     // MARK: - 构建参数

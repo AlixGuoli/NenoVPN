@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct DisconnectConfirmView: View {
+    @ObservedObject private var localeManager = LocaleDao.shared
     let onConfirm: () -> Void
     let onCancel: () -> Void
     
@@ -16,14 +17,14 @@ struct DisconnectConfirmView: View {
             // 弹窗内容
             VStack(spacing: 0) {
                 // 标题
-                Text("断开连接")
+                Text(LocalizedText("disconnect_confirm_title"))
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.white)
                     .padding(.top, 24)
                     .padding(.bottom, 16)
                 
                 // 内容
-                Text("确定要断开 VPN 连接吗？")
+                Text(LocalizedText("disconnect_confirm_message"))
                     .font(.system(size: 15))
                     .foregroundColor(.white.opacity(0.8))
                     .padding(.bottom, 24)
@@ -32,7 +33,7 @@ struct DisconnectConfirmView: View {
                 HStack(spacing: 12) {
                     // 取消按钮
                     Button(action: onCancel) {
-                        Text("取消")
+                        Text(LocalizedText("cancel"))
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -43,7 +44,7 @@ struct DisconnectConfirmView: View {
                     
                     // 确认按钮
                     Button(action: onConfirm) {
-                        Text("断开")
+                        Text(LocalizedText("disconnect_confirm_button"))
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -70,6 +71,7 @@ struct DisconnectConfirmView: View {
                             .stroke(Color.white.opacity(0.1), lineWidth: 1)
                     )
             )
+            .bindLocale()
         }
     }
 }

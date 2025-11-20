@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ReturnLaunchView: View {
     @ObservedObject private var localeManager = LocaleDao.shared
+    let onShowAd: () -> Void
     let onComplete: () -> Void
     
     var body: some View {
@@ -77,6 +78,11 @@ struct ReturnLaunchView: View {
         }
         .bindLocale()
         .onAppear {
+            // 2秒后展示广告
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                onShowAd()
+            }
+            
             // 3秒后自动关闭
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 onComplete()

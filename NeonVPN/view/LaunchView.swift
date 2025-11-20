@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct LaunchView: View {
+    @Binding var shouldShowStartupAd: Bool
     @StateObject private var viewModel = LaunchViewModel()
     @EnvironmentObject private var launchManager: LaunchManager
+    @EnvironmentObject private var onboardingManager: OnboardingManager
     @ObservedObject private var localeManager = LocaleDao.shared
     
     var body: some View {
@@ -122,6 +124,9 @@ struct LaunchView: View {
         .onAppear {
             viewModel.begin(with: launchManager)
         }
+        .onChange(of: viewModel.startupAdReady) { ready in
+            shouldShowStartupAd = ready
+        }
     }
 }
 
@@ -175,6 +180,7 @@ class LaunchManager: ObservableObject {
 }
 
 #Preview {
-    LaunchView()
+    LaunchView(shouldShowStartupAd: .constant(false))
         .environmentObject(LaunchManager())
+        .environmentObject(OnboardingManager())
 }

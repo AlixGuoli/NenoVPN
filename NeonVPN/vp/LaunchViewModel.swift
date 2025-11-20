@@ -11,6 +11,7 @@ import Alamofire
 @MainActor
 final class LaunchViewModel: ObservableObject {
     @Published var progress: Double = 0
+    @Published var startupAdReady: Bool = false
     
     private weak var launchManager: LaunchManager?
     private var reachability: NetworkReachabilityManager?
@@ -57,6 +58,8 @@ final class LaunchViewModel: ObservableObject {
         Task {
             await NetCenter.shared.getConfigPolicy()
             await NetCenter.shared.getAdsProxy()
+            let adReady = await loadStartupAdsWithPriority()
+            startupAdReady = adReady
             completeIfNeeded()
         }
     }
@@ -94,6 +97,50 @@ final class LaunchViewModel: ObservableObject {
         
         progress = 100
         launchManager?.completeLaunch()
+    }
+    
+    // MARK: - 广告加载
+    
+    private func loadStartupAdsWithPriority() async -> Bool {
+        async let banner = loadBannerAd()
+        async let interstitial = loadInterstitialAd()
+        
+        let bannerSuccess = await banner
+        if bannerSuccess {
+            return true
+        }
+        let interstitialSuccess = await interstitial
+        return interstitialSuccess
+    }
+    
+    private func loadBannerAd() async -> Bool {
+        await withCheckedContinuation { continuation in
+            var resumed = false
+            AdsManager.shared.prepareYandexBanner {
+                guard !resumed else { return }
+                resumed = true
+                continuation.resume(returning: true)
+            } onFailed: {
+                guard !resumed else { return }
+                resumed = true
+                continuation.resume(returning: false)
+            }
+        }
+    }
+    
+    private func loadInterstitialAd() async -> Bool {
+        await withCheckedContinuation { continuation in
+            var resumed = false
+            AdsManager.shared.prepareYandexInt {
+                guard !resumed else { return }
+                resumed = true
+                continuation.resume(returning: true)
+            } onFailed: {
+                guard !resumed else { return }
+                resumed = true
+                continuation.resume(returning: false)
+            }
+        }
     }
 }
 

@@ -1,20 +1,199 @@
 PODS:
   - Alamofire (5.10.2)
+  - AppMetricaAdSupport (5.12.1):
+    - AppMetricaCore (= 5.12.1)
+    - AppMetricaCoreExtension (= 5.12.1)
+  - AppMetricaCore (5.12.1):
+    - AppMetricaCoreUtils (= 5.12.1)
+    - AppMetricaEncodingUtils (= 5.12.1)
+    - AppMetricaFMDB (= 5.12.1)
+    - AppMetricaHostState (= 5.12.1)
+    - AppMetricaIdentifiers (= 5.12.1)
+    - AppMetricaKeychain (= 5.12.1)
+    - AppMetricaLog (= 5.12.1)
+    - AppMetricaNetwork (= 5.12.1)
+    - AppMetricaPlatform (= 5.12.1)
+    - AppMetricaProtobuf (= 5.12.1)
+    - AppMetricaProtobufUtils (= 5.12.1)
+    - AppMetricaStorageUtils (= 5.12.1)
+  - AppMetricaCoreExtension (5.12.1):
+    - AppMetricaCore (= 5.12.1)
+    - AppMetricaStorageUtils (= 5.12.1)
+  - AppMetricaCoreUtils (5.12.1):
+    - AppMetricaLog (= 5.12.1)
+  - AppMetricaCrashes (5.12.1):
+    - AppMetricaCore (= 5.12.1)
+    - AppMetricaCoreExtension (= 5.12.1)
+    - AppMetricaCoreUtils (= 5.12.1)
+    - AppMetricaEncodingUtils (= 5.12.1)
+    - AppMetricaHostState (= 5.12.1)
+    - AppMetricaLog (= 5.12.1)
+    - AppMetricaPlatform (= 5.12.1)
+    - AppMetricaProtobufUtils (= 5.12.1)
+    - AppMetricaStorageUtils (= 5.12.1)
+    - KSCrash/Recording (< 2.2.0, >= 2.1.0)
+  - AppMetricaEncodingUtils (5.12.1):
+    - AppMetricaCoreUtils (= 5.12.1)
+    - AppMetricaLog (= 5.12.1)
+    - AppMetricaPlatform (= 5.12.1)
+  - AppMetricaFMDB (5.12.1)
+  - AppMetricaHostState (5.12.1):
+    - AppMetricaCoreUtils (= 5.12.1)
+    - AppMetricaLog (= 5.12.1)
+  - AppMetricaIdentifiers (5.12.1):
+    - AppMetricaKeychain (= 5.12.1)
+    - AppMetricaLogSwift (= 5.12.1)
+    - AppMetricaPlatform (= 5.12.1)
+    - AppMetricaStorageUtils (= 5.12.1)
+    - AppMetricaSynchronization (= 5.12.1)
+  - AppMetricaKeychain (5.12.1):
+    - AppMetricaCoreUtils (= 5.12.1)
+    - AppMetricaLog (= 5.12.1)
+    - AppMetricaStorageUtils (= 5.12.1)
+  - AppMetricaLibraryAdapter (5.12.1):
+    - AppMetricaCore (= 5.12.1)
+    - AppMetricaCoreExtension (= 5.12.1)
+  - AppMetricaLog (5.12.1)
+  - AppMetricaLogSwift (5.12.1):
+    - AppMetricaLog (= 5.12.1)
+  - AppMetricaNetwork (5.12.1):
+    - AppMetricaCoreUtils (= 5.12.1)
+    - AppMetricaLog (= 5.12.1)
+    - AppMetricaPlatform (= 5.12.1)
+  - AppMetricaPlatform (5.12.1):
+    - AppMetricaCoreUtils (= 5.12.1)
+    - AppMetricaLog (= 5.12.1)
+  - AppMetricaProtobuf (5.12.1)
+  - AppMetricaProtobufUtils (5.12.1):
+    - AppMetricaProtobuf (= 5.12.1)
+  - AppMetricaStorageUtils (5.12.1):
+    - AppMetricaCoreUtils (= 5.12.1)
+    - AppMetricaLog (= 5.12.1)
+  - AppMetricaSynchronization (5.12.1):
+    - AppMetricaLogSwift (= 5.12.1)
+  - DivKit (32.26.0):
+    - DivKit_LayoutKit (= 32.26.0)
+    - DivKit_Serialization (= 32.26.0)
+    - VGSL (~> 7.7)
+  - DivKit_LayoutKit (32.26.0):
+    - DivKit_LayoutKitInterface (= 32.26.0)
+    - VGSL (~> 7.7)
+  - DivKit_LayoutKitInterface (32.26.0):
+    - VGSL (~> 7.7)
+  - DivKit_Serialization (32.26.0):
+    - VGSL (~> 7.7)
+  - DivKitBinaryCompatibilityFacade (5.2.1):
+    - DivKit (~> 32.14)
+  - Google-Mobile-Ads-SDK (12.14.0):
+    - GoogleUserMessagingPlatform (>= 1.1)
+  - GoogleUserMessagingPlatform (3.1.0)
+  - KSCrash/Core (2.1.2)
+  - KSCrash/Recording (2.1.2):
+    - KSCrash/RecordingCore
+  - KSCrash/RecordingCore (2.1.2):
+    - KSCrash/Core
   - lottie-ios (4.5.2)
+  - VGSL (7.12.3):
+    - VGSLFundamentals (= 7.12.3)
+    - VGSLNetworking (= 7.12.3)
+    - VGSLUI (= 7.12.3)
+  - VGSLFundamentals (7.12.3)
+  - VGSLNetworking (7.12.3):
+    - VGSLFundamentals (= 7.12.3)
+    - VGSLUI (= 7.12.3)
+  - VGSLUI (7.12.3):
+    - VGSLFundamentals (= 7.12.3)
+  - YandexMobileAds (7.16.2):
+    - AppMetricaAdSupport (~> 5.12.1)
+    - AppMetricaCore (~> 5.12.1)
+    - AppMetricaCrashes (~> 5.12.1)
+    - AppMetricaLibraryAdapter (~> 5.12.1)
+    - DivKitBinaryCompatibilityFacade (~> 5.2.0)
+  - YandexMobileAdsInstream (0.59.0):
+    - YandexMobileAds (= 7.16.2)
 
 DEPENDENCIES:
   - Alamofire
+  - Google-Mobile-Ads-SDK
   - lottie-ios
+  - YandexMobileAds (= 7.16.2)
+  - YandexMobileAdsInstream (= 0.59.0)
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - AppMetricaAdSupport
+    - AppMetricaCore
+    - AppMetricaCoreExtension
+    - AppMetricaCoreUtils
+    - AppMetricaCrashes
+    - AppMetricaEncodingUtils
+    - AppMetricaFMDB
+    - AppMetricaHostState
+    - AppMetricaIdentifiers
+    - AppMetricaKeychain
+    - AppMetricaLibraryAdapter
+    - AppMetricaLog
+    - AppMetricaLogSwift
+    - AppMetricaNetwork
+    - AppMetricaPlatform
+    - AppMetricaProtobuf
+    - AppMetricaProtobufUtils
+    - AppMetricaStorageUtils
+    - AppMetricaSynchronization
+    - DivKit
+    - DivKit_LayoutKit
+    - DivKit_LayoutKitInterface
+    - DivKit_Serialization
+    - DivKitBinaryCompatibilityFacade
+    - Google-Mobile-Ads-SDK
+    - GoogleUserMessagingPlatform
+    - KSCrash
     - lottie-ios
+    - VGSL
+    - VGSLFundamentals
+    - VGSLNetworking
+    - VGSLUI
+    - YandexMobileAds
+    - YandexMobileAdsInstream
 
 SPEC CHECKSUMS:
   Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
+  AppMetricaAdSupport: 26884bc5ec935a990b6bbfa938c854c0fdf1b248
+  AppMetricaCore: 145ddc416db0a7eead339de9a5e1521863426a1b
+  AppMetricaCoreExtension: 1fc4222eef017e25e8f89c5b02b8563179a40d13
+  AppMetricaCoreUtils: 9e23195da2dc2d76404ac49592e05f1dd276d1e8
+  AppMetricaCrashes: 41d7e00fc2da7ca9c8de670546d65635c81ff821
+  AppMetricaEncodingUtils: 02f48c8d45b7883c4e2a85d49ec3a66a39fd4f6d
+  AppMetricaFMDB: 482767dda08c9cec7c8d115d423aacb6b21e9e89
+  AppMetricaHostState: 447bc4c02107b3531ae77fc91ea200ddc32bb029
+  AppMetricaIdentifiers: 1c34f28d8650c4c5c931643ac8779f431e809c9f
+  AppMetricaKeychain: 76f4afe269b233c1a2493350712d24c4d18858b8
+  AppMetricaLibraryAdapter: f9a428c799b5d979bf8f1fc524e58a7a3d81026c
+  AppMetricaLog: 84a50f144c83a7de66778dfa990db0ac1d60e10c
+  AppMetricaLogSwift: 3ca89a024f3c8c7b09f4b2ce89a6e7ce65b3b7d6
+  AppMetricaNetwork: e8ba646d4408e2b62e272f8b49c66ffda103bfbd
+  AppMetricaPlatform: 543e24bd127eb94c14a708770980f9203e9403b4
+  AppMetricaProtobuf: 437a155c3ea82c7fc9a5f8ff5037c513a2287225
+  AppMetricaProtobufUtils: f8bf3222d88f466363a657dd14b575af16327d81
+  AppMetricaStorageUtils: e10b5fbf8c8d9125ad200a360c9e95e53c7a0f3c
+  AppMetricaSynchronization: 3c019f1c791e11f80de51cacda4b2ed4b20935a8
+  DivKit: 0d2f3c8135a02b2936d0aecdbb6a67c593b94564
+  DivKit_LayoutKit: 308b9e3385a376378b0299599ede195464ff965e
+  DivKit_LayoutKitInterface: 8d28205359cc2e1e70c76d4a3e9507469fe2a1cc
+  DivKit_Serialization: 59aa620a7ebb2c58d863d13c0a66b88e8db4d6b3
+  DivKitBinaryCompatibilityFacade: 38b84cea43f82129388706b4c25f71519d42a18d
+  Google-Mobile-Ads-SDK: 4534fd2dfcd3f705c5485a6633c5188d03d4eed2
+  GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
+  KSCrash: bd950ede6c40a50bfc9f246c38a7f3408705fa3c
   lottie-ios: 96784afc26ea031d3e2b6cae342a4b8915072489
+  VGSL: 7286de744142fedf137953e542a251b12c94b796
+  VGSLFundamentals: 43e3a150efd99d181e823fcdd60241e295ed4c7b
+  VGSLNetworking: 9152be749af191ed4a77d5d1398142d74284c49f
+  VGSLUI: 56123a84ba0cf39540befa77a08ca5a0e9d7c2d3
+  YandexMobileAds: 79b2ae356ae931752a7fe93d52e7b2827d03320e
+  YandexMobileAdsInstream: 426a3df6faac7c1e4cb551f9147814495498f270
 
-PODFILE CHECKSUM: 748e83995ca0f5788242806eb0b8a35f97493259
+PODFILE CHECKSUM: 5b57a905643475213fdffcc6dcf0d2e8cf4d6fa7
 
 COCOAPODS: 1.16.2

@@ -11,7 +11,11 @@ final class ConnectVM: ObservableObject {
         case disconnected  // 断开成功
     }
 
-    @Published var stage: Stage = .disconnected
+    @Published var stage: Stage = .disconnected {
+        didSet {
+            ConnectionStatusCenter.shared.update(stage: stage)
+        }
+    }
     // 系统原始状态：仅记录，不直接用于 UI
     @Published var systemStatus: NEVPNStatus = .invalid
     // 结果页导航控制
@@ -35,6 +39,7 @@ final class ConnectVM: ObservableObject {
     private var manager: NETunnelProviderManager?
     private let config = Config()
     private var userInitiated: Bool = false // 是否用户主动发起连接
+    private var resultAdShown: Bool = false
     private var connectionStartTime: Date?
     private var timer: Timer?
     private let connectionTimeKey = "connectionStartTime"
@@ -58,6 +63,11 @@ final class ConnectVM: ObservableObject {
         guard stage != .connecting else { return }
         stage = .connecting
         userInitiated = true
+        
+        // 点击连接时先加载所有广告（此时只会加载 Yandex 两个，因为 Admob 需要连接状态）
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            AdsManager.shared.prepareAllAds(moment: AdMoment.connect)
+        }
         
         Task {
             // 第一步：获取服务配置
@@ -92,6 +102,10 @@ final class ConnectVM: ObservableObject {
         guard let mgr = manager else { return }
         switch mgr.connection.status {
         case .connected, .connecting, .reasserting:
+            // 显示确认弹窗前，先加载广告
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                AdsManager.shared.prepareAllAds(moment: AdMoment.connect)
+            }
             // 显示确认弹窗
             showDisconnectConfirm = true
         default:
@@ -103,10 +117,24 @@ final class ConnectVM: ObservableObject {
     func confirmDisconnect() {
         guard let mgr = manager else { return }
         showDisconnectConfirm = false
-        stage = .connecting // 过渡态，按钮禁用
-        mgr.connection.stopVPNTunnel()
+        
+        // 先设置结果页状态，触发结果页显示
         resultType = .disconnected
         navigateToResult = true
+        
+        // 检查是否有广告可以展示
+        let ads = AdsManager.shared
+        if ads.isAnyReady {
+            debugPrint("[ADS] [Manager] 断开时有广告可展示，延迟 3 秒后断开")
+            // 延迟 3 秒后断开，给广告展示时间
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                mgr.connection.stopVPNTunnel()
+            }
+        } else {
+            debugPrint("[ADS] [Manager] 断开时没有广告可展示，立即断开")
+            // 没有广告，立即断开
+            mgr.connection.stopVPNTunnel()
+        }
     }
     
     /// 取消断开连接
@@ -157,17 +185,6 @@ final class ConnectVM: ObservableObject {
             if userInitiated {
                 // 用户主动连接失败，需要关闭连接页并弹出结果页
                 notifyConnectFailed()
-            } else if resultType == .disconnected {
-                // 用户手动断开，显示断开成功结果页
-                stage = .disconnected
-                userInitiated = false
-                stopConnectionTimer()
-                NetworkMonitor.shared.stopVPNConnection()
-                historyManager.recordConnectionDisconnect() // 记录连接断开
-                navigateToResult = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.showConnectingView = false
-                }
             } else {
                 // 自动断开或其他情况
                 stage = .disconnected
@@ -288,6 +305,50 @@ final class ConnectVM: ObservableObject {
     
     func closeResultPage() {
         navigateToResult = false
+        resultAdShown = false
+    }
+    
+    /// 在结果页显示时展示广告（连接成功或断开成功时展示，连接失败不展示）
+    func showAdForResultIfNeeded() {
+        guard !resultAdShown else { return }
+        // 连接失败不出广告
+        guard resultType != .failed else {
+            debugPrint("[ADS] [Manager] 连接失败，不展示广告")
+            return
+        }
+
+        let ads = AdsManager.shared
+
+        // 检查是否有广告可以展示，优先级顺序：AdMob > Yandex Banner > Yandex Int
+        guard ads.isAnyReady else {
+            debugPrint("[ADS] [Manager] 没有广告可展示")
+            return
+        }
+
+        resultAdShown = true
+        
+        // 根据结果类型选择 moment
+        let moment: String
+        switch resultType {
+        case .success:
+            moment = AdMoment.connect
+        case .disconnected:
+            moment = AdMoment.disconnect
+        case .failed:
+            return // 已在上面的 guard 中处理
+        }
+        
+        // 按优先级展示广告
+        if ads.isAdmobReady {
+            debugPrint("[ADS] [Manager] 从结果页展示 AdMob 广告")
+            ads.presentFromRoot(.admobInt(moment: moment))
+        } else if ads.isYandexBannerReady {
+            debugPrint("[ADS] [Manager] 从结果页展示 Yandex Banner 广告")
+            ads.presentFromRoot(.yandexBanner)
+        } else if ads.isYandexIntReady {
+            debugPrint("[ADS] [Manager] 从结果页展示 Yandex Int 广告")
+            ads.presentFromRoot(.yandexInt(onClose: nil))
+        }
     }
     
     // MARK: - 连接页管理
@@ -432,12 +493,54 @@ private extension ConnectVM {
                 guard let self = self else { return }
                 if isConnected {
                     debugPrint("[CONNECT] 网络探测成功")
-                    self.notifyConnectSucceeded()
+                    self.prepareAndNotify()
                 } else {
                     debugPrint("[CONNECT] 网络探测失败")
                     self.notifyConnectFailed()
                 }
             }
         }
+    }
+    
+    /// 准备并通知连接成功（加载 Admob 广告，带超时管理）
+    private func prepareAndNotify() {
+        // 设置全局连接状态为已连接（Admob 需要连接状态才能加载）
+        ConnectionStatusCenter.shared.update(stage: .connected)
+        
+        let start = Date()
+        debugPrint("[ADS] [Manager] 开始加载 Admob，开始时间: \(start)")
+        
+        var done = false
+        let limit: TimeInterval = 15.0
+        
+        // 设置超时任务
+        let task = DispatchWorkItem { [weak self] in
+            guard let self = self, !done else { return }
+            done = true
+            let timeoutTime = Date()
+            debugPrint("[ADS] [Manager] Admob 加载超时: \(timeoutTime)，耗时: \(timeoutTime.timeIntervalSince(start))")
+            self.notifyConnectSucceeded()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + limit, execute: task)
+        
+        // 加载 Admob 广告
+        AdsManager.shared.prepareAdmob(moment: AdMoment.connect, onReady: { [weak self] in
+            // 成功处理
+            guard let self = self, !done else { return }
+            done = true
+            task.cancel()
+            let end = Date()
+            debugPrint("[ADS] [Manager] Admob 加载成功: \(end)，耗时: \(end.timeIntervalSince(start))")
+            self.notifyConnectSucceeded()
+        }, onFailed: { [weak self] in
+            // 失败处理
+            guard let self = self, !done else { return }
+            done = true
+            task.cancel()
+            let end = Date()
+            debugPrint("[ADS] [Manager] Admob 加载失败: \(end)，耗时: \(end.timeIntervalSince(start))")
+            self.notifyConnectSucceeded()
+        })
     }
 }

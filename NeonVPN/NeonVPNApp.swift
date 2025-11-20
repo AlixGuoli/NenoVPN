@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct NeonVPNApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var launchManager = LaunchManager()
     @StateObject private var onboardingManager = OnboardingManager()
     @StateObject private var globalConnectVM = ConnectVM()
@@ -17,14 +18,16 @@ struct NeonVPNApp: App {
     @State private var startupDone = false
     @State private var showReturnLaunch = false
     @State private var isBack = false
+    @State private var shouldShowStartupAd = false
     
     var body: some Scene {
         WindowGroup {
             ZStack {
                 // 主界面
                 if launchManager.isLaunching {
-                    LaunchView()
+                    LaunchView(shouldShowStartupAd: $shouldShowStartupAd)
                         .environmentObject(launchManager)
+                        .environmentObject(onboardingManager)
                         .preferredColorScheme(.dark)
                 } else if !onboardingManager.hasCompletedOnboarding {
                     OnboardingView(onboardingManager: onboardingManager)
@@ -37,9 +40,11 @@ struct NeonVPNApp: App {
                 
                 // 前台返回启动页
                 if showReturnLaunch {
-                    ReturnLaunchView {
+                    ReturnLaunchView(onShowAd: {
+                        showBackgroundAd()
+                    }, onComplete: {
                         showReturnLaunch = false
-                    }
+                    })
                     .preferredColorScheme(.dark)
                 }
             }
@@ -49,8 +54,8 @@ struct NeonVPNApp: App {
         }
         .onChange(of: launchManager.isLaunching) { newValue in
             if !newValue {
-                // 冷启动完成
                 startupDone = true
+                showStartupAdIfNeeded()
             }
         }
     }
@@ -58,25 +63,98 @@ struct NeonVPNApp: App {
     private func handleScenePhaseChange(_ newPhase: ScenePhase) {
         switch newPhase {
         case .active:
-            // 从后台回到前台，需要满足以下条件：
-            // 1. 之前进入过后台
-            // 2. 冷启动已完成
-            // 3. 已完成引导
-            // 4. 不在连接中（stage != .connecting）
-            // 5. 不在断开中（系统状态不是 .disconnecting）
-            // 6. 不在启动中
-            if isBack 
-                && startupDone 
+            // App 进入前台时的处理
+            if isBack
+                && startupDone
                 && onboardingManager.hasCompletedOnboarding
                 && globalConnectVM.stage != .connecting
                 && !launchManager.isLaunching {
-                showReturnLaunch = true
-                isBack = false
+                
+                let ads = AdsManager.shared
+                
+                // 拉广告
+                ads.prepareAllAds(moment: AdMoment.foreground)
+                
+                // 检查是否有广告正在展示
+                if !ads.isShowingAd {
+                    // 检查是否有广告可以展示
+                    if ads.isAnyReady {
+                        debugPrint("[ADS] [Manager] 从后台返回，显示后台页")
+                        showReturnLaunch = true
+                        isBack = false
+                    } else {
+                        debugPrint("[ADS] [Manager] 从后台返回，但没有广告可展示，跳过后台页")
+                        isBack = false
+                    }
+                } else {
+                    debugPrint("[ADS] [Manager] 从后台返回，但广告正在展示，跳过后台页")
+                    isBack = false
+                }
             }
         case .background:
             isBack = true
         default:
             break
+        }
+    }
+    
+    private func showStartupAdIfNeeded() {
+        guard shouldShowStartupAd,
+              onboardingManager.hasCompletedOnboarding else {
+            shouldShowStartupAd = false
+            return
+        }
+        shouldShowStartupAd = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            presentYandexSplashAd()
+        }
+    }
+    
+    private func presentYandexSplashAd() {
+        let ads = AdsManager.shared
+        if ads.isYandexBannerReady {
+            ads.presentFromRoot(.yandexBanner)
+        } else if ads.isYandexIntReady {
+            ads.presentFromRoot(.yandexInt(onClose: nil))
+        }
+    }
+    
+    private func showBackgroundAd() {
+        // 检查隐私状态（已完成引导页）
+        guard onboardingManager.hasCompletedOnboarding else {
+            debugPrint("[ADS] [Manager] 隐私未同意，跳过后台广告")
+            return
+        }
+        
+        let ads = AdsManager.shared
+        
+        // 检查是否有广告可以展示，优先级顺序：AdMob > Yandex Banner > Yandex Int
+        if ads.isAnyReady {
+            // 按优先级展示广告，广告展示成功，立即关闭后台页
+            if ads.isAdmobReady {
+                debugPrint("[ADS] [Manager] 从后台页展示 AdMob 广告")
+                ads.presentFromRoot(.admobInt(moment: AdMoment.foreground))
+                // 广告展示成功，立即关闭后台页
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showReturnLaunch = false
+                }
+            } else if ads.isYandexBannerReady {
+                debugPrint("[ADS] [Manager] 从后台页展示 Yandex Banner 广告")
+                ads.presentFromRoot(.yandexBanner)
+                // 广告展示成功，立即关闭后台页
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showReturnLaunch = false
+                }
+            } else if ads.isYandexIntReady {
+                debugPrint("[ADS] [Manager] 从后台页展示 Yandex Int 广告")
+                ads.presentFromRoot(.yandexInt(onClose: nil))
+                // 广告展示成功，立即关闭后台页
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showReturnLaunch = false
+                }
+            }
+        } else {
+            debugPrint("[ADS] [Manager] 没有广告可展示，后台页将在 3 秒后自动关闭")
         }
     }
 }
