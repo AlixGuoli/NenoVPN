@@ -78,7 +78,7 @@ final class AdmobInterstitialService: NSObject {
         presentingAd = ad
         interstitial = nil
         // 上报展示广告
-        ReportCat.shared.reportAd(moment: ReportCat.E_AD_SHOW, key: adUnitID, adMoment: moment)
+        EventLogger.shared.logAdvertisement(moment: NetProfile.EventKeys.KEY_AD_SHOW, key: adUnitID, adMoment: moment)
         ad.present(from: controller)
     }
     
@@ -113,7 +113,7 @@ final class AdmobInterstitialService: NSObject {
         debugPrint("[ADS] [AdMob] 开始加载: \(unitID)")
         
         // 上报开始加载
-        ReportCat.shared.reportAd(moment: ReportCat.E_AD_START, adMoment: moment)
+        EventLogger.shared.logAdvertisement(moment: NetProfile.EventKeys.KEY_AD_START, adMoment: moment)
         
         let request = Request()
         InterstitialAd.load(with: unitID, request: request) { [weak self] ad, error in
@@ -125,7 +125,7 @@ final class AdmobInterstitialService: NSObject {
                     self.isLoading = false
                     self.loadTimestamp = nil
                     // 上报加载成功
-                    ReportCat.shared.reportAd(moment: ReportCat.E_AD_SUCCESS, key: unitID, adMoment: moment)
+                    EventLogger.shared.logAdvertisement(moment: NetProfile.EventKeys.KEY_AD_SUCCESS, key: unitID, adMoment: moment)
                     self.onAdReady?()
                     debugPrint("[ADS] [AdMob] 加载成功: \(unitID)")
                 } else {

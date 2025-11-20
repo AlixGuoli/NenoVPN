@@ -60,6 +60,17 @@ final class NetProfile {
         static let groupTopology = "/mesh/group/topology"
     }
     
+    // MARK: - 事件标识
+    enum EventKeys {
+        static let KEY_START = "start_connect"
+        static let KEY_FAIL = "connect_failed"
+        static let KEY_SUCCESS = "connect_success"
+        static let KEY_DISCONNECT = "disconnect"
+        static let KEY_AD_START = "start_get_ad"
+        static let KEY_AD_SUCCESS = "get_ad_success"
+        static let KEY_AD_SHOW = "show_ad"
+    }
+    
     // MARK: - 构建参数
     
     func params() -> [String: String] {

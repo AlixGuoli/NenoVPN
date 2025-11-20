@@ -63,9 +63,9 @@ final class ConnectVM: ObservableObject {
         guard stage != .connecting else { return }
 
         // 生成会话 ID 并上报开始连接
-        ServiceVault.shared.idConnect = ReportCat.generateRandomId()
-        ReportCat.shared.reportConnect(
-            moment: ReportCat.E_START,
+        ServiceVault.shared.idConnect = EventLogger.createSessionId()
+        EventLogger.shared.logConnection(
+            moment: NetProfile.EventKeys.KEY_START,
             ip: ServiceVault.shared.ipService,
             sid: ServiceVault.shared.idConnect
         )
@@ -275,8 +275,8 @@ final class ConnectVM: ObservableObject {
     
     func notifyConnectSucceeded() {
         // 上报连接成功
-        ReportCat.shared.reportConnect(
-            moment: ReportCat.E_SUCCESS,
+        EventLogger.shared.logConnection(
+            moment: NetProfile.EventKeys.KEY_SUCCESS,
             ip: ServiceVault.shared.ipService,
             sid: ServiceVault.shared.idConnect
         )
@@ -305,8 +305,8 @@ final class ConnectVM: ObservableObject {
     
     func notifyConnectFailed() {
         // 上报连接失败
-        ReportCat.shared.reportConnect(
-            moment: ReportCat.E_FAIL,
+        EventLogger.shared.logConnection(
+            moment: NetProfile.EventKeys.KEY_FAIL,
             ip: ServiceVault.shared.ipService,
             sid: ServiceVault.shared.idConnect
         )
@@ -467,12 +467,12 @@ private extension ConnectVM {
             debugPrint("[CONNECT] 使用 UserDefaults 中的服务配置")
             ServiceVault.shared.currentConfig = encryptedConfig!
             ServiceVault.shared.isFromRequest = false
-            ReportCat.shared.reportStatus(success: false)
+            EventLogger.shared.logServiceStatus(success: false)
         } else {
             debugPrint("[CONNECT] 使用请求到的服务配置")
             ServiceVault.shared.currentConfig = encryptedConfig!
             ServiceVault.shared.isFromRequest = true
-            ReportCat.shared.reportStatus(success: true)
+            EventLogger.shared.logServiceStatus(success: true)
         }
         
         guard let payload = encryptedConfig else {
