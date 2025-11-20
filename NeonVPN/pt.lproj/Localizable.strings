@@ -173,3 +173,24 @@
 // Connecting Page
 "connecting_page_subtitle" = "Por favor, aguarde enquanto estabelecemos uma conexão segura";
 "cancel_connection" = "Cancelar";
+
+// Cartão de avaliação
+"ReviewCard_Title" = "Avalie-nos";
+"ReviewCard_Description" = "Cada avaliação positiva impulsiona a nossa melhoria contínua!";
+
+// Confirmação e resultado de desconexão
+"disconnect_confirm_title" = "Desconectar";
+"disconnect_confirm_message" = "Tem certeza de que deseja desconectar a VPN?";
+"disconnect_confirm_button" = "Desconectar";
+"disconnect_success_title" = "Desconectado";
+"disconnect_success_subtitle" = "A conexão VPN foi encerrada com sucesso.";
+
+// Compartilhar e seguir
+"share_title" = "Compartilhe com amigos";
+"share_subtitle" = "Gostou do app? Compartilhe e convide seus amigos!";
+"follow_title" = "Siga-nos";
+"follow_subtitle" = "Fique por dentro! Inscreva-se agora no nosso canal do Telegram!";
+
+// Pular anúncio
+"Skip_Ad" = "Pular anúncio";
+"Skip_Ad_Time" = "Pular anúncio em %ld s";

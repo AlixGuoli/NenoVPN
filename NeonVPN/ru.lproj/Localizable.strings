@@ -173,3 +173,24 @@
 // Connecting Page
 "connecting_page_subtitle" = "Пожалуйста, подождите, пока мы устанавливаем безопасное подключение";
 "cancel_connection" = "Отмена";
+
+// Карточка оценки
+"ReviewCard_Title" = "Оцените нас";
+"ReviewCard_Description" = "Каждый положительный отзыв помогает нам становиться лучше!";
+
+// Подтверждение и результат отключения
+"disconnect_confirm_title" = "Отключить";
+"disconnect_confirm_message" = "Вы действительно хотите отключить VPN?";
+"disconnect_confirm_button" = "Отключить";
+"disconnect_success_title" = "Отключено";
+"disconnect_success_subtitle" = "VPN-подключение успешно разорвано.";
+
+// Поделиться и подписаться
+"share_title" = "Поделитесь с друзьями";
+"share_subtitle" = "Нравится приложение? Поделитесь им и пригласите друзей!";
+"follow_title" = "Подписывайтесь на нас";
+"follow_subtitle" = "Будьте в курсе событий! Подпишитесь на наш канал в Telegram!";
+
+// Пропуск рекламы
+"Skip_Ad" = "Пропустить";
+"Skip_Ad_Time" = "Пропустить рекламу через %ld";

@@ -116,6 +116,9 @@ struct ConnectingView: View {
                             .foregroundColor(.white.opacity(0.7))
                             .multilineTextAlignment(.center)
                     }
+                    
+                    // 评价卡片
+                    ReviewCardView()
                 }
                 
                 Spacer()

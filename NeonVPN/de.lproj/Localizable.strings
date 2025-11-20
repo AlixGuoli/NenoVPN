@@ -174,3 +174,24 @@ Datensammlungshinweis";
 // Connecting Page
 "connecting_page_subtitle" = "Bitte warten Sie, während wir eine sichere Verbindung herstellen";
 "cancel_connection" = "Abbrechen";
+
+// Bewertungskarte
+"ReviewCard_Title" = "Bewerte uns";
+"ReviewCard_Description" = "Jede positive Bewertung treibt unsere kontinuierliche Verbesserung voran!";
+
+// Trennbestätigung & Ergebnis
+"disconnect_confirm_title" = "Trennen";
+"disconnect_confirm_message" = "Möchten Sie die VPN-Verbindung wirklich trennen?";
+"disconnect_confirm_button" = "Trennen";
+"disconnect_success_title" = "Getrennt";
+"disconnect_success_subtitle" = "Die VPN-Verbindung wurde erfolgreich getrennt.";
+
+// Teilen & Folgen
+"share_title" = "Freunde einladen";
+"share_subtitle" = "Gefällt dir unsere App? Teile sie und lade deine Freunde ein!";
+"follow_title" = "Folge uns";
+"follow_subtitle" = "Bleibe auf dem Laufenden! Abonniere jetzt unseren Telegram-Kanal!";
+
+// Werbe-Überspringen
+"Skip_Ad" = "Werbung überspringen";
+"Skip_Ad_Time" = "In %ld Sek. überspringen";

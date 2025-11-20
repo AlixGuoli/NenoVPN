@@ -175,12 +175,22 @@
 "connecting_page_subtitle" = "Please wait while we establish a secure connection";
 "cancel_connection" = "Cancel";
 
+// Rating Card
+"ReviewCard_Title" = "Rate Us";
+"ReviewCard_Description" = "Every positive review drives our continuous improvement!";
+
 // Disconnect Dialog & Result
 "disconnect_confirm_title" = "Disconnect";
 "disconnect_confirm_message" = "Are you sure you want to disconnect the VPN?";
 "disconnect_confirm_button" = "Disconnect";
 "disconnect_success_title" = "Disconnected";
 "disconnect_success_subtitle" = "VPN connection has been disconnected successfully";
+
+// Result Page Sharing
+"share_title" = "Tell Friends";
+"share_subtitle" = "Love our app? Share it and invite your friends!";
+"follow_title" = "Follow Us";
+"follow_subtitle" = "Stay updated! Subscribe to our Telegram channel now!";
 
 // Ad Skip Button
 "Skip_Ad" = "Skip Ad";

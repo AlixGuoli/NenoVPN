@@ -136,6 +136,8 @@ final class AdsManager {
     
     // MARK: - Private flags
     private var adsEnabled: Bool {
+        // 测试
+        //return false
         guard !isVip else { return false }
         return !AdVault.shared.isDisabled()
     }

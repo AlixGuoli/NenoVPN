@@ -173,3 +173,24 @@
 // Connecting Page
 "connecting_page_subtitle" = "安全な接続を確立するまでお待ちください";
 "cancel_connection" = "キャンセル";
+
+// レーティングカード
+"ReviewCard_Title" = "評価をお願いします";
+"ReviewCard_Description" = "皆さまの温かいレビューが私たちの継続的な改善につながります！";
+
+// 切断確認と結果
+"disconnect_confirm_title" = "切断";
+"disconnect_confirm_message" = "本当にVPNを切断しますか？";
+"disconnect_confirm_button" = "切断する";
+"disconnect_success_title" = "切断されました";
+"disconnect_success_subtitle" = "VPN接続が正常に切断されました。";
+
+// 共有・フォロー
+"share_title" = "友だちに紹介する";
+"share_subtitle" = "このアプリがお気に入りですか？友だちと共有して招待しましょう！";
+"follow_title" = "フォローする";
+"follow_subtitle" = "最新情報をチェック！今すぐTelegramチャンネルをフォローしてください。";
+
+// 広告スキップ
+"Skip_Ad" = "広告をスキップ";
+"Skip_Ad_Time" = "%ld秒後にスキップ";
