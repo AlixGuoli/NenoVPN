@@ -1,11 +1,13 @@
 import SwiftUI
 import Network
+import AppTrackingTransparency
 
 struct OnboardingView: View {
     @State private var currentPage = 0
     @State private var hasNetworkPermission = false
     @State private var hasAgreedToTerms = false
     @State private var isComplete = false
+    @State private var hasRequestedATT = false
     @ObservedObject private var localeManager = LocaleDao.shared
     @ObservedObject var onboardingManager: OnboardingManager
     
@@ -47,6 +49,9 @@ struct OnboardingView: View {
                         )
                         .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
                                                 removal: .move(edge: .leading).combined(with: .opacity)))
+                        .onAppear {
+                            requestATTPermission()
+                        }
                     }
                     if currentPage == 1 {
                         NetworkPermissionPage(
@@ -81,6 +86,32 @@ struct OnboardingView: View {
         }
     }
     
+    private func requestATTPermission() {
+        guard !hasRequestedATT else { return }
+        hasRequestedATT = true
+        
+        // 延迟一点时间，确保网络权限请求已完成
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if #available(iOS 14, *) {
+                ATTrackingManager.requestTrackingAuthorization { status in
+                    DispatchQueue.main.async {
+                        switch status {
+                        case .authorized:
+                            debugPrint("[ATT] 用户授权了追踪权限")
+                        case .denied:
+                            debugPrint("[ATT] 用户拒绝了追踪权限")
+                        case .restricted:
+                            debugPrint("[ATT] 追踪权限受限")
+                        case .notDetermined:
+                            debugPrint("[ATT] 追踪权限未确定")
+                        @unknown default:
+                            debugPrint("[ATT] 未知的追踪权限状态")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // MARK: - 隐私保护与数据使用声明页面

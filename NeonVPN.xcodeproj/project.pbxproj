@@ -509,6 +509,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NeonVPN/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "VPN Fly";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We utilize analytics to gain insights into how our application is used and to improve our offerings, allowing us to provide tailored experiences for our users.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -555,6 +556,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NeonVPN/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "VPN Fly";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We utilize analytics to gain insights into how our application is used and to improve our offerings, allowing us to provide tailored experiences for our users.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
