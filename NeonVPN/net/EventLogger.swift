@@ -63,17 +63,17 @@ final class EventLogger {
             if parts.count > 1 {
                 let moment = String(parts[1])
                 id += ":\(moment)"
-            }
+        }
             if parts.count > 4, let key = parts.last {
                 let keyStr = String(key)
                 if !keyStr.isEmpty && keyStr != "empty" {
                     // 只取 key 的最后一部分
                     let keyParts = keyStr.split(separator: "/")
-                    if let lastPart = keyParts.last {
+            if let lastPart = keyParts.last {
                         id += ":...\(lastPart)"
                     }
-                }
             }
+        }
             return id
         }
         
@@ -94,7 +94,7 @@ final class EventLogger {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMddHHmmss"
         return formatter.string(from: Date())
-    }
+        }
     
     static func createSessionId() -> String {
         UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(8).description
@@ -234,10 +234,10 @@ final class EventLogger {
         var logMsg = "[REPORT] [Ad] \(eventName)"
         if let momentValue = adMoment, !momentValue.isEmpty {
             logMsg += " | Moment: \(momentValue)"
-        }
+            }
         if let adKey = key, !adKey.isEmpty {
             let keyParts = adKey.split(separator: "/")
-            if let lastPart = keyParts.last {
+                    if let lastPart = keyParts.last {
                 logMsg += " | Key: .../\(lastPart)"
             } else {
                 logMsg += " | Key: \(adKey)"
@@ -294,7 +294,7 @@ final class EventLogger {
             }
             
             await Self.executeRequest(urlString: url, messageId: msgId)
-        }
+    }
     }
     
     private func getStatusURL() -> String? {

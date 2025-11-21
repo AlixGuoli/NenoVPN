@@ -39,6 +39,15 @@ enum StoreKeys {
     enum Server {
         static let chosenServerId = "nvChosenServerId"
     }
+    
+    enum AdTrigger {
+        static let launch = "launchApp"
+        static let foreground = "foreground"
+        static let connect = "connect"
+        static let disconnect = "disconnect"
+        static let closeAd = "closead"
+        static let scenario = "scene"
+    }
 }
 
 

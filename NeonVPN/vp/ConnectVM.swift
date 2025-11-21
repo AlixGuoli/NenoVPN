@@ -75,7 +75,7 @@ final class ConnectVM: ObservableObject {
         
         // 点击连接时先加载所有广告（此时只会加载 Yandex 两个，因为 Admob 需要连接状态）
         DispatchQueue.main.asyncAfter(deadline: .now()) {
-            AdsManager.shared.prepareAllAds(moment: AdMoment.connect)
+            AdCoordinator.instance.loadAllAds(moment: StoreKeys.AdTrigger.connect)
         }
         
         Task {
@@ -113,7 +113,7 @@ final class ConnectVM: ObservableObject {
         case .connected, .connecting, .reasserting:
             // 显示确认弹窗前，先加载广告
             DispatchQueue.main.asyncAfter(deadline: .now()) {
-                AdsManager.shared.prepareAllAds(moment: AdMoment.connect)
+                AdCoordinator.instance.loadAllAds(moment: StoreKeys.AdTrigger.connect)
             }
             // 显示确认弹窗
             showDisconnectConfirm = true
@@ -132,8 +132,8 @@ final class ConnectVM: ObservableObject {
         navigateToResult = true
         
         // 检查是否有广告可以展示
-        let ads = AdsManager.shared
-        if ads.isAnyReady {
+        let ads = AdCoordinator.instance
+        if ads.hasAnyReady {
             debugPrint("[ADS] [Manager] 断开时有广告可展示，延迟 3 秒后断开")
             // 延迟 3 秒后断开，给广告展示时间
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
@@ -348,10 +348,10 @@ final class ConnectVM: ObservableObject {
             return
         }
 
-        let ads = AdsManager.shared
+        let ads = AdCoordinator.instance
 
         // 检查是否有广告可以展示，优先级顺序：AdMob > Yandex Banner > Yandex Int
-        guard ads.isAnyReady else {
+        guard ads.hasAnyReady else {
             debugPrint("[ADS] [Manager] 没有广告可展示")
             return
         }
@@ -362,23 +362,23 @@ final class ConnectVM: ObservableObject {
         let moment: String
         switch resultType {
         case .success:
-            moment = AdMoment.connect
+            moment = StoreKeys.AdTrigger.connect
         case .disconnected:
-            moment = AdMoment.disconnect
+            moment = StoreKeys.AdTrigger.disconnect
         case .failed:
             return // 已在上面的 guard 中处理
         }
         
         // 按优先级展示广告
-        if ads.isAdmobReady {
+        if ads.isMobReady {
             debugPrint("[ADS] [Manager] 从结果页展示 AdMob 广告")
-            ads.presentFromRoot(.admobInt(moment: moment))
-        } else if ads.isYandexBannerReady {
+            ads.showFromWindow(.mobInt(moment: moment))
+        } else if ads.isBaYaReady {
             debugPrint("[ADS] [Manager] 从结果页展示 Yandex Banner 广告")
-            ads.presentFromRoot(.yandexBanner)
-        } else if ads.isYandexIntReady {
+            ads.showFromWindow(.baYa)
+        } else if ads.isInYaReady {
             debugPrint("[ADS] [Manager] 从结果页展示 Yandex Int 广告")
-            ads.presentFromRoot(.yandexInt(onClose: nil))
+            ads.showFromWindow(.inYa(onClose: nil))
         }
     }
     
@@ -558,7 +558,7 @@ private extension ConnectVM {
         DispatchQueue.main.asyncAfter(deadline: .now() + limit, execute: task)
         
         // 加载 Admob 广告
-        AdsManager.shared.prepareAdmob(moment: AdMoment.connect, onReady: { [weak self] in
+        AdCoordinator.instance.loadMob(moment: StoreKeys.AdTrigger.connect, onReady: { [weak self] in
             // 成功处理
             guard let self = self, !done else { return }
             done = true

@@ -13,120 +13,102 @@ import YandexMobileAds
 final class YandexBannerService: NSObject {
     
     // MARK: - Callbacks
-    var onAdReady: (() -> Void)?
-    var onAdFailed: (() -> Void)?
-    var onAdClicked: (() -> Void)?
+    var onContentReady: (() -> Void)?
+    var onContentFailed: (() -> Void)?
+    var onContentClicked: (() -> Void)?
     
     // MARK: - Private State
-    private var bannerView: AdView?
-    private var adKeys: [String] = []
-    private var isLoading = false
-    private var loadTimestamp: Date?
-    private var currentIndex = 0
-    private var prepared = false
-    private var overlayClickRelay: (() -> Void)?
+    private var mediaView: AdView?
+    private var mediaKeys: [String] = []
+    private var isRequesting = false
+    private var requestTimestamp: Date?
+    private var keyIndex = 0
+    private var isReady = false
+    private var clickHandler: (() -> Void)?
     
     // MARK: - Public Helpers
-    var isPrepared: Bool { prepared && bannerView != nil }
+    var isPrepared: Bool { isReady && mediaView != nil }
     
-    func reset() {
-        bannerView = nil
-        prepared = false
-        isLoading = false
-        loadTimestamp = nil
-        currentIndex = 0
+    func clear() {
+        mediaView = nil
+        isReady = false
+        isRequesting = false
+        requestTimestamp = nil
+        keyIndex = 0
     }
     
-    func loadBanner() {
-        guard shouldBeginLoading() else {
+    func fetchContent() {
+        guard canStartRequest() else {
             debugPrint("[ADS] [YandexBanner] 跳过加载，正在加载或已有缓存")
             return
         }
         
-        prepareKeys()
-        guard !adKeys.isEmpty else {
+        extractMediaKeys()
+        guard !mediaKeys.isEmpty else {
             debugPrint("[ADS] [YandexBanner] 无可用的广告 key")
-            onAdFailed?()
+            onContentFailed?()
             return
         }
         
-        isLoading = true
-        loadTimestamp = Date()
-        currentIndex = 0
-        load(at: currentIndex)
+        isRequesting = true
+        requestTimestamp = Date()
+        keyIndex = 0
+        requestMedia(at: keyIndex)
     }
     
-    func reload() {
-        reset()
-        loadBanner()
+    func refresh() {
+        clear()
+        fetchContent()
     }
     
-    func currentAdView() -> AdView? {
-        return bannerView
+    func getMediaView() -> AdView? {
+        return mediaView
     }
     
-    func present(from controller: UIViewController) {
-        guard let view = bannerView else {
+    func display(from controller: UIViewController) {
+        guard let view = mediaView else {
             debugPrint("[ADS] [YandexBanner] 无广告可展示")
-            onAdFailed?()
+            onContentFailed?()
             return
         }
         debugPrint("[ADS] [YandexBanner] 展示成功")
-        AdsManager.shared.isShowingAd = true
+        AdCoordinator.instance.isActive = true
         let overlay = BannerOverlayController(banner: view,
                                               penetration: AdVault.shared.penetration(),
                                               clickDelay: AdVault.shared.clickDelay())
         overlay.modalPresentationStyle = .fullScreen
-        overlay.onClosed = { [weak self] in
+        overlay.onDismiss = { [weak self] in
             debugPrint("[ADS] [YandexBanner] 关闭")
-            AdsManager.shared.isShowingAd = false
+            AdCoordinator.instance.isActive = false
             // 每次展示结束后需要准备新广告
-            self?.prepared = false
-            self?.bannerView = nil
-            self?.loadBanner()
+            self?.isReady = false
+            self?.mediaView = nil
+            self?.fetchContent()
         }
-        overlayClickRelay = { [weak overlay] in
+        clickHandler = { [weak overlay] in
             overlay?.notifyAdTapped()
         }
         controller.present(overlay, animated: true)
     }
     
     // MARK: - Internal Loading
-    private func prepareKeys() {
-        adKeys = AdVault.shared.banner()
+    private func extractMediaKeys() {
+        mediaKeys = AdVault.shared.banner()
             .split(separator: ";")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
     }
     
-    private func shouldBeginLoading() -> Bool {
-        if prepared { return false }
-        if isLoading {
-            guard let timestamp = loadTimestamp else { return false }
+    private func canStartRequest() -> Bool {
+        if isReady { return false }
+        if isRequesting {
+            guard let timestamp = requestTimestamp else { return false }
             return Date().timeIntervalSince(timestamp) > 100
         }
         return true
     }
     
-    private func load(at index: Int) {
-        guard index < adKeys.count else {
-            debugPrint("[ADS] [YandexBanner] 加载失败: 所有 key 均失败")
-            finishFailure()
-            return
-        }
-        
-        let key = adKeys[index]
-        debugPrint("[ADS] [YandexBanner] 开始加载: \(key)")
-        
-        let adSize = calculateAdSize()
-        let view = AdView(adUnitID: key, adSize: adSize)
-        view.delegate = self
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.loadAd()
-        bannerView = view
-    }
-    
-    private func calculateAdSize() -> BannerAdSize {
+    private func computeMediaSize() -> BannerAdSize {
         let width = UIScreen.main.bounds.width
         let window = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
@@ -136,16 +118,41 @@ final class YandexBannerService: NSObject {
         return BannerAdSize.inlineSize(withWidth: width, maxHeight: height)
     }
     
-    private func finishFailure() {
-        isLoading = false
-        loadTimestamp = nil
-        bannerView = nil
-        onAdFailed?()
+    private func requestMedia(at index: Int) {
+        guard index < mediaKeys.count else {
+            debugPrint("[ADS] [YandexBanner] 加载失败: 所有 key 均失败")
+            handleRequestFailure()
+            return
+        }
+        
+        // 超时检查（120秒）
+        if let startTime = requestTimestamp, Date().timeIntervalSince(startTime) > 120 {
+            debugPrint("[ADS] [YandexBanner] 加载超时")
+            handleRequestFailure()
+            return
+        }
+        
+        let mediaId = mediaKeys[index]
+        debugPrint("[ADS] [YandexBanner] 开始加载: \(mediaId)")
+        
+        let adSize = computeMediaSize()
+        let view = AdView(adUnitID: mediaId, adSize: adSize)
+        view.delegate = self
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.loadAd()
+        mediaView = view
     }
     
-    private func tryNextKey() {
-        currentIndex += 1
-        load(at: currentIndex)
+    private func handleRequestFailure() {
+        isRequesting = false
+        requestTimestamp = nil
+        mediaView = nil
+        onContentFailed?()
+    }
+    
+    private func attemptNextKey() {
+        keyIndex += 1
+        requestMedia(at: keyIndex)
     }
 }
 
@@ -154,21 +161,21 @@ final class YandexBannerService: NSObject {
 extension YandexBannerService: AdViewDelegate {
     func adViewDidLoad(_ adView: AdView) {
         debugPrint("[ADS] [YandexBanner] 加载成功: \(adView.adUnitID)")
-        prepared = true
-        isLoading = false
-        loadTimestamp = nil
-        onAdReady?()
+        isReady = true
+        isRequesting = false
+        requestTimestamp = nil
+        onContentReady?()
     }
     
     func adViewDidFailLoading(_ adView: AdView, error: Error) {
         debugPrint("[ADS] [YandexBanner] 加载失败: \(adView.adUnitID) - \(error.localizedDescription)")
-        tryNextKey()
+        attemptNextKey()
     }
     
     func adViewDidClick(_ adView: AdView) {
         debugPrint("[ADS] [YandexBanner] 点击")
-        overlayClickRelay?()
-        onAdClicked?()
+        clickHandler?()
+        onContentClicked?()
     }
 }
 
@@ -176,24 +183,24 @@ extension YandexBannerService: AdViewDelegate {
 
 final class BannerOverlayController: UIViewController {
     
-    private let bannerView: UIView
-    private let penetrationThreshold: Int
-    private let delayThreshold: Int
+    private let mediaContent: UIView
+    private let penetrationValue: Int
+    private let delayValue: Int
     
-    private var penetrationEnabled = false
-    private var delayEnabled = false
-    private var countdownTimer = 6
-    private var skipContainer = UIView()
-    private var skipLabel = UILabel()
-    private var timer: Timer?
-    private var adTapped = false
+    private var canPenetrate = false
+    private var canDelay = false
+    private var remainingSeconds = 6
+    private var closeButtonContainer = UIView()
+    private var closeButtonLabel = UILabel()
+    private var countdownTimer: Timer?
+    private var wasTapped = false
     
-    var onClosed: (() -> Void)?
+    var onDismiss: (() -> Void)?
     
     init(banner: UIView, penetration: Int, clickDelay: Int) {
-        self.bannerView = banner
-        self.penetrationThreshold = penetration
-        self.delayThreshold = clickDelay
+        self.mediaContent = banner
+        self.penetrationValue = penetration
+        self.delayValue = clickDelay
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -203,144 +210,152 @@ final class BannerOverlayController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerNotifications()
-        setupFlags()
-        buildLayout()
-        setupSkipUI()
-        initializeCountdown()
-    }
-    
-    private func initializeCountdown() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
-            guard let self = self else { return }
-            self.processCountdownTick(timer)
-        }
+        attachNotificationObserver()
+        evaluateFlags()
+        constructViewHierarchy()
+        configureCloseButton()
+        startCountdown()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        timer?.invalidate()
+        countdownTimer?.invalidate()
         NotificationCenter.default.removeObserver(self)
     }
     
     func notifyAdTapped() {
-        adTapped = true
+        wasTapped = true
     }
     
-    private func setupFlags() {
-        let penetrationThreshold = Int.random(in: 1...100)
-        let delayThreshold = Int.random(in: 1...100)
+    // MARK: - Private Setup
+    
+    private func evaluateFlags() {
+        let randomPenetration = Int.random(in: 1...100)
+        let randomDelay = Int.random(in: 1...100)
         
-        penetrationEnabled = self.penetrationThreshold >= penetrationThreshold
-        delayEnabled = self.delayThreshold >= delayThreshold
+        canPenetrate = self.penetrationValue >= randomPenetration
+        canDelay = self.delayValue >= randomDelay
         
-        debugPrint("[ADS] [YandexBanner] 穿透阈值: \(self.penetrationThreshold) | 随机值: \(penetrationThreshold)")
-        debugPrint("[ADS] [YandexBanner] 延迟阈值: \(self.delayThreshold) | 随机值: \(delayThreshold)")
+        debugPrint("[ADS] [YandexBanner] 穿透阈值: \(self.penetrationValue) | 随机值: \(randomPenetration)")
+        debugPrint("[ADS] [YandexBanner] 延迟阈值: \(self.delayValue) | 随机值: \(randomDelay)")
     }
     
-    private func buildLayout() {
+    private func constructViewHierarchy() {
         view.backgroundColor = .white
-        view.addSubview(bannerView)
-        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(mediaContent)
+        mediaContent.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            bannerView.topAnchor.constraint(equalTo: view.topAnchor),
-            bannerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bannerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bannerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            mediaContent.topAnchor.constraint(equalTo: view.topAnchor),
+            mediaContent.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mediaContent.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mediaContent.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
-    private func setupSkipUI() {
-        skipContainer.translatesAutoresizingMaskIntoConstraints = false
-        skipContainer.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-        skipContainer.layer.cornerRadius = 10
-        view.addSubview(skipContainer)
+    private func configureCloseButton() {
+        closeButtonContainer.translatesAutoresizingMaskIntoConstraints = false
+        closeButtonContainer.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        closeButtonContainer.layer.cornerRadius = 10
+        view.addSubview(closeButtonContainer)
         
-        skipLabel.translatesAutoresizingMaskIntoConstraints = false
-        skipLabel.textColor = .white
-        skipLabel.font = UIFont(name: "PingFangSC-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14)
-        skipLabel.textAlignment = .center
-        skipContainer.addSubview(skipLabel)
+        closeButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        closeButtonLabel.textColor = .white
+        closeButtonLabel.font = UIFont(name: "PingFangSC-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14)
+        closeButtonLabel.textAlignment = .center
+        closeButtonContainer.addSubview(closeButtonLabel)
         
         NSLayoutConstraint.activate([
-            skipContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
-            skipContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            closeButtonContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
+            closeButtonContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
-            skipLabel.topAnchor.constraint(equalTo: skipContainer.topAnchor, constant: 4),
-            skipLabel.leadingAnchor.constraint(equalTo: skipContainer.leadingAnchor, constant: 10),
-            skipLabel.bottomAnchor.constraint(equalTo: skipContainer.bottomAnchor, constant: -4),
-            skipLabel.trailingAnchor.constraint(equalTo: skipContainer.trailingAnchor, constant: -10),
-            skipLabel.heightAnchor.constraint(equalToConstant: 30)
+            closeButtonLabel.topAnchor.constraint(equalTo: closeButtonContainer.topAnchor, constant: 4),
+            closeButtonLabel.leadingAnchor.constraint(equalTo: closeButtonContainer.leadingAnchor, constant: 10),
+            closeButtonLabel.bottomAnchor.constraint(equalTo: closeButtonContainer.bottomAnchor, constant: -4),
+            closeButtonLabel.trailingAnchor.constraint(equalTo: closeButtonContainer.trailingAnchor, constant: -10),
+            closeButtonLabel.heightAnchor.constraint(equalToConstant: 30)
         ])
         
-        skipLabel.text = String(format: LocalizedText("Skip_Ad_Time"), countdownTimer)
+        closeButtonLabel.text = String(format: LocalizedText("Skip_Ad_Time"), remainingSeconds)
         
-        let interactionEnabled = !penetrationEnabled
-        skipLabel.isUserInteractionEnabled = interactionEnabled
-        skipContainer.isUserInteractionEnabled = interactionEnabled
+        let interactionEnabled = !canPenetrate
+        closeButtonLabel.isUserInteractionEnabled = interactionEnabled
+        closeButtonContainer.isUserInteractionEnabled = interactionEnabled
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(skipButtonTapped))
-        skipLabel.addGestureRecognizer(tapGesture)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped))
+        closeButtonLabel.addGestureRecognizer(tapGesture)
     }
     
-    private func processCountdownTick(_ timer: Timer) {
-        let hasTimeRemaining = countdownTimer > 0
+    private func startCountdown() {
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            self.updateCountdown(timer)
+        }
+    }
+    
+    // MARK: - Countdown Logic
+    
+    private func updateCountdown(_ timer: Timer) {
+        let hasTimeRemaining = remainingSeconds > 0
         
         if hasTimeRemaining {
-            countdownTimer -= 1
-            refreshSkipButtonText()
+            remainingSeconds -= 1
+            updateCloseButtonText()
         } else {
-            skipLabel.isUserInteractionEnabled = true
-            skipContainer.isUserInteractionEnabled = true
-            refreshSkipButtonText()
+            closeButtonLabel.isUserInteractionEnabled = true
+            closeButtonContainer.isUserInteractionEnabled = true
+            updateCloseButtonText()
             timer.invalidate()
         }
     }
     
-    private func enableSkipButton() {
-        let shouldEnable = !delayEnabled || !penetrationEnabled
+    private func activateCloseButton() {
+        let shouldEnable = !canDelay || !canPenetrate
         
         if shouldEnable {
-            skipLabel.isUserInteractionEnabled = true
-            skipContainer.isUserInteractionEnabled = true
+            closeButtonLabel.isUserInteractionEnabled = true
+            closeButtonContainer.isUserInteractionEnabled = true
         }
     }
     
-    private func refreshSkipButtonText() {
-        let timeExpired = countdownTimer <= 0
+    private func updateCloseButtonText() {
+        let timeExpired = remainingSeconds <= 0
         
         if timeExpired {
-            enableSkipButton()
-            skipLabel.text = LocalizedText("Skip_Ad")
+            activateCloseButton()
+            closeButtonLabel.text = LocalizedText("Skip_Ad")
         } else {
-            skipLabel.text = String(format: LocalizedText("Skip_Ad_Time"), countdownTimer)
+            closeButtonLabel.text = String(format: LocalizedText("Skip_Ad_Time"), remainingSeconds)
         }
     }
     
-    @objc private func skipButtonTapped() {
-        let canSkip = countdownTimer <= 1
+    // MARK: - User Interaction
+    
+    @objc private func closeButtonTapped() {
+        let canSkip = remainingSeconds <= 1
         if canSkip {
-            dismissOverlay()
+            closePresenter()
         }
     }
     
-    private func dismissOverlay() {
+    private func closePresenter() {
         dismiss(animated: true) { [weak self] in
-            self?.onClosed?()
+            self?.onDismiss?()
         }
     }
     
-    private func registerNotifications() {
+    // MARK: - Notifications
+    
+    private func attachNotificationObserver() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleForeground),
+                                               selector: #selector(handleForegroundEvent),
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
     }
     
-    @objc private func handleForeground() {
-        guard adTapped else { return }
+    @objc private func handleForegroundEvent() {
+        guard wasTapped else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            self?.dismissOverlay()
+            self?.closePresenter()
         }
     }
 }

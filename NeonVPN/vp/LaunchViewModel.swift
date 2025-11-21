@@ -116,7 +116,7 @@ final class LaunchViewModel: ObservableObject {
     private func loadBannerAd() async -> Bool {
         await withCheckedContinuation { continuation in
             var resumed = false
-            AdsManager.shared.prepareYandexBanner {
+            AdCoordinator.instance.loadBaYa {
                 guard !resumed else { return }
                 resumed = true
                 continuation.resume(returning: true)
@@ -131,7 +131,7 @@ final class LaunchViewModel: ObservableObject {
     private func loadInterstitialAd() async -> Bool {
         await withCheckedContinuation { continuation in
             var resumed = false
-            AdsManager.shared.prepareYandexInt {
+            AdCoordinator.instance.loadInYa {
                 guard !resumed else { return }
                 resumed = true
                 continuation.resume(returning: true)

@@ -13,109 +13,109 @@ import UIKit
 final class YandexInterstitialService: NSObject {
     
     // MARK: - Callbacks
-    var onAdReady: (() -> Void)?
-    var onAdFailed: (() -> Void)?
-    var onAdClosed: (() -> Void)?
+    var onContentReady: (() -> Void)?
+    var onContentFailed: (() -> Void)?
+    var onContentClosed: (() -> Void)?
     
     // MARK: - Private State
-    private var currentAd: InterstitialAd?
-    private var loader = InterstitialAdLoader()
-    private var adUnitIDs: [String] = []
-    private var isLoading = false
-    private var loadTimestamp: Date?
-    private var currentIndex = 0
+    private var mediaInstance: InterstitialAd?
+    private var requestLoader = InterstitialAdLoader()
+    private var mediaKeys: [String] = []
+    private var isRequesting = false
+    private var requestTimestamp: Date?
+    private var keyIndex = 0
     
     override init() {
         super.init()
-        loader.delegate = self
+        requestLoader.delegate = self
     }
     
-    var isPrepared: Bool {
-        return currentAd != nil
+    var isReady: Bool {
+        return mediaInstance != nil
     }
     
-    func reset() {
-        currentAd = nil
-        isLoading = false
-        loadTimestamp = nil
-        currentIndex = 0
-    }
-    
-    // MARK: - Load
-    func loadAd(moment: String? = nil) {
-        guard shouldBeginLoading() else {
-            debugPrint("[ADS] [YandexInt] 跳过加载，状态不满足")
-            return
-        }
-        
-        prepareKeys()
-        guard !adUnitIDs.isEmpty else {
-            debugPrint("[ADS] [YandexInt] 无可用的广告 key")
-            onAdFailed?()
-            return
-        }
-        
-        isLoading = true
-        loadTimestamp = Date()
-        currentIndex = 0
-        loadAd(at: currentIndex)
-    }
-    
-    func reload(moment: String? = nil) {
-        currentAd = nil
-        loadAd(moment: moment)
-    }
-    
-    // MARK: - Present
-    func present(from controller: UIViewController) {
-        guard let ad = currentAd else {
-            debugPrint("[ADS] [YandexInt] 无广告可展示")
-            onAdFailed?()
-            return
-        }
-        ad.show(from: controller)
+    func clear() {
+        mediaInstance = nil
+        isRequesting = false
+        requestTimestamp = nil
+        keyIndex = 0
     }
     
     // MARK: - Private helpers
-    private func prepareKeys() {
+    private func extractMediaKeys() {
         let raw = AdVault.shared.yandexInt()
-        adUnitIDs = raw
+        mediaKeys = raw
             .split(separator: ";")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
     }
     
-    private func shouldBeginLoading() -> Bool {
-        if currentAd != nil { return false }
-        if isLoading {
-            guard let ts = loadTimestamp else { return false }
+    private func canStartRequest() -> Bool {
+        if mediaInstance != nil { return false }
+        if isRequesting {
+            guard let ts = requestTimestamp else { return false }
             return Date().timeIntervalSince(ts) > 100
         }
         return true
     }
     
-    private func loadAd(at index: Int) {
-        guard index < adUnitIDs.count else {
+    private func requestMedia(at index: Int) {
+        guard index < mediaKeys.count else {
             debugPrint("[ADS] [YandexInt] 加载失败: 所有 key 均失败")
-            finishFailure()
+            handleRequestFailure()
             return
         }
         
-        let unitID = adUnitIDs[index]
-        debugPrint("[ADS] [YandexInt] 开始加载: \(unitID)")
-        let config = AdRequestConfiguration(adUnitID: unitID)
-        loader.loadAd(with: config)
+        let mediaId = mediaKeys[index]
+        debugPrint("[ADS] [YandexInt] 开始加载: \(mediaId)")
+        let config = AdRequestConfiguration(adUnitID: mediaId)
+        requestLoader.loadAd(with: config)
     }
     
-    private func finishFailure() {
-        isLoading = false
-        loadTimestamp = nil
-        onAdFailed?()
+    private func handleRequestFailure() {
+        isRequesting = false
+        requestTimestamp = nil
+        onContentFailed?()
     }
     
-    private func scheduleNextAttempt() {
-        currentIndex += 1
-        loadAd(at: currentIndex)
+    private func attemptNextKey() {
+        keyIndex += 1
+        requestMedia(at: keyIndex)
+    }
+    
+    // MARK: - Load
+    func fetchContent(moment: String? = nil) {
+        guard canStartRequest() else {
+            debugPrint("[ADS] [YandexInt] 跳过加载，状态不满足")
+            return
+        }
+        
+        extractMediaKeys()
+        guard !mediaKeys.isEmpty else {
+            debugPrint("[ADS] [YandexInt] 无可用的广告 key")
+            onContentFailed?()
+            return
+        }
+        
+        isRequesting = true
+        requestTimestamp = Date()
+        keyIndex = 0
+        requestMedia(at: keyIndex)
+    }
+    
+    func refresh(moment: String? = nil) {
+        mediaInstance = nil
+        fetchContent(moment: moment)
+    }
+    
+    // MARK: - Present
+    func display(from controller: UIViewController) {
+        guard let ad = mediaInstance else {
+            debugPrint("[ADS] [YandexInt] 无广告可展示")
+            onContentFailed?()
+            return
+        }
+        ad.show(from: controller)
     }
 }
 
@@ -123,19 +123,19 @@ final class YandexInterstitialService: NSObject {
 
 extension YandexInterstitialService: InterstitialAdLoaderDelegate {
     func interstitialAdLoader(_ adLoader: InterstitialAdLoader, didLoad interstitialAd: InterstitialAd) {
-        let adUnitId = interstitialAd.adInfo?.adUnitId ?? "-"
-        debugPrint("[ADS] [YandexInt] 加载成功: \(adUnitId)")
-        isLoading = false
-        loadTimestamp = nil
-        currentAd = interstitialAd
+        let mediaId = interstitialAd.adInfo?.adUnitId ?? "-"
+        debugPrint("[ADS] [YandexInt] 加载成功: \(mediaId)")
+        isRequesting = false
+        requestTimestamp = nil
+        mediaInstance = interstitialAd
         interstitialAd.delegate = self
-        onAdReady?()
+        onContentReady?()
     }
     
     func interstitialAdLoader(_ adLoader: InterstitialAdLoader, didFailToLoadWithError error: AdRequestError) {
-        let adUnitId = error.adUnitId ?? "-"
-        debugPrint("[ADS] [YandexInt] 加载失败: \(adUnitId) - \(error.error.localizedDescription)")
-        scheduleNextAttempt()
+        let mediaId = error.adUnitId ?? "-"
+        debugPrint("[ADS] [YandexInt] 加载失败: \(mediaId) - \(error.error.localizedDescription)")
+        attemptNextKey()
     }
 }
 
@@ -144,24 +144,21 @@ extension YandexInterstitialService: InterstitialAdLoaderDelegate {
 extension YandexInterstitialService: InterstitialAdDelegate {
     func interstitialAd(_ interstitialAd: InterstitialAd, didFailToShowWithError error: Error) {
         debugPrint("[ADS] [YandexInt] 展示失败: \(error.localizedDescription)")
-        AdsManager.shared.isShowingAd = false
-        currentAd = nil
-        reload()
+        AdCoordinator.instance.isActive = false
+        mediaInstance = nil
+        refresh()
     }
     
     func interstitialAdDidShow(_ interstitialAd: InterstitialAd) {
         debugPrint("[ADS] [YandexInt] 展示成功")
-        AdsManager.shared.isShowingAd = true
-        currentAd = nil
-        reload(moment: AdMoment.closeAd)
+        AdCoordinator.instance.isActive = true
     }
     
     func interstitialAdDidDismiss(_ interstitialAd: InterstitialAd) {
         debugPrint("[ADS] [YandexInt] 关闭")
-        AdsManager.shared.isShowingAd = false
-        currentAd = nil
-        onAdClosed?()
-        reload()
+        onContentClosed?()
+        refresh()
+        AdCoordinator.instance.isActive = false
     }
     
     func interstitialAdDidClick(_ interstitialAd: InterstitialAd) {

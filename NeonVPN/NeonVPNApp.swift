@@ -70,15 +70,15 @@ struct NeonVPNApp: App {
                 && globalConnectVM.stage != .connecting
                 && !launchManager.isLaunching {
                 
-                let ads = AdsManager.shared
+                let ads = AdCoordinator.instance
                 
                 // 拉广告
-                ads.prepareAllAds(moment: AdMoment.foreground)
+                ads.loadAllAds(moment: StoreKeys.AdTrigger.foreground)
                 
                 // 检查是否有广告正在展示
-                if !ads.isShowingAd {
+                if !ads.isActive {
                     // 检查是否有广告可以展示
-                    if ads.isAnyReady {
+                    if ads.hasAnyReady {
                         debugPrint("[ADS] [Manager] 从后台返回，显示后台页")
                         showReturnLaunch = true
                         isBack = false
@@ -111,11 +111,11 @@ struct NeonVPNApp: App {
     }
     
     private func presentYandexSplashAd() {
-        let ads = AdsManager.shared
-        if ads.isYandexBannerReady {
-            ads.presentFromRoot(.yandexBanner)
-        } else if ads.isYandexIntReady {
-            ads.presentFromRoot(.yandexInt(onClose: nil))
+        let ads = AdCoordinator.instance
+        if ads.isBaYaReady {
+            ads.showFromWindow(.baYa)
+        } else if ads.isInYaReady {
+            ads.showFromWindow(.inYa(onClose: nil))
         }
     }
     
@@ -126,28 +126,28 @@ struct NeonVPNApp: App {
             return
         }
         
-        let ads = AdsManager.shared
+        let ads = AdCoordinator.instance
         
         // 检查是否有广告可以展示，优先级顺序：AdMob > Yandex Banner > Yandex Int
-        if ads.isAnyReady {
+        if ads.hasAnyReady {
             // 按优先级展示广告，广告展示成功，立即关闭后台页
-            if ads.isAdmobReady {
+            if ads.isMobReady {
                 debugPrint("[ADS] [Manager] 从后台页展示 AdMob 广告")
-                ads.presentFromRoot(.admobInt(moment: AdMoment.foreground))
+                ads.showFromWindow(.mobInt(moment: StoreKeys.AdTrigger.foreground))
                 // 广告展示成功，立即关闭后台页
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     showReturnLaunch = false
                 }
-            } else if ads.isYandexBannerReady {
+            } else if ads.isBaYaReady {
                 debugPrint("[ADS] [Manager] 从后台页展示 Yandex Banner 广告")
-                ads.presentFromRoot(.yandexBanner)
+                ads.showFromWindow(.baYa)
                 // 广告展示成功，立即关闭后台页
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     showReturnLaunch = false
                 }
-            } else if ads.isYandexIntReady {
+            } else if ads.isInYaReady {
                 debugPrint("[ADS] [Manager] 从后台页展示 Yandex Int 广告")
-                ads.presentFromRoot(.yandexInt(onClose: nil))
+                ads.showFromWindow(.inYa(onClose: nil))
                 // 广告展示成功，立即关闭后台页
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     showReturnLaunch = false
