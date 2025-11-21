@@ -10,6 +10,12 @@
 		1619EF89A894311430FB95E6 /* Pods_NeonVPN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B446555FBD20B7EC4789E2E8 /* Pods_NeonVPN.framework */; };
 		FE003E5D2E7D47EB0071416A /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE003E5C2E7D47EB0071416A /* NetworkExtension.framework */; };
 		FE003E652E7D47EB0071416A /* cocopacket.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FE003E5B2E7D47EB0071416A /* cocopacket.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FE9B5C2A2ED047A400252E28 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9B5C292ED047A400252E28 /* AppTrackingTransparency.framework */; };
+		FE9B5C2C2ED047AE00252E28 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9B5C2B2ED047AE00252E28 /* AdSupport.framework */; };
+		FE9B5C2E2ED047D400252E28 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9B5C2D2ED047D400252E28 /* SystemConfiguration.framework */; };
+		FE9B5C302ED047DE00252E28 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9B5C2F2ED047DE00252E28 /* libsqlite3.tbd */; };
+		FE9B5C322ED047E600252E28 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9B5C312ED047E600252E28 /* libz.tbd */; };
+		FE9B5C342ED0485500252E28 /* GameAnalytics.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9B5C332ED0485500252E28 /* GameAnalytics.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +49,12 @@
 		FE003E332E7D46110071416A /* NeonVPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeonVPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE003E5B2E7D47EB0071416A /* cocopacket.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = cocopacket.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE003E5C2E7D47EB0071416A /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		FE9B5C292ED047A400252E28 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = DEVELOPER_DIR; };
+		FE9B5C2B2ED047AE00252E28 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
+		FE9B5C2D2ED047D400252E28 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		FE9B5C2F2ED047DE00252E28 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
+		FE9B5C312ED047E600252E28 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		FE9B5C332ED0485500252E28 /* GameAnalytics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GameAnalytics.xcframework; path = "Pods/GA-SDK-IOS/GameAnalytics.xcframework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -94,6 +106,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE9B5C342ED0485500252E28 /* GameAnalytics.xcframework in Frameworks */,
+				FE9B5C322ED047E600252E28 /* libz.tbd in Frameworks */,
+				FE9B5C302ED047DE00252E28 /* libsqlite3.tbd in Frameworks */,
+				FE9B5C2E2ED047D400252E28 /* SystemConfiguration.framework in Frameworks */,
+				FE9B5C2C2ED047AE00252E28 /* AdSupport.framework in Frameworks */,
+				FE9B5C2A2ED047A400252E28 /* AppTrackingTransparency.framework in Frameworks */,
 				1619EF89A894311430FB95E6 /* Pods_NeonVPN.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,6 +139,12 @@
 		5E09182D2F93BED86B6AE79F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FE9B5C332ED0485500252E28 /* GameAnalytics.xcframework */,
+				FE9B5C312ED047E600252E28 /* libz.tbd */,
+				FE9B5C2F2ED047DE00252E28 /* libsqlite3.tbd */,
+				FE9B5C2D2ED047D400252E28 /* SystemConfiguration.framework */,
+				FE9B5C2B2ED047AE00252E28 /* AdSupport.framework */,
+				FE9B5C292ED047A400252E28 /* AppTrackingTransparency.framework */,
 				B446555FBD20B7EC4789E2E8 /* Pods_NeonVPN.framework */,
 				FE003E5C2E7D47EB0071416A /* NetworkExtension.framework */,
 			);
@@ -476,7 +500,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NeonVPN/NeonVPN.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 65F9DSLLJ5;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -499,7 +523,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.fly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -507,6 +531,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/stephenschaaf/Documents/NeonVPN/NeonVPN/GameAnalytics-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 2.5;
@@ -521,7 +546,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NeonVPN/NeonVPN.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 65F9DSLLJ5;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -544,7 +569,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.fly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -552,6 +577,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/stephenschaaf/Documents/NeonVPN/NeonVPN/GameAnalytics-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 2.5;
@@ -581,7 +607,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/cocopacket",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = "-lresolv";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.fly.cocopacket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -621,7 +647,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/cocopacket",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = "-lresolv";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coco.neon.vpn.fly.cocopacket;
 				PRODUCT_NAME = "$(TARGET_NAME)";

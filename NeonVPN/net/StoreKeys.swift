@@ -48,6 +48,11 @@ enum StoreKeys {
         static let closeAd = "closead"
         static let scenario = "scene"
     }
+    
+    enum GaKey {
+        static let gameKey = "8ef35b9153a99995084f490b3503e36f"
+        static let secretKey = "b70568589bd3aedde15973d520d41903e756947e"
+    }
 }
 
 

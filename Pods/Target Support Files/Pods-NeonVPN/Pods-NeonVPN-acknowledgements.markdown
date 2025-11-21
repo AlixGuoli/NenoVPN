@@ -2549,6 +2549,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
+## GA-SDK-IOS
+
+Copyright (c) 2022, GameAnalytics.
+All rights reserved.
+
+
 ## Google-Mobile-Ads-SDK
 
 Copyright 2025 Google LLC

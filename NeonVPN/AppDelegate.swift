@@ -17,6 +17,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> Bool {
         setupAdmob()
         setupYandex()
+        setupGA()
         return true
     }
     
@@ -31,6 +32,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         MobileAds.initializeSDK {
             debugPrint("[AD] Yandex Mobile Ads 初始化完成")
         }
+    }
+    
+    private func setupGA() {
+        debugPrint("初始化 GameAnalytics")
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+       
+        // Enable log
+        GameAnalytics.setEnabledInfoLog(true)
+        GameAnalytics.setEnabledVerboseLog(true)
+        GameAnalytics.configureAutoDetectAppVersion(true)
+        GameAnalytics.configureBuild(version)
+        GameAnalytics.initialize(withGameKey: StoreKeys.GaKey.gameKey, gameSecret: StoreKeys.GaKey.secretKey)
     }
 }
 

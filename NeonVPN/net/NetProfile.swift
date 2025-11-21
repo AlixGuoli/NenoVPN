@@ -33,7 +33,7 @@ final class NetProfile {
     
     var packageId: String {
         /// 测试
-        return "CatVPN.CatVPN"
+        //return "CatVPN.CatVPN"
         return Bundle.main.bundleIdentifier ?? "com.coco.neon.vpn.fly"
     }
     
