@@ -34,7 +34,7 @@ final class NetProfile {
     var packageId: String {
         /// 测试
         return "CatVPN.CatVPN"
-        //return Bundle.main.bundleIdentifier ?? "com.coco.neon.vpn.fly"
+        return Bundle.main.bundleIdentifier ?? "com.coco.neon.vpn.fly"
     }
     
     var locale: String {
@@ -43,7 +43,7 @@ final class NetProfile {
     
     var region: String {
         /// 测试
-        return "ru"
+        //return "ru"
         return (Locale.current.region?.identifier ?? "us").lowercased()
     }
     

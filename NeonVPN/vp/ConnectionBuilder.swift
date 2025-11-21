@@ -193,9 +193,9 @@ class ConnectionBuilder {
     // MARK: - 配置持久化
     
     private func writeToStorage(_ configString: String) async {
-        let userDefaults = UserDefaults(suiteName: RouterConf.targetGroup)
-        userDefaults?.set(Date(), forKey: RouterConf.targetDate)
-        userDefaults?.set(configString, forKey: RouterConf.targetConfig)
+        let userDefaults = UserDefaults(suiteName: RouterConf.routerGroupId)
+        userDefaults?.set(Date(), forKey: RouterConf.routerTimestamp)
+        userDefaults?.set(configString, forKey: RouterConf.routerConfigKey)
         userDefaults?.synchronize()
     }
 }

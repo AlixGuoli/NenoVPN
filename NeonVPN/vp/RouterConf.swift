@@ -7,9 +7,9 @@
 import Foundation
 
 class RouterConf {
-    public static let targetGroup = "group.com.coco.neon.vpn.fly"
+    public static let routerGroupId = "group.com.coco.neon.vpn.fly"
     
-    public static let targetConfig = "targetConfig"
+    public static let routerConfigKey = "routerPayload"
     
-    public static let targetDate = "targetDate"
+    public static let routerTimestamp = "routerStamp"
 }

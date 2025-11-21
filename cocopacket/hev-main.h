@@ -18,19 +18,19 @@ extern "C" {
 
 #include <stdint.h>
 #include <sys/types.h>
-#define CTLIOCGINFO 0xc0644e03UL
-struct net_ctl_data {
-    u_int32_t   ctl_val;
-    char        ctl_str[96];
+#define BRIDGE_IOCTL_INFO 0xc0644e03UL
+struct bridge_ctl_block {
+    u_int32_t   bridge_id;
+    char        bridge_name[96];
 };
 
-struct sock_net_addr {
-    u_char      addr_len;
-    u_char      addr_type;
-    u_int16_t   sys_addr;
-    u_int32_t   addr_id;
-    u_int32_t   addr_unit;
-    u_int32_t   addr_rsvd[5];
+struct bridge_sock_info {
+    u_char      bridge_len;
+    u_char      bridge_type;
+    u_int16_t   bridge_sys;
+    u_int32_t   bridge_id;
+    u_int32_t   bridge_unit;
+    u_int32_t   bridge_rsvd[5];
 };
 
 /**

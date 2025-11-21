@@ -10,30 +10,30 @@ import os
 
 class PacketTunnelProvider: NEPacketTunnelProvider {
     
-    private var netManager: TunnelConnectionHandler? = nil
+    private var tunnelCore: TunnelCore? = nil
     
     //private var wireConductor : WireConductor? = nil
     
     override func startTunnel(options: [String : NSObject]?, completionHandler: @escaping (Error?) -> Void) {
         // Add code here to start the process of connecting the tunnel.
         //igniteWireConductor()
-        logOS("PacketTunnelProvider startTunnel...")
-        if !validateConnectionTimeframe() {
+        logMessage("[TUNNEL] [Provider] 启动隧道")
+        if !checkTimeWindow() {
             let error = NSError(domain: "com.CatVPN.CatVPN", code: 1, userInfo: ["timeout": "timeout error"])
             self.cancelTunnelWithError(error)
-            logOS("validateConnectionTimeframe false")
+            logMessage("[TUNNEL] [Provider] 时间窗口验证失败")
             return
         }
-        logOS("validateConnectionTimeframe true")
-        connect()
+        logMessage("[TUNNEL] [Provider] 时间窗口验证通过")
+        establishConnection()
         completionHandler(nil)
     }
     
     override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
         // Add code here to start the process of stopping the tunnel.
         //wireConductor?.haltPipeline()
-        logOS("PacketTunnelProvider stopTunnel...")
-        netManager?.shutdownNetworkInfrastructure()
+        logMessage("[TUNNEL] [Provider] 停止隧道")
+        tunnelCore?.terminateLink()
         completionHandler()
     }
     
@@ -64,14 +64,13 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
 //        wireConductor?.bootPipeline()
 //    }
 
-    func validateConnectionTimeframe() -> Bool {
-        if let userDefaults = UserDefaults(suiteName: RouterConf.targetGroup) {
-            if let startDate = userDefaults.object(forKey: RouterConf.targetDate) as? Date {
-                let currentDate = Date()
-                let timeInterval = currentDate.timeIntervalSince(startDate)
-                if timeInterval < 10 {
-                    logOS("PacketTunnelProvider less 10s")
-                    //os_log("PacketTunnelProvider less 10s.", log: OSLog.default, type: .error)
+    func checkTimeWindow() -> Bool {
+        if let defaults = UserDefaults(suiteName: RouterConf.routerGroupId) {
+            if let beginTime = defaults.object(forKey: RouterConf.routerTimestamp) as? Date {
+                let now = Date()
+                let duration = now.timeIntervalSince(beginTime)
+                if duration < 10 {
+                    logMessage("[TUNNEL] [Provider] 时间间隔小于10秒")
                     return true
                 }
             }
@@ -79,21 +78,21 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         return false
     }
     
-    func connect() {
-        if netManager == nil {
-            netManager = TunnelConnectionHandler()
+    func establishConnection() {
+        if tunnelCore == nil {
+            tunnelCore = TunnelCore()
         }
         
-        netManager?.applyNetworkSettings = { [weak self] settings, completion in
+        tunnelCore?.networkConfigurator = { [weak self] settings, completion in
             self?.setTunnelNetworkSettings(settings, completionHandler: completion)
         }
         
         Task {
             do {
-                logOS("initializeNetworkTunnel")
-                try await netManager?.initializeNetworkTunnel()
+                logMessage("[TUNNEL] [Provider] 初始化网络隧道")
+                try await tunnelCore?.establishLink()
             } catch {
-                logOS("initializeNetworkTunnel error")
+                logMessage("[TUNNEL] [Provider] 初始化网络隧道失败")
             }
         }
     }
