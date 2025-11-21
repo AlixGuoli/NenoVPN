@@ -94,13 +94,13 @@ final class SourceVault {
     func endpoints(from config: String) -> [String] {
         // 临时测试：让所有host超时，触发Git更新流程
         // 测试完后删除或注释掉这段代码
-        #if DEBUG
-        let testTimeout = false  // 改为 true 启用测试
-        if testTimeout {
-            debugPrint("[TEST] 测试模式：使用延迟URL，模拟请求超时（延迟6秒，超过5秒超时）")
-            return ["https://httpbin.org/delay/6"]
-        }
-        #endif
+//        #if DEBUG
+//        let testTimeout = false  // 改为 true 启用测试
+//        if testTimeout {
+//            debugPrint("[TEST] 测试模式：使用延迟URL，模拟请求超时（延迟6秒，超过5秒超时）")
+//            return ["https://httpbin.org/delay/6"]
+//        }
+//        #endif
         
         guard let api = loadApiSection(from: config) else { return [] }
         return api["host"] as? [String] ?? []

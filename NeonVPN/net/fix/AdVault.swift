@@ -139,22 +139,22 @@ final class AdVault {
     /// 原: getYandexBannerKey()
     func banner() -> String {
         /// 测试
-        return "aa;bb;demo-banner-yandex"
-        //return UserDefaults.standard.string(forKey: bannerKey) ?? "R-M-17736350-1;R-M-17736350-2"
+        //return "demo-banner-yandex"
+        return UserDefaults.standard.string(forKey: bannerKey) ?? "R-M-17736350-1;R-M-17736350-2"
     }
     
     /// 原: getYandexIntKey()
     func yandexInt() -> String {
         /// 测试
-        return "demo-interstitial-yandex"
-        //return UserDefaults.standard.string(forKey: yandexIntKey) ?? "R-M-17736350-3"
+        //return "demo-interstitial-yandex"
+        return UserDefaults.standard.string(forKey: yandexIntKey) ?? "R-M-17736350-3"
     }
     
     /// 原: getAdmobIntKey()
     func admobInt() -> String {
         /// 测试
-        return "vv;ca-app-pub-3940256099942544/4411468910"
-        //return UserDefaults.standard.string(forKey: admobIntKey) ?? "ca-app-pub-9967705190578179/2229741380"
+        //return "ca-app-pub-3940256099942544/4411468910"
+        return UserDefaults.standard.string(forKey: admobIntKey) ?? "ca-app-pub-9967705190578179/2229741380"
     }
     
     /// 原: getPenetrate()
