@@ -488,28 +488,28 @@ private extension ConnectVM {
         debugPrint("[CONNECT] 解密后的服务配置: \(decryptedConfig)")
         
         // 解析配置，提取节点信息
-        parseNetConfig(input: decryptedConfig, isValid: ServiceVault.shared.isFromRequest)
+        extractNodeAddress(configString: decryptedConfig, shouldPrefix: ServiceVault.shared.isFromRequest)
         
         // 保存到 Group，供 PacketTunnel 使用
-        try await ConnectConfigHandler.shared.savedGroupServiceConfig(serviceConfig: decryptedConfig)
+        try await ConnectionBuilder.instance.storeGroupConfig(serviceConfig: decryptedConfig)
     }
     
     /// 解析服务配置，提取节点
-    func parseNetConfig(input: String?, isValid: Bool) {
-        guard let data = input?.data(using: .utf8) else { return }
+    func extractNodeAddress(configString: String?, shouldPrefix: Bool) {
+        guard let configData = configString?.data(using: .utf8) else { return }
         
         do {
-            let parsed = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
-            let bounds = parsed?["outbounds"] as? [[String: Any]]
+            let jsonRoot = try JSONSerialization.jsonObject(with: configData, options: .allowFragments) as? [String: Any]
+            let outboundList = jsonRoot?["outbounds"] as? [[String: Any]]
             
-            bounds?.forEach { bound in
-                let config = bound["settings"] as? [String: Any]
-                let nodes = config?["vnext"] as? [[String: Any]]
+            outboundList?.forEach { outboundItem in
+                let settingsDict = outboundItem["settings"] as? [String: Any]
+                let nodeList = settingsDict?["vnext"] as? [[String: Any]]
                 
-                nodes?.forEach { node in
-                    if let ip = node["address"] as? String {
-                        let finalIp = isValid ? ip : "f\(ip)"
-                        ServiceVault.shared.ipService = finalIp
+                nodeList?.forEach { nodeItem in
+                    if let address = nodeItem["address"] as? String {
+                        let targetAddress = shouldPrefix ? address : "f\(address)"
+                        ServiceVault.shared.ipService = targetAddress
                     }
                 }
             }
@@ -526,7 +526,7 @@ private extension ConnectVM {
                 guard let self = self else { return }
                 if isConnected {
                     debugPrint("[CONNECT] 网络探测成功")
-                    self.prepareAndNotify()
+                    self.loadAdWithTimeout()
                 } else {
                     debugPrint("[CONNECT] 网络探测失败")
                     self.notifyConnectFailed()
@@ -536,43 +536,43 @@ private extension ConnectVM {
     }
     
     /// 准备并通知连接成功（加载 Admob 广告，带超时管理）
-    private func prepareAndNotify() {
+    private func loadAdWithTimeout() {
         // 设置全局连接状态为已连接（Admob 需要连接状态才能加载）
         ConnectionStatusCenter.shared.update(stage: .connected)
         
-        let start = Date()
-        debugPrint("[ADS] [Manager] 开始加载 Admob，开始时间: \(start)")
+        let startTime = Date()
+        debugPrint("[ADS] [Manager] 开始加载 Admob，开始时间: \(startTime)")
         
-        var done = false
-        let limit: TimeInterval = 15.0
+        var isCompleted = false
+        let timeoutDuration: TimeInterval = 15.0
         
         // 设置超时任务
-        let task = DispatchWorkItem { [weak self] in
-            guard let self = self, !done else { return }
-            done = true
-            let timeoutTime = Date()
-            debugPrint("[ADS] [Manager] Admob 加载超时: \(timeoutTime)，耗时: \(timeoutTime.timeIntervalSince(start))")
+        let timeoutTask = DispatchWorkItem { [weak self] in
+            guard let self = self, !isCompleted else { return }
+            isCompleted = true
+            let timeoutTimestamp = Date()
+            debugPrint("[ADS] [Manager] Admob 加载超时: \(timeoutTimestamp)，耗时: \(timeoutTimestamp.timeIntervalSince(startTime))")
             self.notifyConnectSucceeded()
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + limit, execute: task)
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeoutDuration, execute: timeoutTask)
         
         // 加载 Admob 广告
         AdCoordinator.instance.loadMob(moment: StoreKeys.AdTrigger.connect, onReady: { [weak self] in
             // 成功处理
-            guard let self = self, !done else { return }
-            done = true
-            task.cancel()
-            let end = Date()
-            debugPrint("[ADS] [Manager] Admob 加载成功: \(end)，耗时: \(end.timeIntervalSince(start))")
+            guard let self = self, !isCompleted else { return }
+            isCompleted = true
+            timeoutTask.cancel()
+            let endTime = Date()
+            debugPrint("[ADS] [Manager] Admob 加载成功: \(endTime)，耗时: \(endTime.timeIntervalSince(startTime))")
             self.notifyConnectSucceeded()
         }, onFailed: { [weak self] in
             // 失败处理
-            guard let self = self, !done else { return }
-            done = true
-            task.cancel()
-            let end = Date()
-            debugPrint("[ADS] [Manager] Admob 加载失败: \(end)，耗时: \(end.timeIntervalSince(start))")
+            guard let self = self, !isCompleted else { return }
+            isCompleted = true
+            timeoutTask.cancel()
+            let endTime = Date()
+            debugPrint("[ADS] [Manager] Admob 加载失败: \(endTime)，耗时: \(endTime.timeIntervalSince(startTime))")
             self.notifyConnectSucceeded()
         })
     }
