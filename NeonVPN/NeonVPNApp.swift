@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppTrackingTransparency
 
 @main
 struct NeonVPNApp: App {
@@ -64,6 +65,7 @@ struct NeonVPNApp: App {
         switch newPhase {
         case .active:
             // App 进入前台时的处理
+            requestATTPermissionIfNeeded()
             if isBack
                 && startupDone
                 && onboardingManager.hasCompletedOnboarding
@@ -155,6 +157,17 @@ struct NeonVPNApp: App {
             }
         } else {
             debugPrint("[ADS] [Manager] 没有广告可展示，后台页将在 3 秒后自动关闭")
+        }
+    }
+    
+    private func requestATTPermissionIfNeeded() {
+        if #available(iOS 14, *) {
+            // 延迟一点时间，确保应用完全启动
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                ATTrackingManager.requestTrackingAuthorization { status in
+                    
+                }
+            }
         }
     }
 }
