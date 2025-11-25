@@ -8,7 +8,7 @@
 #ifndef Coco_Bridging_Header_h
 #define Coco_Bridging_Header_h
 
-//#import "hev-main.h"
-//#import "libSanti.h"
+#import "hev-main.h"
+#import "libSanti.h"
 
 #endif /* Coco_Bridging_Header_h */
