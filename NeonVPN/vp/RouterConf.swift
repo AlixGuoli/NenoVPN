@@ -7,7 +7,7 @@
 import Foundation
 
 class RouterConf {
-    public static let routerGroupId = "group.com.coco.neon.vpn.fly"
+    public static let routerGroupId = "group.com.coco.neon.vpn.fly.roke"
     
     public static let routerConfigKey = "routerPayload"
     
