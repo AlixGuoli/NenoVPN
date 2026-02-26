@@ -138,21 +138,21 @@ final class AdVault {
     
     /// 原: getYandexBannerKey()
     func banner() -> String {
-        /// 测试
+        /// 测试服
         //return "demo-banner-yandex"
         return UserDefaults.standard.string(forKey: bannerKey) ?? "R-M-17736350-1;R-M-17736350-2"
     }
     
     /// 原: getYandexIntKey()
     func yandexInt() -> String {
-        /// 测试
+        /// 测试服
         //return "demo-interstitial-yandex"
         return UserDefaults.standard.string(forKey: yandexIntKey) ?? "R-M-17736350-3"
     }
     
     /// 原: getAdmobIntKey()
     func admobInt() -> String {
-        /// 测试
+        /// 测试服
         //return "ca-app-pub-3940256099942544/4411468910"
         return UserDefaults.standard.string(forKey: admobIntKey) ?? "ca-app-pub-9967705190578179/2229741380"
     }
@@ -169,11 +169,15 @@ final class AdVault {
     
     /// 原: getAdsOff()
     func isDisabled() -> Bool {
+        /// 测试服
+        //return false
         return UserDefaults.standard.bool(forKey: disabledKey)
     }
     
     /// 原: getAdsType()
     func variant() -> String? {
+        /// 测试服
+        //return "y;a"
         return UserDefaults.standard.string(forKey: variantKey)
     }
     
