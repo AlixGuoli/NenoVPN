@@ -179,6 +179,9 @@
 "ReviewCard_Description" = "¡Cada reseña positiva impulsa nuestra mejora continua!";
 
 // Confirmación de desconexión y resultado
+// No network alert
+"no_network_title" = "Sin red";
+"no_network_message" = "Comprueba tu conexión e inténtalo de nuevo.";
 "disconnect_confirm_title" = "Desconectar";
 "disconnect_confirm_message" = "¿Seguro que deseas desconectar la VPN?";
 "disconnect_confirm_button" = "Desconectar";

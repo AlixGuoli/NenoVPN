@@ -92,6 +92,8 @@ final class SourceVault {
     
     /// 原: hosts(from:)
     func endpoints(from config: String) -> [String] {
+        /// 测试服
+        //return ["http://test.nifymon.com"]
         // 临时测试：让所有host超时，触发Git更新流程
         // 测试完后删除或注释掉这段代码
 //        #if DEBUG

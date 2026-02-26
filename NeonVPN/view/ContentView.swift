@@ -71,6 +71,13 @@ struct ContentView: View {
                     )
                 }
             }
+            .alert(LocalizedText("no_network_title"), isPresented: $globalConnectVM.showNoNetworkAlert) {
+                Button(LocalizedText("got_it")) {
+                    globalConnectVM.showNoNetworkAlert = false
+                }
+            } message: {
+                Text(LocalizedText("no_network_message"))
+            }
             
         }
         .onChange(of: globalConnectVM.navigateToResult) { newValue in
@@ -163,8 +170,7 @@ struct HomeView: View {
     private func handleConnectionAction() {
         switch viewModel.stage {
         case .disconnected, .failed:
-            // 先显示连接页，然后开始连接
-            viewModel.showConnectingView = true
+            // 只调 beginSession；连接页在拿到权限后再由 VM 显示
             viewModel.beginSession()
         case .connected:
             viewModel.endSession()

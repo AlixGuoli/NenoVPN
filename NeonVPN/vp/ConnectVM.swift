@@ -1,4 +1,5 @@
 import Foundation
+import Network
 import NetworkExtension
 
 final class ConnectVM: ObservableObject {
@@ -25,6 +26,8 @@ final class ConnectVM: ObservableObject {
     @Published var showConnectingView: Bool = false
     // 断开确认弹窗
     @Published var showDisconnectConfirm: Bool = false
+    /// 无网络提示（点击连接时无网则弹出，不进入连接流程）
+    @Published var showNoNetworkAlert: Bool = false
     // 连接时间统计
     @Published var connectionDuration: TimeInterval = 0
     @Published var formattedDuration: String = "00:00:00"
@@ -62,45 +65,77 @@ final class ConnectVM: ObservableObject {
         // 发起连接；进行中时直接返回
         guard stage != .connecting else { return }
 
-        // 生成会话 ID 并上报开始连接
-        ServiceVault.shared.idConnect = EventLogger.createSessionId()
-        EventLogger.shared.logConnection(
-            moment: NetProfile.EventKeys.KEY_START,
-            ip: ServiceVault.shared.ipService,
-            sid: ServiceVault.shared.idConnect
-        )
-
-        stage = .connecting
-        userInitiated = true
-        
-        // 点击连接时先加载所有广告（此时只会加载 Yandex 两个，因为 Admob 需要连接状态）
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            AdCoordinator.instance.loadAllAds(moment: StoreKeys.AdTrigger.connect)
+        // 无网先拦：点击时做一次即时 path 检查，避免用尚未更新的 trafficData 误判（首点易误报无网）
+        let pathMonitor = NWPathMonitor()
+        let pathQueue = DispatchQueue(label: "com.neonvpn.connect.path")
+        pathMonitor.pathUpdateHandler = { [weak self] path in
+            pathMonitor.cancel()
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                if path.status != .satisfied {
+                    self.showNoNetworkAlert = true
+                    return
+                }
+                self.proceedWithConnectionFlow()
+            }
         }
-        
-        Task {
-            // 第一步：获取服务配置
-            try? await loadService()
-            
-            // 继续连接逻辑
-            loadOrCreateManager { [weak self] mgr in
-            guard let self = self, let mgr = mgr else { self?.stage = .failed; return }
-            self.enableAndReload(mgr) { ok in
-                guard ok else { self.stage = .failed; return }
-                // 延迟 3 秒后再开始实际连接，用于展示"处理中"过程
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                    // 在3秒延迟后记录连接开始时间
+        pathMonitor.start(queue: pathQueue)
+    }
+
+    /// 在确认有网、拿到权限后再出连接页并起隧道
+    private func proceedWithConnectionFlow() {
+        loadOrCreateManager { [weak self] mgr in
+            guard let self = self, let mgr = mgr else {
+                DispatchQueue.main.async { self?.stage = .disconnected }
+                return
+            }
+            self.enableAndReload(mgr) { [weak self] ok in
+                guard let self = self else { return }
+                guard ok else {
+                    DispatchQueue.main.async { self.stage = .disconnected }
+                    return
+                }
+                // 权限/配置就绪后再出连接页并上报、拉广告
+                DispatchQueue.main.async {
+                    self.showConnectingView = true
+                    self.stage = .connecting
+                    self.userInitiated = true
+                    ServiceVault.shared.idConnect = EventLogger.createSessionId()
+                    EventLogger.shared.logConnection(
+                        moment: NetProfile.EventKeys.KEY_START,
+                        ip: ServiceVault.shared.ipService,
+                        sid: ServiceVault.shared.idConnect
+                    )
+                    AdCoordinator.instance.loadAllAds(moment: StoreKeys.AdTrigger.connect)
+                }
+                // 拉服务配置后立即起隧道（无人为延迟）；主线程更新用 main.async 投递，不 await，保持原有时序
+                Task { [weak self] in
+                    guard let self = self else { return }
+                    do {
+                        try await self.loadService()
+                    } catch {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.stage = .failed
+                            self?.showConnectingView = false
+                        }
+                        return
+                    }
                     let selectedServer = UserDefaults.standard.string(forKey: "selectedServerCode") ?? "auto"
                     let serverName = self.getServerDisplayName(for: selectedServer)
-                    self.historyManager.recordConnectionStart(server: serverName)
-                    
+                    // recordConnectionStart 会改 @Published，投到主线程执行，不 await 不改变后续 startVPNTunnel 的时机
+                    DispatchQueue.main.async { [weak self] in
+                        self?.historyManager.recordConnectionStart(server: serverName)
+                    }
                     do {
-                        try mgr.connection.startVPNTunnel()
+                        try self.manager?.connection.startVPNTunnel()
                     } catch {
                         debugPrint("[CONNECT] startVPNTunnel 失败: \(error)")
+                        DispatchQueue.main.async { [weak self] in
+                            self?.stage = .failed
+                            self?.showConnectingView = false
+                        }
                     }
                 }
-            }
             }
         }
     }

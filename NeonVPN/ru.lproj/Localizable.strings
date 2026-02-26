@@ -182,6 +182,11 @@
 "disconnect_confirm_title" = "Отключить";
 "disconnect_confirm_message" = "Вы действительно хотите отключить VPN?";
 "disconnect_confirm_button" = "Отключить";
+
+// Нет сети
+"no_network_title" = "Нет сети";
+"no_network_message" = "Проверьте подключение к интернету и попробуйте снова.";
+
 "disconnect_success_title" = "Отключено";
 "disconnect_success_subtitle" = "VPN-подключение успешно разорвано.";
 

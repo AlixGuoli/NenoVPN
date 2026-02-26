@@ -183,6 +183,10 @@
 "disconnect_confirm_title" = "Disconnect";
 "disconnect_confirm_message" = "Are you sure you want to disconnect the VPN?";
 "disconnect_confirm_button" = "Disconnect";
+
+// No network alert
+"no_network_title" = "No Network";
+"no_network_message" = "Please check your network connection and try again.";
 "disconnect_success_title" = "Disconnected";
 "disconnect_success_subtitle" = "VPN connection has been disconnected successfully";
 

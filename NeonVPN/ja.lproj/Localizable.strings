@@ -182,6 +182,11 @@
 "disconnect_confirm_title" = "切断";
 "disconnect_confirm_message" = "本当にVPNを切断しますか？";
 "disconnect_confirm_button" = "切断する";
+
+// ネットワークなし
+"no_network_title" = "ネットワークなし";
+"no_network_message" = "ネットワーク接続を確認して、もう一度お試しください。";
+
 "disconnect_success_title" = "切断されました";
 "disconnect_success_subtitle" = "VPN接続が正常に切断されました。";
 

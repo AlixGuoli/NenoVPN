@@ -183,6 +183,11 @@ Datensammlungshinweis";
 "disconnect_confirm_title" = "Trennen";
 "disconnect_confirm_message" = "Möchten Sie die VPN-Verbindung wirklich trennen?";
 "disconnect_confirm_button" = "Trennen";
+
+// Kein Netzwerk
+"no_network_title" = "Kein Netzwerk";
+"no_network_message" = "Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.";
+
 "disconnect_success_title" = "Getrennt";
 "disconnect_success_subtitle" = "Die VPN-Verbindung wurde erfolgreich getrennt.";
 

@@ -182,6 +182,11 @@
 "disconnect_confirm_title" = "Desconectar";
 "disconnect_confirm_message" = "Tem certeza de que deseja desconectar a VPN?";
 "disconnect_confirm_button" = "Desconectar";
+
+// Sem rede
+"no_network_title" = "Sem rede";
+"no_network_message" = "Verifique sua conexão e tente novamente.";
+
 "disconnect_success_title" = "Desconectado";
 "disconnect_success_subtitle" = "A conexão VPN foi encerrada com sucesso.";
 
