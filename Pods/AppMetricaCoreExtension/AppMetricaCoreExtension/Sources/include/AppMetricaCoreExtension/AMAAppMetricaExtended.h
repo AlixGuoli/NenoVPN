@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol AMAAppMetricaExtendedReporting;
 @protocol AMAActivationStrategy;
 
+
+#pragma mark - This API is not SemVer-compliant. It may change at any time without backward compatibility. Use at your own risk.
+
 @interface AMAAppMetrica ()
 
 // Activation and Event Delegates
@@ -29,7 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Ad related methods
 + (void)registerAdProvider:(id<AMAAdProviding>)provider;
-@property (class, nonatomic, getter=isAdvertisingIdentifierTrackingEnabled) BOOL advertisingIdentifierTrackingEnabled;
 
 // AdRevenue methods
 + (void)registerAdRevenueNativeSource:(NSString *)source;
@@ -58,6 +60,8 @@ NS_SWIFT_NAME(reportLibraryAdapterAdRevenueRelatedEvent(name:parameters:onFailur
 
 + (void)setLibraryAdapterAdvertisingIdentifierTracking:(BOOL)advertisingIdentifierTracking;
 + (void)setLibraryAdapterLocationTracking:(BOOL)locationTracking;
+
++ (void)subscribeForAutocollectedDataForApiKey:(NSString *)apiKey NS_SWIFT_NAME(subscribeForAutocollectedData(apiKey:));
 
 // Reporting
 + (nullable id<AMAAppMetricaExtendedReporting>)extendedReporterForApiKey:(NSString *)apiKey

@@ -354,6 +354,7 @@ typedef SWIFT_ENUM_NAMED(NSInteger, YMAAdErrorCode, "AdErrorCode", open) {
 };
 
 @class YMAAdSize;
+@class YMACreative;
 /// A class with information data for ad.
 SWIFT_CLASS_NAMED("AdInfo")
 @interface YMAAdInfo : NSObject
@@ -365,6 +366,8 @@ SWIFT_CLASS_NAMED("AdInfo")
 @property (nonatomic, readonly, copy) NSString * _Nullable data SWIFT_DEPRECATED_MSG("`info` property is deprecated. Use `adAttributes` property of ad class instead.");
 /// Size of downloaded ad.
 @property (nonatomic, readonly, strong) YMAAdSize * _Nullable adSize;
+/// Information about creatives of the ad.
+@property (nonatomic, readonly, copy) NSArray<YMACreative *> * _Nonnull creatives;
 - (nonnull instancetype)initWithAdUnitId:(NSString * _Nonnull)adUnitId adSize:(YMAAdSize * _Nullable)adSize;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
@@ -556,6 +559,8 @@ SWIFT_CLASS_NAMED("AdView")
 @property (nonatomic, readonly, copy) NSString * _Nullable info SWIFT_DEPRECATED_MSG("`info` property is deprecated. Use `adAttributes` property instead.");
 /// Information about additional ad attributes
 @property (nonatomic, readonly, copy) NSArray<YMAAdAttributes *> * _Nonnull adAttributes;
+/// Information about the ad.
+@property (nonatomic, readonly, strong) YMAAdInfo * _Nullable adInfo;
 /// VideoController provides playback control for ad video.
 @property (nonatomic, readonly, strong) YMAVideoController * _Nonnull videoController SWIFT_DEPRECATED_MSG("`videoController` property will be removed in future versions.");
 /// It monitors the ad and receives notifications about user interaction with the ad.
@@ -674,6 +679,7 @@ SWIFT_PROTOCOL_NAMED("AdViewDelegate")
 /// This class is responsible for showing an app open ad.
 SWIFT_CLASS_NAMED("AppOpenAd")
 @interface YMAAppOpenAd : NSObject
+/// Information about the ad.
 @property (nonatomic, readonly, strong) YMAAdInfo * _Nullable adInfo;
 /// Information about additional ad attributes
 @property (nonatomic, readonly, copy) NSArray<YMAAdAttributes *> * _Nonnull adAttributes;
@@ -850,16 +856,43 @@ SWIFT_CLASS_NAMED("BidderTokenRequestConfiguration")
 /// A target information about user.
 @property (nonatomic, readonly, strong) YMAAdTargetInfo * _Nonnull targetInfo;
 /// A size of the banner if the type of ad is a banner.
-@property (nonatomic, strong) YMABannerAdSize * _Nullable bannerAdSize;
+@property (nonatomic, strong) YMABannerAdSize * _Nullable bannerAdSize SWIFT_DEPRECATED_MSG("Use the factory method banner(size:) instead.");
 /// A set of arbitrary input parameters.
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nullable parameters;
+/// Creates a configuration for banner ad.
+/// \param size A size of the banner ad.
+///
+///
+/// returns:
+/// A configured instance for banner ad.
++ (YMABidderTokenRequestConfiguration * _Nonnull)bannerWithSize:(YMABannerAdSize * _Nonnull)size SWIFT_WARN_UNUSED_RESULT;
+/// Creates a configuration for interstitial ad.
+///
+/// returns:
+/// A configured instance for interstitial ad.
++ (YMABidderTokenRequestConfiguration * _Nonnull)interstitial SWIFT_WARN_UNUSED_RESULT;
+/// Creates a configuration for rewarded ad.
+///
+/// returns:
+/// A configured instance for rewarded ad.
++ (YMABidderTokenRequestConfiguration * _Nonnull)rewarded SWIFT_WARN_UNUSED_RESULT;
+/// Creates a configuration for native ad.
+///
+/// returns:
+/// A configured instance for native ad.
++ (YMABidderTokenRequestConfiguration * _Nonnull)native SWIFT_WARN_UNUSED_RESULT;
+/// Creates a configuration for app open ad.
+///
+/// returns:
+/// A configured instance for app open ad.
++ (YMABidderTokenRequestConfiguration * _Nonnull)appOpenAd SWIFT_WARN_UNUSED_RESULT;
 /// Initializes a new object of the <code>BidderTokenRequestConfiguration</code> class.
 /// \param adType A type of ad.
 ///
 ///
 /// returns:
 /// An object of the BidderTokenRequestConfiguration class, configuration for generating bidder token.
-- (nonnull instancetype)initWithAdType:(enum YMAAdType)adType OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithAdType:(enum YMAAdType)adType SWIFT_DEPRECATED_MSG("Use factory methods instead: banner(size:), interstitial(), rewarded(), native() or appOpenAd().");
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -960,6 +993,17 @@ SWIFT_CLASS_NAMED("ButtonAppearance")
 - (id _Nonnull)mutableCopyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT SWIFT_DEPRECATED_MSG("mutableCopy(with:) is deprecated. Use `mutableAppearance` property instead.");
 @end
 
+/// Information about creative in ad.
+SWIFT_CLASS_NAMED("Creative")
+@interface YMACreative : NSObject
+/// Creative ID - a unique identifier for the creative.
+@property (nonatomic, readonly, copy) NSString * _Nullable creativeID;
+/// Campaign ID - an identifier for the campaign.
+@property (nonatomic, readonly, copy) NSString * _Nullable campaignID;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 /// A container view that manages the display of media content based on the retail media ad type.
 SWIFT_CLASS("_TtC15YandexMobileAds15CustomMediaView")
 @interface CustomMediaView : UIView
@@ -1021,7 +1065,7 @@ SWIFT_PROTOCOL_NAMED("ImpressionData")
 /// This class is responsible for showing an interstitial ad.
 SWIFT_CLASS_NAMED("InterstitialAd")
 @interface YMAInterstitialAd : NSObject
-/// Information data for ad
+/// Information about the ad.
 @property (nonatomic, readonly, strong) YMAAdInfo * _Nullable adInfo;
 /// Information about additional ad attributes
 @property (nonatomic, readonly, copy) NSArray<YMAAdAttributes *> * _Nonnull adAttributes;
@@ -1200,7 +1244,15 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger serverRequ
 @end
 
 @interface YMAMobileAds (SWIFT_EXTENSION(YandexMobileAds))
++ (void)setForceMediationTestMode:(BOOL)value;
+@end
+
+@interface YMAMobileAds (SWIFT_EXTENSION(YandexMobileAds))
 + (void)setWebViewShouldDelayLoadCallback:(BOOL)value;
+@end
+
+@interface YMAMobileAds (SWIFT_EXTENSION(YandexMobileAds))
++ (void)setShowFakeStoreController:(BOOL)value;
 @end
 
 @interface YMAMobileAds (SWIFT_EXTENSION(YandexMobileAds))
@@ -1719,6 +1771,10 @@ SWIFT_PROTOCOL_NAMED("NativeAd")
 @property (nonatomic, readonly, strong) YMAAdAttributes * _Nullable adAttributes;
 /// An array with nested ads.
 @property (nonatomic, readonly, copy) NSArray<id <YMANativeAd>> * _Nonnull ads;
+/// Creative ID from the ad response.
+@property (nonatomic, readonly, copy) NSString * _Nullable creativeID;
+/// Campaign ID from the ad response.
+@property (nonatomic, readonly, copy) NSString * _Nullable campaignID;
 /// An object with ad assets.
 ///
 /// returns:
@@ -1766,7 +1822,7 @@ SWIFT_PROTOCOL_NAMED("NativeAd")
 ///
 /// returns:
 /// <code>true</code> if binding succeeded, otherwise <code>false</code>.
-- (BOOL)bindAdToSliderView:(YMANativeAdView * _Nonnull)sliderView error:(NSError * _Nullable * _Nullable)error;
+- (BOOL)bindAdToSliderView:(YMANativeAdView * _Nonnull)sliderView error:(NSError * _Nullable * _Nullable)error SWIFT_DEPRECATED_MSG("`bindAd(toSliderView:)` will be removed in future versions. Use `SliderAd.bind(with:)` instead.");
 @end
 
 @class YMANativeAdImage;
@@ -2146,7 +2202,7 @@ SWIFT_PROTOCOL_NAMED("Reward")
 /// This class is responsible for showing a rewarded ad.
 SWIFT_CLASS_NAMED("RewardedAd")
 @interface YMARewardedAd : NSObject
-/// Information data for ad
+/// Information about the ad.
 @property (nonatomic, readonly, strong) YMAAdInfo * _Nullable adInfo;
 /// Information about additional ad attributes
 @property (nonatomic, readonly, copy) NSArray<YMAAdAttributes *> * _Nonnull adAttributes;
@@ -2237,6 +2293,112 @@ typedef SWIFT_ENUM_NAMED(NSInteger, YMASizeConstraintType, "SizeConstraintType",
 /// but no more than the actual size of the content.
   YMASizeConstraintTypePreferredBannerRatio = 2,
 };
+
+@protocol YMASliderAdDelegate;
+SWIFT_PROTOCOL_NAMED("SliderAd")
+@protocol YMASliderAd
+/// An object implementing the <code>SliderAdDelegate</code> protocol
+/// that receives events triggered by the user’s interaction with the ad.
+@property (nonatomic, strong) id <YMASliderAdDelegate> _Nullable delegate;
+/// Any string in the ad (set in the Partner interface).
+/// warning:
+/// This property is only used for working with ADFOX.
+@property (nonatomic, readonly, copy) NSString * _Nullable info;
+/// Information about additional ad attributes
+@property (nonatomic, readonly, strong) YMAAdAttributes * _Nullable adAttributes;
+/// An array with nested ads.
+@property (nonatomic, readonly, copy) NSArray<id <YMANativeAd>> * _Nonnull ads;
+/// Creative ID from the ad response.
+@property (nonatomic, readonly, copy) NSString * _Nullable creativeID;
+/// Campaign ID from the ad response.
+@property (nonatomic, readonly, copy) NSString * _Nullable campaignID;
+/// Loads images if manual loading is selected.
+/// warning:
+/// All images are cached, but they can be deleted at any time,
+/// so you need to call this method before every ad impression.
+- (void)loadImages;
+/// Sets values of all ad assets to native ad view, installs impression and click handlers.
+/// \param adView <code>NativeAdView</code> with views for ad assets.
+///
+/// \param error Binding error. - seealso:  <code>NativeAdErrorCode</code> for error codes.
+///
+///
+/// returns:
+/// <code>true</code> if binding succeeded, otherwise <code>false</code>.
+- (BOOL)bindWithAdView:(YMANativeAdView * _Nonnull)adView error:(NSError * _Nullable * _Nullable)error;
+@end
+
+SWIFT_PROTOCOL_NAMED("SliderAdDelegate")
+@protocol YMASliderAdDelegate <NSObject>
+@optional
+/// Notifies that the user has clicked on the ad.
+/// \param ad A reference to the object that invoked the method.
+///
+- (void)sliderAdDidClick:(id <YMASliderAd> _Nonnull)ad;
+/// Notifies that the user switched from the ad to an app (for example, the browser).
+/// \param ad A reference to the object that invoked the method.
+///
+- (void)sliderAdWillLeaveApplication:(id <YMASliderAd> _Nonnull)ad;
+/// Notifies that the ad will show the modal <code>UIViewController</code>
+/// in response to the user interacting with the banner.
+/// \param ad A reference to the object that invoked the method.
+///
+/// \param viewController Modal <code>UIViewController</code>.
+///
+- (void)sliderAd:(id <YMASliderAd> _Nonnull)ad willPresentScreen:(UIViewController * _Nullable)viewController;
+/// Notifies that the ad finished showing the modal <code>UIViewController</code>
+/// in response to the user interacting with the banner.
+/// \param ad A reference to the object that invoked the method.
+///
+/// \param viewController Modal <code>UIViewController</code>.
+///
+- (void)sliderAd:(id <YMASliderAd> _Nonnull)ad didDismissScreen:(UIViewController * _Nullable)viewController;
+/// Notifies delegate when an impression was tracked.
+/// \param ad A reference to the object that invoked the method.
+///
+/// \param impressionData Ad impression-level revenue data
+///
+- (void)sliderAd:(id <YMASliderAd> _Nonnull)ad didTrackImpressionWithData:(id <YMAImpressionData> _Nullable)impressionData;
+/// Notifies that the user has chosen a reason for closing the ad and the ad must be hidden.
+/// warning:
+/// Advertising will not be hidden.
+/// The developer must determine what to do with the ad after the reason for closing it is chosen.
+/// \param ad A reference to the object that invoked the method.
+///
+- (void)sliderAdDidClose:(id <YMASliderAd> _Nonnull)ad;
+@end
+
+@protocol YMASliderAdLoaderDelegate;
+/// This class is responsible for loading slider ads.
+SWIFT_CLASS_NAMED("SliderAdLoader")
+@interface YMASliderAdLoader : NSObject
+/// Monitors the process of loading slider ads.
+@property (nonatomic, weak) id <YMASliderAdLoaderDelegate> _Nullable delegate;
+- (nonnull instancetype)init;
+/// Loads an ad with the specified targeting data.
+/// \param requestConfiguration Request configuration for targeting.
+///
+- (void)loadAdWithRequestConfiguration:(YMANativeAdRequestConfiguration * _Nonnull)requestConfiguration;
+@end
+
+/// The protocol defines the methods of a delegate that monitors the ad loading process.
+/// remark:
+/// The methods are invoked by an object of the <code>SliderAdLoader</code> class.
+SWIFT_PROTOCOL_NAMED("SliderAdLoaderDelegate")
+@protocol YMASliderAdLoaderDelegate <NSObject>
+/// Notifies that a slider ad is loaded.
+/// \param loader The loader that sends the message.
+///
+/// \param ad Slider ad that is loaded and ready to be displayed.
+///
+- (void)sliderAdLoader:(YMASliderAdLoader * _Nonnull)loader didLoadAd:(id <YMASliderAd> _Nonnull)ad;
+/// Notifies that the ad failed to load.
+/// \param loader The loader that sends the message.
+///
+/// \param error Information about the error (for details, see <code>AdErrorCode</code>)
+///
+- (void)sliderAdLoader:(YMASliderAdLoader * _Nonnull)loader didFailLoadingWithError:(NSError * _Nonnull)error;
+@end
 
 /// Version information.
 SWIFT_CLASS_NAMED("Version")

@@ -13,7 +13,7 @@ private func isExpectedBytesCountToTransferValid(_ expectedBytesToTransfer: Int6
 
 @objc(YXURLSessionDelegateImpl)
 @preconcurrency @MainActor
-public final class URLSessionDelegateImpl: NSObject {
+public final class URLSessionDelegateImpl: NSObject, @preconcurrency NetworkingDelegate {
   public typealias ProgressChangeHandler = (Double) -> Void
   public typealias CompletionHandler = (Result<(Data, HTTPURLResponse), NSError>) -> Void
   public typealias RedirectHandler = (HTTPURLResponse, URLRequest) -> URLRequest
@@ -35,8 +35,7 @@ public final class URLSessionDelegateImpl: NSObject {
     self.errorInferrer = errorInferrer
   }
 
-  @preconcurrency @MainActor
-  public func setHandlers(
+  public nonisolated func setHandlers(
     downloadProgressChange: ProgressChangeHandler? = nil,
     uploadProgressChange: ProgressChangeHandler? = nil,
     challengeHandler: ChallengeHandling? = nil,
@@ -44,17 +43,18 @@ public final class URLSessionDelegateImpl: NSObject {
     completion: @escaping CompletionHandler,
     forTask task: URLSessionDataTask
   ) {
-    Thread.assertIsMain()
-    assert(stateByTask[task] == nil && task.state == .suspended)
-    stateByTask[task] = TaskState(
-      downloadProgressChangeHandler: downloadProgressChange,
-      uploadProgressChangeHandler: uploadProgressChange,
-      challengeHandler: challengeHandler,
-      redirectHandler: redirectHandler,
-      completionHandler: completion,
-      receivedData: Data()
-    )
-    self.challengeHandler = challengeHandler
+    onMainThreadSync {
+      assert(self.stateByTask[task] == nil && task.state == .suspended)
+      self.stateByTask[task] = TaskState(
+        downloadProgressChangeHandler: downloadProgressChange,
+        uploadProgressChangeHandler: uploadProgressChange,
+        challengeHandler: challengeHandler,
+        redirectHandler: redirectHandler,
+        completionHandler: completion,
+        receivedData: Data()
+      )
+      self.challengeHandler = challengeHandler
+    }
   }
 }
 

@@ -74,8 +74,11 @@ extern NSString *const AMAStorageStringKeyDidApplyDataMigrationFor500;
 extern NSString *const AMAStorageStringKeyDidApplyDataMigrationFor580;
 extern NSString *const AMAStorageStringKeyDidApplyDataMigrationFor590;
 extern NSString *const AMAStorageStringKeyDidApplyDataMigrationFor5100;
+extern NSString *const AMAStorageStringKeyDidApplyDataMigrationFor5140;
 
 extern NSString *const AMAStorageStringKeyAppMetricaClientConfiguration;
 extern NSString *const AMAStorageStringKeyRecentMainApiKey;
+
+extern NSString *const AMAStorageStringKeyAutocollectedData;
 
 NS_ASSUME_NONNULL_END

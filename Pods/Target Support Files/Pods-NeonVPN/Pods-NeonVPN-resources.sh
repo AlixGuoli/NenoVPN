@@ -97,14 +97,38 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "${PODS_ROOT}/Ads-Global/SDK/PAGAdSDK.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Ads-Global/AdsGlobalSDK.bundle"
+  install_resource "${PODS_ROOT}/BigoADS_spec/BigoADS/BigoADSRes.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/BigoADS_spec/BigoADS.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/FBAudienceNetwork/FBAudienceNetwork.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Fyber_Marketplace_SDK/Fyber_Marketplace_SDK.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Google-Mobile-Ads-SDK/GoogleMobileAdsResources.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/GoogleUserMessagingPlatform/UserMessagingPlatformResources.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/IronSourceAdMobAdapter/ISAdMobResources.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/IronSourceAdQualitySDK/IronSourceAdQualityPrivacyInfo.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/IronSourceSDK/IronSourcePrivacyInfo.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/MintegralAdSDK/MTGSDK.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/UnityAds/UnityAdsResources.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/VungleAds/VungleAds.bundle"
   install_resource "${PODS_ROOT}/YandexMobileAds/static/YandexMobileAds.xcframework/MobileAdsBundle.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/YandexMobileAds/YandexMobileAds_PrivacyInfo.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "${PODS_ROOT}/Ads-Global/SDK/PAGAdSDK.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Ads-Global/AdsGlobalSDK.bundle"
+  install_resource "${PODS_ROOT}/BigoADS_spec/BigoADS/BigoADSRes.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/BigoADS_spec/BigoADS.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/FBAudienceNetwork/FBAudienceNetwork.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Fyber_Marketplace_SDK/Fyber_Marketplace_SDK.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Google-Mobile-Ads-SDK/GoogleMobileAdsResources.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/GoogleUserMessagingPlatform/UserMessagingPlatformResources.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/IronSourceAdMobAdapter/ISAdMobResources.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/IronSourceAdQualitySDK/IronSourceAdQualityPrivacyInfo.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/IronSourceSDK/IronSourcePrivacyInfo.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/MintegralAdSDK/MTGSDK.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/UnityAds/UnityAdsResources.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/VungleAds/VungleAds.bundle"
   install_resource "${PODS_ROOT}/YandexMobileAds/static/YandexMobileAds.xcframework/MobileAdsBundle.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/YandexMobileAds/YandexMobileAds_PrivacyInfo.bundle"
 fi

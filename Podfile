@@ -8,9 +8,11 @@ target 'NeonVPN' do
   # Pods for NeonVPN
   pod 'lottie-ios'
   pod 'Alamofire'
-  pod 'Google-Mobile-Ads-SDK'
-  pod 'YandexMobileAds', '7.16.2'
-  pod 'YandexMobileAdsInstream', '0.59.0'
+  
+#  pod 'Google-Mobile-Ads-SDK'
+#  pod 'YandexMobileAds', '7.16.2'
+#  pod 'YandexMobileAdsInstream', '0.59.0'
+  pod 'YandexMobileAdsMediationSpec'
 
   pod 'GA-SDK-IOS', '~> 4.11.0'
 end

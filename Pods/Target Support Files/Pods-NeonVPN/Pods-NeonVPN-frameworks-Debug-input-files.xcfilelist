@@ -4,10 +4,10 @@ ${BUILT_PRODUCTS_DIR}/AppMetricaAdSupport/AppMetricaAdSupport.framework
 ${BUILT_PRODUCTS_DIR}/AppMetricaCore/AppMetricaCore.framework
 ${BUILT_PRODUCTS_DIR}/AppMetricaCoreExtension/AppMetricaCoreExtension.framework
 ${BUILT_PRODUCTS_DIR}/AppMetricaCoreUtils/AppMetricaCoreUtils.framework
-${BUILT_PRODUCTS_DIR}/AppMetricaCrashes/AppMetricaCrashes.framework
 ${BUILT_PRODUCTS_DIR}/AppMetricaEncodingUtils/AppMetricaEncodingUtils.framework
 ${BUILT_PRODUCTS_DIR}/AppMetricaFMDB/AppMetricaFMDB.framework
 ${BUILT_PRODUCTS_DIR}/AppMetricaHostState/AppMetricaHostState.framework
+${BUILT_PRODUCTS_DIR}/AppMetricaIDSync/AppMetricaIDSync.framework
 ${BUILT_PRODUCTS_DIR}/AppMetricaIdentifiers/AppMetricaIdentifiers.framework
 ${BUILT_PRODUCTS_DIR}/AppMetricaKeychain/AppMetricaKeychain.framework
 ${BUILT_PRODUCTS_DIR}/AppMetricaLibraryAdapter/AppMetricaLibraryAdapter.framework
@@ -24,9 +24,10 @@ ${BUILT_PRODUCTS_DIR}/DivKitBinaryCompatibilityFacade/DivKitBinaryCompatibilityF
 ${BUILT_PRODUCTS_DIR}/DivKit_LayoutKit/LayoutKit.framework
 ${BUILT_PRODUCTS_DIR}/DivKit_LayoutKitInterface/LayoutKitInterface.framework
 ${BUILT_PRODUCTS_DIR}/DivKit_Serialization/Serialization.framework
-${BUILT_PRODUCTS_DIR}/KSCrash/KSCrash.framework
 ${BUILT_PRODUCTS_DIR}/VGSL/VGSL.framework
 ${BUILT_PRODUCTS_DIR}/VGSLFundamentals/VGSLFundamentals.framework
 ${BUILT_PRODUCTS_DIR}/VGSLNetworking/VGSLNetworking.framework
 ${BUILT_PRODUCTS_DIR}/VGSLUI/VGSLUI.framework
 ${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework
+${PODS_XCFRAMEWORKS_BUILD_DIR}/AppLovinSDK/AppLovinSDK.framework/AppLovinSDK
+${PODS_XCFRAMEWORKS_BUILD_DIR}/InMobiSDK/InMobiSDK.framework/InMobiSDK

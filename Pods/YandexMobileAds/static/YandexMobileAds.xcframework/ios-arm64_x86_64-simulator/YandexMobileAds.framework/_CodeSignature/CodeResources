@@ -30,11 +30,11 @@
 		</data>
 		<key>Headers/YMAVersion.h</key>
 		<data>
-		mW7xnQezcvR67RlmqksKsttJjR4=
+		36dXnsjj1lfgopBIu1p40vs963M=
 		</data>
 		<key>Headers/YandexMobileAds-Swift.h</key>
 		<data>
-		KshjNiKhwN13Uk9IpVXBckmd6P4=
+		5ELYpBN3Qey/fc7EPZpAeScTKR0=
 		</data>
 		<key>Headers/YandexMobileAds.h</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		g76FscOhvX5w0gqsVtK3Tpk+cxw=
+		Au2JUc8S0XE3wnmgiBTZYOuafL0=
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -50,19 +50,19 @@
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		+vriJtv8iTJ1ozMOL6cHKB1Jciw=
+		Pwg1rCdcjr7O/6kBkN/GsBUtBww=
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		LFBjSu/hkf2a4oKfmuOY8YLctGY=
+		zm4rorKZE2X6p5c8la/IIT7ssOg=
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		TaIyoBfywuhP35rj7/hFDA61SuU=
+		rTpPQDDkZb+jjQ4WP1eeZhJE5kw=
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		AB9OfktwvpYVr43jSRi/LSlCixo=
+		FGhhdTZWekwI4pUx/UxPtfHJM50=
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -70,19 +70,19 @@
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		Ja8XJ0OJVGqgN/W4tsM6cSppAtg=
+		E3pQqDoXdgGi806ljJJqsxqN+Sc=
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		W96ds+P/v00f5GURpNqsnLUGUqM=
+		470/z0e6qiRdUPsuLGFcfw/LCgY=
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		xfTPOImiIKz4AbyHA4B2AvLhca8=
+		kkZo4ezmDSBRWopDZi3ghohD9NE=
 		</data>
 		<key>Modules/YandexMobileAds.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		BN1j9C8IQjekA5+AH/+Oh76xTPY=
+		77FcZO9TRfg/SD4PIRbwtD2MaGE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -177,22 +177,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			mW7xnQezcvR67RlmqksKsttJjR4=
+			36dXnsjj1lfgopBIu1p40vs963M=
 			</data>
 			<key>hash2</key>
 			<data>
-			kEJmbADrDaKjbLzCSH3hg8U/Hw8bj7ZY652SPdIso5c=
+			oilghzLkZLJmSggEWgO/F+NxR+MzPKwWj4zo9KxSPtg=
 			</data>
 		</dict>
 		<key>Headers/YandexMobileAds-Swift.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			KshjNiKhwN13Uk9IpVXBckmd6P4=
+			5ELYpBN3Qey/fc7EPZpAeScTKR0=
 			</data>
 			<key>hash2</key>
 			<data>
-			6V+xlBWKZniNuwrQj12VfDN5r8l+yA9PnZ4JLQg3Sek=
+			ef6KBXSzwDgYbLKPaMt3yL4kN21Lu0DeyLctSOHKO0w=
 			</data>
 		</dict>
 		<key>Headers/YandexMobileAds.h</key>
@@ -221,44 +221,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			+vriJtv8iTJ1ozMOL6cHKB1Jciw=
+			Pwg1rCdcjr7O/6kBkN/GsBUtBww=
 			</data>
 			<key>hash2</key>
 			<data>
-			tnf8fJPd4mF/fYwmfN5HXq6MbT1X482BL0n0reNPmpM=
+			N53Zfx7/7ZfDC7WPETpkuj4fBAEA2ZdwDLnBn8roxU4=
 			</data>
 		</dict>
 		<key>Modules/YandexMobileAds.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			LFBjSu/hkf2a4oKfmuOY8YLctGY=
+			zm4rorKZE2X6p5c8la/IIT7ssOg=
 			</data>
 			<key>hash2</key>
 			<data>
-			KhhhbRtMEYSZ8W1mINvZPrGZRb89MCzLfzb57ocQft0=
+			yXHyrPD42113ZyOd4XwLFDmlJmBtVtz/QiE2dIMCSdE=
 			</data>
 		</dict>
 		<key>Modules/YandexMobileAds.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			TaIyoBfywuhP35rj7/hFDA61SuU=
+			rTpPQDDkZb+jjQ4WP1eeZhJE5kw=
 			</data>
 			<key>hash2</key>
 			<data>
-			40zt3HtPkUF5uOaBh4aV1rNBKX/xh/Z0R3uk1mJ/54M=
+			px9TrhRYPj3qJqPiHpcSbhHCZYSTnFJAQ+bIS7mnGiM=
 			</data>
 		</dict>
 		<key>Modules/YandexMobileAds.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			AB9OfktwvpYVr43jSRi/LSlCixo=
+			FGhhdTZWekwI4pUx/UxPtfHJM50=
 			</data>
 			<key>hash2</key>
 			<data>
-			djIOw6mLLZ0yxKhVl/8r8wmP8ilTabSd728RF5JoYWg=
+			XtzLPQDO2L/p7qu1q3LSTd/73bvMnoS7OBwA993N3Qw=
 			</data>
 		</dict>
 		<key>Modules/YandexMobileAds.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -276,44 +276,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Ja8XJ0OJVGqgN/W4tsM6cSppAtg=
+			E3pQqDoXdgGi806ljJJqsxqN+Sc=
 			</data>
 			<key>hash2</key>
 			<data>
-			xjlG0K51TjNeUmXSJfi7Fa8ghziqMV703jCNXJMvu0c=
+			4WPFnNikI3m5ek0bzlSQrzclW6JpKRyLYyR0CP0o75Q=
 			</data>
 		</dict>
 		<key>Modules/YandexMobileAds.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			W96ds+P/v00f5GURpNqsnLUGUqM=
+			470/z0e6qiRdUPsuLGFcfw/LCgY=
 			</data>
 			<key>hash2</key>
 			<data>
-			mt1fJ9z/XQwgtAuQl3DIEGFYV9KdSN7Y4UoOdPriTc4=
+			LIfIP9wEmn+/kghErEgOIgEq6aUYWu2RTNonshAVAW0=
 			</data>
 		</dict>
 		<key>Modules/YandexMobileAds.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			xfTPOImiIKz4AbyHA4B2AvLhca8=
+			kkZo4ezmDSBRWopDZi3ghohD9NE=
 			</data>
 			<key>hash2</key>
 			<data>
-			qHUKtLrqiYDXQmPwhZmOETaWSfncf639ugEs30OOdlA=
+			Z5wcgUN/tDdE5t94vuLV5DDtxmwnTkWUQhRRKJhibhw=
 			</data>
 		</dict>
 		<key>Modules/YandexMobileAds.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			BN1j9C8IQjekA5+AH/+Oh76xTPY=
+			77FcZO9TRfg/SD4PIRbwtD2MaGE=
 			</data>
 			<key>hash2</key>
 			<data>
-			dqBk2TmoEVc5sIq+Ou8TAbu+G1jHR+Y80hRnTJP6kyg=
+			83WrUwW3ZbkvPCIJtAGAyUsgIbQ9IhRg1MBOaKDmqL8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

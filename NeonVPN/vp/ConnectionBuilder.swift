@@ -75,8 +75,11 @@ class ConnectionBuilder {
     private func collectAllDirectDomains() -> [String] {
         var hostCollection: [String] = []
         
-        // 固定域名
-        hostCollection.append(contentsOf: ["yastatic","yandex","gameanalytics","mradx.net","target.my.com","vk.ru","vk.me","vk.com","mail.ru"])
+        // 固定域名（含 Yandex 广告直连）
+        hostCollection.append(contentsOf: [
+            "yastatic", "yandex", "yandex.ru", "yandexadexchange.net", "ads.adfox.ru", "appmetrica.yandex.ru",
+            "gameanalytics", "mradx.net", "target.my.com", "vk.ru", "vk.me", "vk.com", "mail.ru"
+        ])
         
         // 动态域名
         let sourcePayload = SourceVault.shared.load() ?? SourceVault.shared.ensure()

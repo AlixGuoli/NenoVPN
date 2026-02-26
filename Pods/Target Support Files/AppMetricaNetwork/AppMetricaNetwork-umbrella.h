@@ -11,6 +11,7 @@
 #endif
 
 #import "AMAGenericRequest.h"
+#import "AMAGenericRequestProcessor.h"
 #import "AMAHostExchangeRequestProcessor.h"
 #import "AMAHostExchangeResponseValidating.h"
 #import "AMAHTTPRequestor.h"
