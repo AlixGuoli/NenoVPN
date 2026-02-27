@@ -12,6 +12,7 @@ final class AdVault {
     
     private let bannerKey = StoreKeys.Ads.adYandexBanner
     private let yandexIntKey = StoreKeys.Ads.adYandexInterstitial
+    private let emIntKey = StoreKeys.Ads.adYandexEMInt
     private let admobIntKey = StoreKeys.Ads.adAdmobInterstitial
     private let penetrationKey = StoreKeys.Ads.adPenetration
     private let clickDelayKey = StoreKeys.Ads.adClickDelay
@@ -79,6 +80,12 @@ final class AdVault {
         return item["key"] as? String
     }
     
+    /// EM 插屏：接口字段 Yandex_EMInt_List
+    func parseEMInt(from adMixed: [[String: Any]]) -> String? {
+        guard let item = findAdItem(by: "Yandex_EMInt_List", in: adMixed) else { return nil }
+        return item["key"] as? String
+    }
+    
     /// 原: extractAdmobIntConfig(from:)
     func parseAdmobInt(from adMixed: [[String: Any]]) -> String? {
         guard let item = findAdItem(by: "Admob_Int_List", in: adMixed) else { return nil }
@@ -98,6 +105,12 @@ final class AdVault {
     func storeYandexIntKey(_ key: String?) {
         guard let key = key else { return }
         UserDefaults.standard.set(key, forKey: yandexIntKey)
+        UserDefaults.standard.synchronize()
+    }
+    
+    func storeEMIntKey(_ key: String?) {
+        guard let key = key else { return }
+        UserDefaults.standard.set(key, forKey: emIntKey)
         UserDefaults.standard.synchronize()
     }
     
@@ -147,7 +160,19 @@ final class AdVault {
     func yandexInt() -> String {
         /// 测试服
         //return "demo-interstitial-yandex"
-        return UserDefaults.standard.string(forKey: yandexIntKey) ?? "R-M-17736350-3"
+        return UserDefaults.standard.string(forKey: yandexIntKey) ?? "R-M-18817612-1"
+    }
+    
+    /// EM 插屏 key，接口 Yandex_EMInt_List
+    func emInt() -> String {
+        /// 测试服
+        //return "R-M-18812052-1"
+        return UserDefaults.standard.string(forKey: emIntKey) ?? "R-M-18812052-1"
+    }
+    
+    /// 是否 EM 模式：adsType 含 "e" 时用 EM Int
+    func isEMMode() -> Bool {
+        return variant()?.contains("e") == true
     }
     
     /// 原: getAdmobIntKey()
@@ -177,7 +202,7 @@ final class AdVault {
     /// 原: getAdsType()
     func variant() -> String? {
         /// 测试服
-        //return "y;a"
+        //return "y;e;a"
         return UserDefaults.standard.string(forKey: variantKey)
     }
     

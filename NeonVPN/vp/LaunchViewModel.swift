@@ -102,30 +102,7 @@ final class LaunchViewModel: ObservableObject {
     // MARK: - 广告加载
     
     private func loadStartupAdsWithPriority() async -> Bool {
-        async let banner = loadBannerAd()
-        async let interstitial = loadInterstitialAd()
-        
-        let bannerSuccess = await banner
-        if bannerSuccess {
-            return true
-        }
-        let interstitialSuccess = await interstitial
-        return interstitialSuccess
-    }
-    
-    private func loadBannerAd() async -> Bool {
-        await withCheckedContinuation { continuation in
-            var resumed = false
-            AdCoordinator.instance.loadBaYa {
-                guard !resumed else { return }
-                resumed = true
-                continuation.resume(returning: true)
-            } onFailed: {
-                guard !resumed else { return }
-                resumed = true
-                continuation.resume(returning: false)
-            }
-        }
+        return await loadInterstitialAd()
     }
     
     private func loadInterstitialAd() async -> Bool {

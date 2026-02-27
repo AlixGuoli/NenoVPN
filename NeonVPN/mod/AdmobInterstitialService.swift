@@ -19,6 +19,9 @@ final class AdmobInterstitialService: NSObject {
     /// 广告拉取失败时回调。
     var onContentFailed: (() -> Void)?
     
+    /// 本次展示后是否再拉一条（断开场景由 AdCoordinator 设为 false）
+    var reloadAfterPresent: Bool = true
+    
     // MARK: - Private State
     private var contentKeys: [String] = []
     private var isFetching = false
@@ -148,7 +151,12 @@ extension AdmobInterstitialService: FullScreenContentDelegate {
         AdCoordinator.instance.isActive = true
         activeContent = currentContent
         currentContent = nil
-        refresh(moment: StoreKeys.AdTrigger.closeAd)
+        if reloadAfterPresent {
+            refresh(moment: StoreKeys.AdTrigger.closeAd)
+        } else {
+            debugPrint("[ADS] [AdMob] 断开场景，展示后不重新加载")
+            reloadAfterPresent = true
+        }
     }
     
     func adDidRecordImpression(_ ad: FullScreenPresentingAd) {

@@ -7,6 +7,7 @@ struct ConnectingView: View {
     @State private var rotationAngle: Double = 0
     @State private var pulseScale: CGFloat = 1.0
     @State private var rotationTimer: Timer?
+    @State private var autoCloseTimer: Timer?
     
     var body: some View {
         ZStack {
@@ -123,36 +124,6 @@ struct ConnectingView: View {
                 
                 Spacer()
             }
-            
-            // 关闭按钮（X图标）- 右上角
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        connectVM.closeConnectingView()
-                        // 如果正在连接，取消连接
-                        if connectVM.stage == .connecting {
-                            connectVM.endSession()
-                        }
-                    }) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.white.opacity(0.8))
-                            .frame(width: 44, height: 44)
-                            .background(
-                                Circle()
-                                    .fill(Color.white.opacity(0.1))
-                                    .overlay(
-                                        Circle()
-                                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                                    )
-                            )
-                    }
-                    .padding(.top, 8)
-                    .padding(.trailing, 20)
-                }
-                Spacer()
-            }
         }
         .navigationBarBackButtonHidden(true)
         .bindLocale()
@@ -177,11 +148,18 @@ struct ConnectingView: View {
             withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
                 pulseScale = 1.12
             }
+            
+            // 连接页最多展示 40 秒：超时自动关闭，不影响原有连接流程
+            autoCloseTimer = Timer.scheduledTimer(withTimeInterval: 40.0, repeats: false) { _ in
+                connectVM.closeConnectingView()
+            }
         }
         .onDisappear {
             // 清理旋转定时器，避免内存泄漏
             rotationTimer?.invalidate()
             rotationTimer = nil
+            autoCloseTimer?.invalidate()
+            autoCloseTimer = nil
         }
     }
 }

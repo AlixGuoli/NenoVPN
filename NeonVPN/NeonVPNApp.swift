@@ -114,8 +114,8 @@ struct NeonVPNApp: App {
     
     private func presentYandexSplashAd() {
         let ads = AdCoordinator.instance
-        if ads.isBaYaReady {
-            ads.showFromWindow(.baYa)
+        if ads.isMobReady {
+            ads.showFromWindow(.mobInt(moment: StoreKeys.AdTrigger.launch))
         } else if ads.isInYaReady {
             ads.showFromWindow(.inYa(onClose: nil))
         }
@@ -130,30 +130,16 @@ struct NeonVPNApp: App {
         
         let ads = AdCoordinator.instance
         
-        // 检查是否有广告可以展示，优先级顺序：AdMob > Yandex Banner > Yandex Int
+        // 检查是否有广告可以展示，优先级：AdMob > Yandex/EM Int
         if ads.hasAnyReady {
-            // 按优先级展示广告，广告展示成功，立即关闭后台页
             if ads.isMobReady {
                 debugPrint("[ADS] [Manager] 从后台页展示 AdMob 广告")
                 ads.showFromWindow(.mobInt(moment: StoreKeys.AdTrigger.foreground))
-                // 广告展示成功，立即关闭后台页
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    showReturnLaunch = false
-                }
-            } else if ads.isBaYaReady {
-                debugPrint("[ADS] [Manager] 从后台页展示 Yandex Banner 广告")
-                ads.showFromWindow(.baYa)
-                // 广告展示成功，立即关闭后台页
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    showReturnLaunch = false
-                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { showReturnLaunch = false }
             } else if ads.isInYaReady {
-                debugPrint("[ADS] [Manager] 从后台页展示 Yandex Int 广告")
+                debugPrint("[ADS] [Manager] 从后台页展示 Yandex/EM Int 广告")
                 ads.showFromWindow(.inYa(onClose: nil))
-                // 广告展示成功，立即关闭后台页
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    showReturnLaunch = false
-                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { showReturnLaunch = false }
             }
         } else {
             debugPrint("[ADS] [Manager] 没有广告可展示，后台页将在 3 秒后自动关闭")

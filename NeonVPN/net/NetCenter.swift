@@ -367,6 +367,13 @@ final class NetCenter {
             debugPrint("[NET]   key: \(intKey)")
         }
         
+        // 3b. 提取并保存 EM Int 配置（Yandex_EMInt_List）
+        if let emIntKey = AdVault.shared.parseEMInt(from: adMixed) {
+            AdVault.shared.storeEMIntKey(emIntKey)
+            debugPrint("[NET] ✅ Yandex EM Int 配置已保存")
+            debugPrint("[NET]   key: \(emIntKey)")
+        }
+        
         // 4. 提取并保存 AdMob Int 配置
         if let admobKey = AdVault.shared.parseAdmobInt(from: adMixed) {
             AdVault.shared.storeAdmobIntKey(admobKey)

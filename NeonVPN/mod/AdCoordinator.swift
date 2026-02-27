@@ -16,7 +16,7 @@ final class AdCoordinator {
     
     private let mobService = AdmobInterstitialService()
     private let inYaService = YandexInterstitialService()
-    private let baYaService = YandexBannerService()
+    private let emIntService = YandexEMInterstitialService()
     
     private init() {}
     
@@ -31,17 +31,15 @@ final class AdCoordinator {
     
     var isInYaReady: Bool {
         guard adsEnabled && isInYaEnabled else { return false }
+        if isEMMode { return emIntService.isReady }
         return inYaService.isReady
     }
     
-    var isBaYaReady: Bool {
-        guard adsEnabled && isInYaEnabled else { return false }
-        return baYaService.isPrepared
-    }
+    private var isEMMode: Bool { AdVault.shared.isEMMode() }
     
     var hasAnyReady: Bool {
         guard adsEnabled else { return false }
-        return isMobReady || isInYaReady || isBaYaReady
+        return isMobReady || isInYaReady
     }
     
     // MARK: - Load entry points
@@ -51,8 +49,8 @@ final class AdCoordinator {
             return
         }
         if isInYaEnabled {
-            inYaService.fetchContent()
-            baYaService.fetchContent()
+            if isEMMode { emIntService.fetchContent(moment: moment) }
+            else { inYaService.fetchContent(moment: moment) }
         }
         if isMobEnabled {
             mobService.fetchContent(moment: moment)
@@ -77,19 +75,15 @@ final class AdCoordinator {
             onReady?()
             return
         }
-        inYaService.onContentReady = onReady
-        inYaService.onContentFailed = onFailed
-        inYaService.fetchContent()
-    }
-    
-    func loadBaYa(onReady: (() -> Void)? = nil, onFailed: (() -> Void)? = nil) {
-        guard adsEnabled && isInYaEnabled else {
-            onReady?()
-            return
+        if isEMMode {
+            emIntService.onContentReady = onReady
+            emIntService.onContentFailed = onFailed
+            emIntService.fetchContent()
+        } else {
+            inYaService.onContentReady = onReady
+            inYaService.onContentFailed = onFailed
+            inYaService.fetchContent()
         }
-        baYaService.onContentReady = onReady
-        baYaService.onContentFailed = onFailed
-        baYaService.fetchContent()
     }
     
     // MARK: - Present helpers
@@ -98,23 +92,25 @@ final class AdCoordinator {
             mobService.clear()
             return
         }
+        if moment == StoreKeys.AdTrigger.disconnect {
+            mobService.reloadAfterPresent = false
+        }
         mobService.display(from: controller, moment: moment)
-        mobService.fetchContent(moment: moment)
     }
     
     func displayInYa(from controller: UIViewController, onClose: (() -> Void)? = nil) {
-        inYaService.onContentClosed = onClose
-        inYaService.display(from: controller)
-    }
-    
-    func displayBaYa(from controller: UIViewController) {
-        baYaService.display(from: controller)
+        if isEMMode {
+            emIntService.onContentClosed = onClose
+            emIntService.display(from: controller)
+        } else {
+            inYaService.onContentClosed = onClose
+            inYaService.display(from: controller)
+        }
     }
     
     enum DisplayType {
         case mobInt(moment: String?)
         case inYa(onClose: (() -> Void)?)
-        case baYa
     }
     
     func showFromWindow(_ placement: DisplayType) {
@@ -129,8 +125,6 @@ final class AdCoordinator {
             displayMob(from: root, moment: moment)
         case .inYa(let onClose):
             displayInYa(from: root, onClose: onClose)
-        case .baYa:
-            displayBaYa(from: root)
         }
     }
     
@@ -142,7 +136,7 @@ final class AdCoordinator {
     
     private var isInYaEnabled: Bool {
         guard let variant = AdVault.shared.variant() else { return false }
-        return variant.contains("y")
+        return variant.contains("y") || variant.contains("e")
     }
     
     private var isMobEnabled: Bool {

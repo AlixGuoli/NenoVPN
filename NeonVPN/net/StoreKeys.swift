@@ -24,6 +24,7 @@ enum StoreKeys {
     enum Ads {
         static let adYandexBanner = "nvAdYandexBanner"
         static let adYandexInterstitial = "nvAdYandexInterstitial"
+        static let adYandexEMInt = "nvAdYandexEMInt"
         static let adAdmobInterstitial = "nvAdAdmobInterstitial"
         static let adPenetration = "nvAdPenetration"
         static let adClickDelay = "nvAdClickDelay"

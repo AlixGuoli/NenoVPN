@@ -385,15 +385,12 @@ final class ConnectVM: ObservableObject {
 
         let ads = AdCoordinator.instance
 
-        // 检查是否有广告可以展示，优先级顺序：AdMob > Yandex Banner > Yandex Int
         guard ads.hasAnyReady else {
             debugPrint("[ADS] [Manager] 没有广告可展示")
             return
         }
 
         resultAdShown = true
-        
-        // 根据结果类型选择 moment
         let moment: String
         switch resultType {
         case .success:
@@ -401,18 +398,13 @@ final class ConnectVM: ObservableObject {
         case .disconnected:
             moment = StoreKeys.AdTrigger.disconnect
         case .failed:
-            return // 已在上面的 guard 中处理
+            return
         }
-        
-        // 按优先级展示广告
         if ads.isMobReady {
             debugPrint("[ADS] [Manager] 从结果页展示 AdMob 广告")
             ads.showFromWindow(.mobInt(moment: moment))
-        } else if ads.isBaYaReady {
-            debugPrint("[ADS] [Manager] 从结果页展示 Yandex Banner 广告")
-            ads.showFromWindow(.baYa)
         } else if ads.isInYaReady {
-            debugPrint("[ADS] [Manager] 从结果页展示 Yandex Int 广告")
+            debugPrint("[ADS] [Manager] 从结果页展示 Yandex/EM Int 广告")
             ads.showFromWindow(.inYa(onClose: nil))
         }
     }
