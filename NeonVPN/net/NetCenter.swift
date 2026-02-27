@@ -60,8 +60,9 @@ final class NetCenter {
     }
     
     /// 获取服务端点配置
+    /// - Parameter group: 节点分组 ID（-1 表示 Auto/随机）
     /// - Returns: 配置字符串（加密的），失败返回 nil
-    func getServiceEndpoint() async -> String? {
+    func getServiceEndpoint(group: Int = -1) async -> String? {
         debugPrint("[NET] 开始请求服务端点配置")
         
         // 合并基本参数和额外参数
@@ -69,7 +70,7 @@ final class NetCenter {
         for (key, value) in NetProfile.shared.params() {
             allParams[key] = value
         }
-        allParams["group"] = -1
+        allParams["group"] = group
         allParams["vip"] = 0
         
         guard let serviceConf = await requestWithRetry(path: NetProfile.API.serviceEndpoint, params: allParams),
@@ -82,6 +83,51 @@ final class NetCenter {
         debugPrint("[NET] 配置内容: \(serviceConf)")
         
         return serviceConf
+    }
+
+    // MARK: - 节点拓扑
+
+    /// 获取节点拓扑列表：调用 /mesh/category/circuit，解析为 NodeVault.Node 数组并保存到 NodeVault。
+    func fetchNodeTopology() async -> [NodeVault.Node] {
+        debugPrint("[NET] 开始请求节点拓扑 /mesh/category/circuit")
+
+        let params = NetProfile.shared.params()
+        guard let json = await requestWithRetry(path: NetProfile.API.groupTopology, params: params),
+              !json.isEmpty else {
+            debugPrint("[NET] !!! 获取节点拓扑失败")
+            return []
+        }
+
+        guard let data = json.data(using: .utf8),
+              let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let categories = root["categories"] as? [[String: Any]] else {
+            debugPrint("[NET] !!! 节点拓扑 JSON 解析失败")
+            return []
+        }
+
+        var nodes: [NodeVault.Node] = []
+
+        for category in categories {
+            guard let nodeArray = category["nodes"] as? [[String: Any]] else { continue }
+            for nodeDict in nodeArray {
+                guard let id = nodeDict["id"] as? Int,
+                      let name = nodeDict["name"] as? String,
+                      let country = nodeDict["country"] as? String else {
+                    continue
+                }
+                let countryCode = country.uppercased()
+                nodes.append(NodeVault.Node(id: id, name: name, countryCode: countryCode))
+            }
+        }
+
+        guard !nodes.isEmpty else {
+            debugPrint("[NET] 节点拓扑解析结果为空")
+            return []
+        }
+
+        NodeVault.shared.storeNodes(nodes)
+        debugPrint("[NET] ✅ 节点拓扑解析成功: \(nodes.count) 个节点")
+        return nodes
     }
     
     // MARK: - 主请求流程

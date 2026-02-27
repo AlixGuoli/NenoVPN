@@ -53,7 +53,7 @@ final class NetProfile {
         static let configPolicy = "/mesh/config/policy"
         static let adsProxy = "/mesh/ads/proxy"
         static let serviceEndpoint = "/mesh/service/endpoint"
-        static let groupTopology = "/mesh/group/topology"
+        static let groupTopology = "/mesh/category/circuit"
     }
     
     // MARK: - 事件标识

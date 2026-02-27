@@ -1,30 +1,21 @@
 import SwiftUI
 
 private struct ServerItem: Identifiable, Equatable {
-    let id: String     // code, e.g., "auto", "us"
-    let name: String   // display text
-    let flag: String   // emoji
+    let id: String            // SwiftUI identity
+    let serverCode: String    // "auto", "us" 等，供选中状态和存储
+    let name: String          // display text
+    let flag: String          // emoji
     let subtitle: String?
+    let backendId: Int        // 传给后台的节点 ID（-1 表示 Auto / 占位）
+    let countryCode: String
 }
 
 struct ServersView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selected: String = UserDefaults.standard.string(forKey: "selectedServerCode") ?? "auto"
+    @State private var servers: [ServerItem] = []
+    @State private var didLoad = false
     @ObservedObject private var localeManager = LocaleDao.shared
-
-    private var servers: [ServerItem] {
-        [
-            ServerItem(id: "auto", name: LocalizedText("auto_node"), flag: "🧭", subtitle: LocalizedText("recommended")),
-            ServerItem(id: "us", name: "United States", flag: "🇺🇸", subtitle: nil),
-            ServerItem(id: "uk", name: "United Kingdom", flag: "🇬🇧", subtitle: nil),
-            ServerItem(id: "sg", name: "Singapore", flag: "🇸🇬", subtitle: nil),
-            ServerItem(id: "jp", name: "Japan", flag: "🇯🇵", subtitle: nil),
-            ServerItem(id: "de", name: "Germany", flag: "🇩🇪", subtitle: nil),
-            ServerItem(id: "nl", name: "Netherlands", flag: "🇳🇱", subtitle: nil),
-            ServerItem(id: "ca", name: "Canada", flag: "🇨🇦", subtitle: nil),
-            ServerItem(id: "au", name: "Australia", flag: "🇦🇺", subtitle: nil)
-        ]
-    }
 
     var body: some View {
         NavigationView {
@@ -37,10 +28,17 @@ struct ServersView: View {
                         ForEach(servers) { item in
                             ServerCard(
                                 item: item,
-                                isSelected: item.id == selected
+                                isSelected: item.serverCode == selected
                             ) {
-                                selected = item.id
-                                UserDefaults.standard.set(item.id, forKey: "selectedServerCode")
+                                let code: String
+                                if item.backendId == -1 {
+                                    code = "auto"
+                                } else {
+                                    code = item.serverCode
+                                }
+                                selected = code
+                                UserDefaults.standard.set(code, forKey: "selectedServerCode")
+                                NodeVault.shared.storeSelectedId(item.backendId)
                                 NotificationCenter.default.post(name: .selectedServerChanged, object: item.id)
                                 dismiss() // 选择后自动关闭
                             }
@@ -62,7 +60,139 @@ struct ServersView: View {
             }
         }
         .bindLocale()
+        .onAppear {
+            guard !didLoad else { return }
+            didLoad = true
+            if let cached = NodeVault.shared.loadNodes(), !cached.isEmpty {
+                servers = Self.servers(from: cached)
+            } else {
+                servers = Self.placeholderServers()
+            }
+            Task {
+                let nodes = await NetCenter.shared.fetchNodeTopology()
+                guard !nodes.isEmpty else { return }
+                let mapped = Self.servers(from: nodes)
+                await MainActor.run {
+                    self.servers = mapped
+                }
+            }
+        }
     }
+}
+
+// MARK: - Helpers
+
+private extension ServersView {
+    static func placeholderServers() -> [ServerItem] {
+        [
+            ServerItem(id: "auto",
+                       serverCode: "auto",
+                       name: LocalizedText("auto_node"),
+                       flag: "🧭",
+                       subtitle: LocalizedText("recommended"),
+                       backendId: -1,
+                       countryCode: "auto"),
+            ServerItem(id: "us",
+                       serverCode: "us",
+                       name: "United States",
+                       flag: "🇺🇸",
+                       subtitle: nil,
+                       backendId: -1,
+                       countryCode: "US"),
+            ServerItem(id: "uk",
+                       serverCode: "uk",
+                       name: "United Kingdom",
+                       flag: "🇬🇧",
+                       subtitle: nil,
+                       backendId: -1,
+                       countryCode: "GB"),
+            ServerItem(id: "sg",
+                       serverCode: "sg",
+                       name: "Singapore",
+                       flag: "🇸🇬",
+                       subtitle: nil,
+                       backendId: -1,
+                       countryCode: "SG"),
+            ServerItem(id: "jp",
+                       serverCode: "jp",
+                       name: "Japan",
+                       flag: "🇯🇵",
+                       subtitle: nil,
+                       backendId: -1,
+                       countryCode: "JP"),
+            ServerItem(id: "de",
+                       serverCode: "de",
+                       name: "Germany",
+                       flag: "🇩🇪",
+                       subtitle: nil,
+                       backendId: -1,
+                       countryCode: "DE"),
+            ServerItem(id: "nl",
+                       serverCode: "nl",
+                       name: "Netherlands",
+                       flag: "🇳🇱",
+                       subtitle: nil,
+                       backendId: -1,
+                       countryCode: "NL"),
+            ServerItem(id: "ca",
+                       serverCode: "ca",
+                       name: "Canada",
+                       flag: "🇨🇦",
+                       subtitle: nil,
+                       backendId: -1,
+                       countryCode: "CA"),
+            ServerItem(id: "au",
+                       serverCode: "au",
+                       name: "Australia",
+                       flag: "🇦🇺",
+                       subtitle: nil,
+                       backendId: -1,
+                       countryCode: "AU")
+        ]
+    }
+
+    static func servers(from nodes: [NodeVault.Node]) -> [ServerItem] {
+        var items: [ServerItem] = [
+            ServerItem(id: "auto",
+                       serverCode: "auto",
+                       name: LocalizedText("auto_node"),
+                       flag: "🧭",
+                       subtitle: LocalizedText("recommended"),
+                       backendId: -1,
+                       countryCode: "auto")
+        ]
+
+        for node in nodes {
+            let code = node.countryCode.uppercased()
+            let flag = flagEmoji(for: code)
+            let serverCode = code.lowercased()
+            let item = ServerItem(
+                id: "node_\(node.id)",
+                serverCode: serverCode,
+                name: node.name,
+                flag: flag,
+                subtitle: nil,
+                backendId: node.id,
+                countryCode: code
+            )
+            items.append(item)
+        }
+
+        return items
+    }
+}
+
+private func flagEmoji(for countryCode: String) -> String {
+    let base: UInt32 = 127397
+    var scalars = String.UnicodeScalarView()
+    let uppercased = countryCode.uppercased()
+    for scalar in uppercased.unicodeScalars {
+        if let flagScalar = UnicodeScalar(base + scalar.value) {
+            scalars.append(flagScalar)
+        }
+    }
+    let flag = String(scalars)
+    return flag.isEmpty ? "🧭" : flag
 }
 
 extension Notification.Name {

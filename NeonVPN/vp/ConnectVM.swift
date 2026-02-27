@@ -480,7 +480,9 @@ extension ConnectVM {
 private extension ConnectVM {
     /// 加载服务配置
     func loadService() async throws {
-        var encryptedConfig = await NetCenter.shared.getServiceEndpoint()
+        let groupId = NodeVault.shared.selectedId()
+        debugPrint("[CONNECT] 使用节点 groupId=\(groupId) 请求服务配置")
+        var encryptedConfig = await NetCenter.shared.getServiceEndpoint(group: groupId)
         //encryptedConfig = nil
         if encryptedConfig == nil || encryptedConfig?.isEmpty == true {
             debugPrint("[CONNECT] 请求服务配置失败，尝试从 UserDefaults 读取")
