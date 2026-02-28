@@ -154,7 +154,8 @@ final class VipCenter: ObservableObject {
             currentProductId = nil
             clearCache()
             AdCoordinator.instance.isVip = false
-            log("snapshot hasVip=false")
+            NodeVault.shared.resetToAuto()
+            log("snapshot hasVip=false, reset node to auto")
         }
     }
 
@@ -236,6 +237,7 @@ private extension VipCenter {
         currentProductId = nil
         clearCache()
         AdCoordinator.instance.isVip = false
+        NodeVault.shared.resetToAuto()
     }
 
     func writeCache(expiry: Date, productId: String?) {

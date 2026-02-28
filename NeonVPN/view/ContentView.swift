@@ -142,10 +142,11 @@ struct HomeView: View {
                 
                 // 中央连接区域
                 VStack(spacing: 0) {
-                    // 连接状态卡片
+                    // 连接状态卡片（图标可点击，与连接按钮行为一致）
                         PremiumConnectionCard(
                             stage: viewModel.stage,
-                            duration: viewModel.formattedDuration
+                            duration: viewModel.formattedDuration,
+                            action: handleConnectionAction
                         )
                         
                         // 连接按钮
@@ -548,11 +549,16 @@ struct PremiumStatusIndicatorView: View {
 struct PremiumConnectionCard: View {
     let stage: ConnectVM.Stage
     let duration: String
+    let action: () -> Void
     @State private var rotationAngle: Double = 0
     @State private var orbitRotation: Double = 0
     @State private var flowPhase: CGFloat = 0
     
     var body: some View {
+        Button(action: {
+            guard stage != .connecting else { return }
+            action()
+        }) {
         VStack(spacing: 20) {
             // 连接图标（增强：更大外圈 + 虚线轨道 + 内部毛玻璃）
             ZStack {
@@ -619,6 +625,9 @@ struct PremiumConnectionCard: View {
             .opacity(stage == .connected ? 1 : 0)
             .animation(.easeInOut(duration: 0.2), value: stage)
         }
+        }
+        .buttonStyle(.plain)
+        .disabled(stage == .connecting)
         .padding(.vertical, 16)
         .onAppear {
             withAnimation(.linear(duration: 12).repeatForever(autoreverses: false)) {

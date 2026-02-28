@@ -486,7 +486,7 @@ final class NetCenter {
             targetUrls = serverList
             debugPrint("[NET] 使用服务器列表进行验证，数量: \(serverList.count)")
         } else {
-            targetUrls = ["", ""]
+            targetUrls = ["https://www.google.com/generate_204", "http://cp.cloudflare.com/generate_204"]
             debugPrint("[NET] 使用默认 URL 进行验证")
         }
         

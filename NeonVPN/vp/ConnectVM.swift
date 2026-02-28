@@ -566,44 +566,39 @@ private extension ConnectVM {
         }
     }
     
-    /// 准备并通知连接成功（加载 Admob 广告，带超时管理）
+    /// 准备并通知连接成功（加载连接场景广告，带超时管理）
     private func loadAdWithTimeout() {
-        // 设置全局连接状态为已连接（Admob 需要连接状态才能加载）
         ConnectionStatusCenter.shared.update(stage: .connected)
         
         let startTime = Date()
-        debugPrint("[ADS] [Manager] 开始加载 Admob，开始时间: \(startTime)")
+        debugPrint("[ADS] [Manager] 连接广告加载开始")
         
         var isCompleted = false
         let timeoutDuration: TimeInterval = 15.0
         
-        // 设置超时任务
         let timeoutTask = DispatchWorkItem { [weak self] in
             guard let self = self, !isCompleted else { return }
             isCompleted = true
             let timeoutTimestamp = Date()
-            debugPrint("[ADS] [Manager] Admob 加载超时: \(timeoutTimestamp)，耗时: \(timeoutTimestamp.timeIntervalSince(startTime))")
+            debugPrint("[ADS] [Manager] 连接广告加载超时，耗时: \(String(format: "%.2f", timeoutTimestamp.timeIntervalSince(startTime)))s")
             self.notifyConnectSucceeded()
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + timeoutDuration, execute: timeoutTask)
         
-        // 加载 Admob 广告
         AdCoordinator.instance.loadMob(moment: StoreKeys.AdTrigger.connect, onReady: { [weak self] in
-            // 成功处理
             guard let self = self, !isCompleted else { return }
             isCompleted = true
             timeoutTask.cancel()
             let endTime = Date()
-            debugPrint("[ADS] [Manager] Admob 加载成功: \(endTime)，耗时: \(endTime.timeIntervalSince(startTime))")
+            debugPrint("[ADS] [Manager] 连接广告加载完成，耗时: \(String(format: "%.2f", endTime.timeIntervalSince(startTime)))s")
             self.notifyConnectSucceeded()
         }, onFailed: { [weak self] in
-            // 失败处理
             guard let self = self, !isCompleted else { return }
             isCompleted = true
             timeoutTask.cancel()
             let endTime = Date()
-            debugPrint("[ADS] [Manager] Admob 加载失败: \(endTime)，耗时: \(endTime.timeIntervalSince(startTime))")
+            debugPrint("[ADS] [Manager] 连接广告未就绪，耗时: \(String(format: "%.2f", endTime.timeIntervalSince(startTime)))s")
             self.notifyConnectSucceeded()
         })
     }

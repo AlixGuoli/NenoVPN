@@ -32,6 +32,8 @@ final class NetProfile {
     }
     
     var packageId: String {
+        /// 测试服
+        //return "admobon"
         return Bundle.main.bundleIdentifier ?? "com.coco.neon.vpn.fly"
     }
     

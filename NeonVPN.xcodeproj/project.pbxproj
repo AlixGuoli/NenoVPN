@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1619EF89A894311430FB95E6 /* Pods_NeonVPN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B446555FBD20B7EC4789E2E8 /* Pods_NeonVPN.framework */; };
+		BBC8EA2A2F52CE62000EB36B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC8EA292F52CE62000EB36B /* StoreKit.framework */; };
 		FE003E5D2E7D47EB0071416A /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE003E5C2E7D47EB0071416A /* NetworkExtension.framework */; };
 		FE003E652E7D47EB0071416A /* cocopacket.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FE003E5B2E7D47EB0071416A /* cocopacket.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FE9B5C2A2ED047A400252E28 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9B5C292ED047A400252E28 /* AppTrackingTransparency.framework */; };
@@ -46,6 +47,7 @@
 		38550FF39600451DFE392AE0 /* Pods-NeonVPN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeonVPN.release.xcconfig"; path = "Target Support Files/Pods-NeonVPN/Pods-NeonVPN.release.xcconfig"; sourceTree = "<group>"; };
 		763CB924486EF783044D50B5 /* Pods-NeonVPN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeonVPN.debug.xcconfig"; path = "Target Support Files/Pods-NeonVPN/Pods-NeonVPN.debug.xcconfig"; sourceTree = "<group>"; };
 		B446555FBD20B7EC4789E2E8 /* Pods_NeonVPN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeonVPN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBC8EA292F52CE62000EB36B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		FE003E332E7D46110071416A /* NeonVPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeonVPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE003E5B2E7D47EB0071416A /* cocopacket.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = cocopacket.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE003E5C2E7D47EB0071416A /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
@@ -109,6 +111,7 @@
 				FE9B5C342ED0485500252E28 /* GameAnalytics.xcframework in Frameworks */,
 				FE9B5C322ED047E600252E28 /* libz.tbd in Frameworks */,
 				FE9B5C302ED047DE00252E28 /* libsqlite3.tbd in Frameworks */,
+				BBC8EA2A2F52CE62000EB36B /* StoreKit.framework in Frameworks */,
 				FE9B5C2E2ED047D400252E28 /* SystemConfiguration.framework in Frameworks */,
 				FE9B5C2C2ED047AE00252E28 /* AdSupport.framework in Frameworks */,
 				FE9B5C2A2ED047A400252E28 /* AppTrackingTransparency.framework in Frameworks */,
@@ -139,6 +142,7 @@
 		5E09182D2F93BED86B6AE79F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BBC8EA292F52CE62000EB36B /* StoreKit.framework */,
 				FE9B5C332ED0485500252E28 /* GameAnalytics.xcframework */,
 				FE9B5C312ED047E600252E28 /* libz.tbd */,
 				FE9B5C2F2ED047DE00252E28 /* libsqlite3.tbd */,

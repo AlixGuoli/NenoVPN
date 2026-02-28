@@ -52,5 +52,12 @@ final class NodeVault {
         let value = UserDefaults.standard.integer(forKey: selectedIdKey)
         return value == 0 ? -1 : value
     }
+
+    /// 重置为自动节点（非会员时调用）
+    func resetToAuto() {
+        UserDefaults.standard.set("auto", forKey: "selectedServerCode")
+        storeSelectedId(-1)
+        NotificationCenter.default.post(name: .selectedServerChanged, object: nil)
+    }
 }
 
