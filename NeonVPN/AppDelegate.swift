@@ -22,6 +22,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
     
     private func setupAdmob() {
+        guard !AdVault.admobDisabledInCode else {
+            debugPrint("[AD] AdMob 已在代码中关闭，跳过初始化")
+            return
+        }
         MobileAds.shared.start { status in
             let isReady = status.adapterStatusesByClassName.values.contains { $0.state == .ready }
             debugPrint(isReady ? "[AD] Google Mobile Ads 初始化完成" : "[AD] Google Mobile Ads 初始化未就绪")

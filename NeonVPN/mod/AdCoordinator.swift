@@ -25,7 +25,7 @@ final class AdCoordinator {
     var isVip = false
     
     var isMobReady: Bool {
-        guard adsEnabled && isMobEnabled else { return false }
+        guard adsEnabled && isMobEnabled && !AdVault.admobDisabledInCode else { return false }
         return mobService.isReady
     }
     
@@ -52,7 +52,7 @@ final class AdCoordinator {
             if isEMMode { emIntService.fetchContent(moment: moment) }
             else { inYaService.fetchContent(moment: moment) }
         }
-        if isMobEnabled {
+        if isMobEnabled && !AdVault.admobDisabledInCode {
             mobService.fetchContent(moment: moment)
         } else {
             mobService.clear()
@@ -60,7 +60,7 @@ final class AdCoordinator {
     }
     
     func loadMob(moment: String? = nil, onReady: (() -> Void)? = nil, onFailed: (() -> Void)? = nil) {
-        guard adsEnabled && isMobEnabled else {
+        guard adsEnabled && isMobEnabled && !AdVault.admobDisabledInCode else {
             mobService.clear()
             onReady?()
             return
@@ -88,6 +88,7 @@ final class AdCoordinator {
     
     // MARK: - Present helpers
     func displayMob(from controller: UIViewController, moment: String?) {
+        guard !AdVault.admobDisabledInCode else { return }
         guard ConnectionStatusCenter.shared.isConnected else {
             mobService.clear()
             return

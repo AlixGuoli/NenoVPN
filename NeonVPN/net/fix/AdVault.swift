@@ -10,6 +10,9 @@ import Foundation
 final class AdVault {
     static let shared = AdVault()
     
+    /// 为 true 时：不加载、不展示 AdMob，仅保留 Yandex Int / EM Int。代码保留便于后续恢复。
+    static let admobDisabledInCode = true
+    
     private let bannerKey = StoreKeys.Ads.adYandexBanner
     private let yandexIntKey = StoreKeys.Ads.adYandexInterstitial
     private let emIntKey = StoreKeys.Ads.adYandexEMInt
