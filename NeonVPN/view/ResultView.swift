@@ -254,19 +254,8 @@ struct ConnectionInfoCard: View {
     }
     
     private func getServerLocation() -> String {
-        let code = UserDefaults.standard.string(forKey: "selectedServerCode") ?? "auto"
-        switch code {
-        case "auto": return LocalizedText("auto_node")
-        case "us": return "United States"
-        case "uk": return "United Kingdom"
-        case "sg": return "Singapore"
-        case "jp": return "Japan"
-        case "de": return "Germany"
-        case "nl": return "Netherlands"
-        case "ca": return "Canada"
-        case "au": return "Australia"
-        default: return "Unknown"
-        }
+        let raw = NodeVault.shared.selectedDisplayName()
+        return raw == "recommended" ? LocalizedText("auto_node") : raw
     }
 }
 

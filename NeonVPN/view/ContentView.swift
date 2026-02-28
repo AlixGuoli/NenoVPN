@@ -999,39 +999,12 @@ private struct ServerWideCard: View {
     }
 
     private func updateSubtitle() {
-        let code = UserDefaults.standard.string(forKey: "selectedServerCode") ?? "auto"
-        currentSubtitle = displayName(for: code)
-    }
-
-    private func displayName(for code: String) -> String {
-        switch code {
-        case "auto": return LocalizedText("recommended")
-        case "us": return "United States"
-        case "uk": return "United Kingdom"
-        case "sg": return "Singapore"
-        case "jp": return "Japan"
-        case "de": return "Germany"
-        case "nl": return "Netherlands"
-        case "ca": return "Canada"
-        case "au": return "Australia"
-        default: return LocalizedText("recommended")
-        }
+        let raw = NodeVault.shared.selectedDisplayName()
+        currentSubtitle = raw == "recommended" ? LocalizedText("recommended") : raw
     }
 
     private func flagForSelected() -> String {
-        let code = UserDefaults.standard.string(forKey: "selectedServerCode") ?? "auto"
-        switch code {
-        case "auto": return "🧭"
-        case "us": return "🇺🇸"
-        case "uk": return "🇬🇧"
-        case "sg": return "🇸🇬"
-        case "jp": return "🇯🇵"
-        case "de": return "🇩🇪"
-        case "nl": return "🇳🇱"
-        case "ca": return "🇨🇦"
-        case "au": return "🇦🇺"
-        default: return "🧭"
-        }
+        NodeVault.shared.selectedFlag()
     }
 }
 

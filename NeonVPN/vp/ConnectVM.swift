@@ -50,6 +50,7 @@ final class ConnectVM: ObservableObject {
 
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(onSystemStatus), name: .NEVPNStatusDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onVipExpiredDisconnectRequired), name: .vipExpiredDisconnectRequired, object: nil)
         bootstrap()
         setupTimer()
     }
@@ -184,6 +185,37 @@ final class ConnectVM: ObservableObject {
     /// 取消断开连接
     func cancelDisconnect() {
         showDisconnectConfirm = false
+    }
+
+    /// 非会员且选中非 auto 时主动断开（不弹确认框）
+    @objc private func onVipExpiredDisconnectRequired() {
+        DispatchQueue.main.async { [weak self] in
+            self?.forceDisconnectForVipExpired()
+        }
+    }
+
+    private func forceDisconnectForVipExpired() {
+        let center = ConnectionStatusCenter.shared
+        guard center.stage == .connecting || center.stage == .connected else { return }
+        guard let mgr = manager else {
+            stage = .disconnected
+            showConnectingView = false
+            return
+        }
+        switch mgr.connection.status {
+        case .connected, .connecting, .reasserting:
+            userInitiated = false
+            showConnectingView = false
+            showDisconnectConfirm = false
+            stopConnectionTimer()
+            NetworkMonitor.shared.stopVPNConnection()
+            historyManager.recordConnectionDisconnect()
+            mgr.connection.stopVPNTunnel()
+            stage = .disconnected
+            debugPrint("[CONNECT] 非会员且非 auto，主动断开")
+        default:
+            break
+        }
     }
 
     // MARK: - Private

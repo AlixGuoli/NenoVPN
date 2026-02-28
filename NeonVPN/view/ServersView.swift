@@ -201,6 +201,8 @@ private func flagEmoji(for countryCode: String) -> String {
 
 extension Notification.Name {
     static let selectedServerChanged = Notification.Name("selectedServerChanged")
+    /// 非会员且连接中/已连接且非 auto 时，需主动断开
+    static let vipExpiredDisconnectRequired = Notification.Name("vipExpiredDisconnectRequired")
 }
 
 private struct ServerCard: View {

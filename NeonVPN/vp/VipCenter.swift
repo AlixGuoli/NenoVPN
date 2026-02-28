@@ -154,6 +154,12 @@ final class VipCenter: ObservableObject {
             currentProductId = nil
             clearCache()
             AdCoordinator.instance.isVip = false
+            // 若连接中/已连接且选中非 auto，主动断开
+            let center = ConnectionStatusCenter.shared
+            let wasNotAuto = NodeVault.shared.selectedId() != -1
+            if wasNotAuto && (center.stage == .connecting || center.stage == .connected) {
+                NotificationCenter.default.post(name: .vipExpiredDisconnectRequired, object: nil)
+            }
             NodeVault.shared.resetToAuto()
             log("snapshot hasVip=false, reset node to auto")
         }
