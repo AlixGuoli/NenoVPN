@@ -228,4 +228,6 @@ Datensammlungshinweis";
 "vip_restore_purchase" = "Kauf wiederherstellen";
 "vip_not_subscribed" = "Nicht abonniert";
 "vip_active_until" = "Aktiv bis %@";
+"vip_footer_prefix" = "Mit Fortfahren stimmst du den ";
+"vip_footer_and" = " und ";
 "Skip_Ad_Time" = "In %ld Sek. überspringen";

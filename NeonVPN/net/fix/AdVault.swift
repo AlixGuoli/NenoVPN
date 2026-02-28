@@ -206,6 +206,7 @@ final class AdVault {
     func variant() -> String? {
         /// 测试服
         //return "y;a"
+        //return "e;a"
         //return "y;e;a"
         return UserDefaults.standard.string(forKey: variantKey)
     }

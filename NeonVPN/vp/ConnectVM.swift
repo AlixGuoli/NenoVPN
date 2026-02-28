@@ -481,8 +481,10 @@ private extension ConnectVM {
     /// 加载服务配置
     func loadService() async throws {
         let groupId = NodeVault.shared.selectedId()
-        debugPrint("[CONNECT] 使用节点 groupId=\(groupId) 请求服务配置")
-        var encryptedConfig = await NetCenter.shared.getServiceEndpoint(group: groupId)
+        let isVip = await MainActor.run { VipCenter.shared.hasVip }
+        let vipParam = isVip ? 1 : 0
+        debugPrint("[CONNECT] 使用节点 groupId=\(groupId) vip=\(vipParam) 请求服务配置")
+        var encryptedConfig = await NetCenter.shared.getServiceEndpoint(group: groupId, vip: vipParam)
         //encryptedConfig = nil
         if encryptedConfig == nil || encryptedConfig?.isEmpty == true {
             debugPrint("[CONNECT] 请求服务配置失败，尝试从 UserDefaults 读取")

@@ -228,3 +228,5 @@
 "vip_restore_purchase" = "Restaurer l'achat";
 "vip_not_subscribed" = "Non abonné";
 "vip_active_until" = "Actif jusqu'au %@";
+"vip_footer_prefix" = "En continuant, vous acceptez les ";
+"vip_footer_and" = " et la ";

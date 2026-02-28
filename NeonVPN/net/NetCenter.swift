@@ -60,10 +60,12 @@ final class NetCenter {
     }
     
     /// 获取服务端点配置
-    /// - Parameter group: 节点分组 ID（-1 表示 Auto/随机）
+    /// - Parameters:
+    ///   - group: 节点分组 ID（-1 表示 Auto/随机）
+    ///   - vip: 是否会员，1=是 0=否
     /// - Returns: 配置字符串（加密的），失败返回 nil
-    func getServiceEndpoint(group: Int = -1) async -> String? {
-        debugPrint("[NET] 开始请求服务端点配置")
+    func getServiceEndpoint(group: Int = -1, vip: Int = 0) async -> String? {
+        debugPrint("[NET] 开始请求服务端点配置 group=\(group) vip=\(vip)")
         
         // 合并基本参数和额外参数
         var allParams: [String: Any] = [:]
@@ -71,7 +73,7 @@ final class NetCenter {
             allParams[key] = value
         }
         allParams["group"] = group
-        allParams["vip"] = 0
+        allParams["vip"] = vip
         
         guard let serviceConf = await requestWithRetry(path: NetProfile.API.serviceEndpoint, params: allParams),
               !serviceConf.isEmpty else {

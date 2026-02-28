@@ -227,4 +227,6 @@
 "vip_restore_purchase" = "Restaurar compra";
 "vip_not_subscribed" = "Não inscrito";
 "vip_active_until" = "Ativo até %@";
+"vip_footer_prefix" = "Ao continuar, você concorda com os ";
+"vip_footer_and" = " e a ";
 "Skip_Ad_Time" = "Pular anúncio em %ld s";

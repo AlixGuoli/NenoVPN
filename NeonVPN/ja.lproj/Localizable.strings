@@ -228,3 +228,5 @@
 "vip_restore_purchase" = "購入を復元";
 "vip_not_subscribed" = "未加入";
 "vip_active_until" = "有効期限：%@";
+"vip_footer_prefix" = "続行することで、";
+"vip_footer_and" = "および";

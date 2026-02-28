@@ -228,3 +228,5 @@
 "vip_restore_purchase" = "Восстановить покупку";
 "vip_not_subscribed" = "Не подписан";
 "vip_active_until" = "Активна до %@";
+"vip_footer_prefix" = "Продолжая, вы соглашаетесь с ";
+"vip_footer_and" = " и ";

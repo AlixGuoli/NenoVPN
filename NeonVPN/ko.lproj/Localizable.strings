@@ -228,3 +228,5 @@
 "vip_restore_purchase" = "구매 복원";
 "vip_not_subscribed" = "미가입";
 "vip_active_until" = "유효 기간: %@";
+"vip_footer_prefix" = "계속 진행하면 ";
+"vip_footer_and" = " 및 ";

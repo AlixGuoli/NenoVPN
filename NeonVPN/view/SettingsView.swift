@@ -12,7 +12,10 @@ struct SettingsView: View {
     @State private var showLanguageSettings = false
     @State private var showAbout = false
     @State private var showVip = false
+    @State private var showUuidSheet = false
     @EnvironmentObject private var vipCenter: VipCenter
+    
+    private var deviceUuid: String { NetProfile.shared.deviceKey }
     
     var body: some View {
         NavigationView {
@@ -23,7 +26,7 @@ struct SettingsView: View {
                 ScrollView {
                     LazyVStack(spacing: 20) {
                         // 顶部应用信息卡片
-                        AppInfoCard()
+                        AppInfoCard(onLongPress: { showUuidSheet = true })
                         
                         // 设置项
                         LazyVStack(spacing: 16) {
@@ -101,6 +104,9 @@ struct SettingsView: View {
                     .navigationDestination(isPresented: $showVip) {
                         SubscriptionView()
                     }
+                    .sheet(isPresented: $showUuidSheet) {
+                        UuidSheet(uuid: deviceUuid)
+                    }
         }
         .bindLocale()
     }
@@ -122,21 +128,33 @@ struct SettingsView: View {
 // MARK: - 应用信息卡片
 struct AppInfoCard: View {
     @ObservedObject private var localeManager = LocaleDao.shared
+    var onLongPress: (() -> Void)? = nil
     
     var body: some View {
         VStack(spacing: 16) {
-            // 应用图标（使用 Assets 中的 logo）
-            Image("logo")
-                .resizable()
-                .renderingMode(.original)
-                .scaledToFit()
-                .frame(width: 80, height: 80)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(Color.white.opacity(0.08), lineWidth: 0.5)
-                )
-                .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
+            // 应用图标（使用 Assets 中的 logo），长按显示 UUID（测试用）
+            ZStack {
+                Image("logo")
+                    .resizable()
+                    .renderingMode(.original)
+                    .scaledToFit()
+                    .frame(width: 80, height: 80)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(Color.white.opacity(0.08), lineWidth: 0.5)
+                    )
+                    .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
+                
+                if onLongPress != nil {
+                    Color.clear
+                        .frame(width: 80, height: 80)
+                        .contentShape(Rectangle())
+                        .onLongPressGesture(minimumDuration: 1.5) {
+                            onLongPress?()
+                        }
+                }
+            }
             
             // 应用名称和版本
             VStack(spacing: 4) {
@@ -340,6 +358,50 @@ struct AboutView: View {
             }
         }
         .bindLocale()
+    }
+}
+
+// MARK: - UUID 测试用 Sheet
+private struct UuidSheet: View {
+    let uuid: String
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 20) {
+                Text(uuid)
+                    .font(.system(size: 14, design: .monospaced))
+                    .foregroundColor(.primary)
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
+                
+                Button("Copy") {
+                    UIPasteboard.general.string = uuid
+                    dismiss()
+                }
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 48)
+                .background(Color.accentColor)
+                .cornerRadius(12)
+                
+                Spacer()
+            }
+            .padding(20)
+            .navigationTitle("UUID")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                    .foregroundColor(.accentColor)
+                }
+            }
+        }
     }
 }
 

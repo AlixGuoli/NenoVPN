@@ -71,6 +71,7 @@ struct SubscriptionView: View {
                     agreementSection
                     primaryButton
                     restoreButton
+                    footerLinksSection
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 8)
@@ -376,6 +377,9 @@ struct SubscriptionView: View {
                         .font(.system(size: 10))
                 }
                 .buttonStyle(.plain)
+                Text(".")
+                    .foregroundColor(.white.opacity(0.7))
+                    .font(.system(size: 10))
             }
             .lineLimit(1)
             .minimumScaleFactor(0.85)
@@ -415,6 +419,41 @@ struct SubscriptionView: View {
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(.plain)
+    }
+    
+    private var footerLinksSection: some View {
+        HStack(spacing: 2) {
+            Text(LocalizedText("vip_footer_prefix"))
+                .font(.system(size: 10))
+                .foregroundColor(.white.opacity(0.5))
+            Button {
+                openURL(URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+            } label: {
+                Text(LocalizedText("terms_of_use"))
+                    .underline()
+                    .foregroundColor(.accentColor)
+                    .font(.system(size: 10))
+            }
+            .buttonStyle(.plain)
+            Text(LocalizedText("vip_footer_and"))
+                .font(.system(size: 10))
+                .foregroundColor(.white.opacity(0.5))
+            Button {
+                openURL(URL(string: "https://keyvpntwo.xyz/p.html")!)
+            } label: {
+                Text(LocalizedText("privacy_policy"))
+                    .underline()
+                    .foregroundColor(.accentColor)
+                    .font(.system(size: 10))
+            }
+            .buttonStyle(.plain)
+            Text(".")
+                .font(.system(size: 10))
+                .foregroundColor(.white.opacity(0.5))
+        }
+        .lineLimit(1)
+        .minimumScaleFactor(0.85)
+        .padding(.top, 4)
     }
 }
 
