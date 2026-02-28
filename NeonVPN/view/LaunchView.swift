@@ -5,6 +5,7 @@ struct LaunchView: View {
     @StateObject private var viewModel = LaunchViewModel()
     @EnvironmentObject private var launchManager: LaunchManager
     @EnvironmentObject private var onboardingManager: OnboardingManager
+    @EnvironmentObject private var vipCenter: VipCenter
     @ObservedObject private var localeManager = LocaleDao.shared
     
     var body: some View {

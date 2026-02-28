@@ -14,6 +14,7 @@ struct NeonVPNApp: App {
     @StateObject private var launchManager = LaunchManager()
     @StateObject private var onboardingManager = OnboardingManager()
     @StateObject private var globalConnectVM = ConnectVM()
+    @StateObject private var vipCenter = VipCenter.shared
     @Environment(\.scenePhase) private var scenePhase
     
     @State private var startupDone = false
@@ -29,6 +30,7 @@ struct NeonVPNApp: App {
                     LaunchView(shouldShowStartupAd: $shouldShowStartupAd)
                         .environmentObject(launchManager)
                         .environmentObject(onboardingManager)
+                        .environmentObject(vipCenter)
                         .preferredColorScheme(.dark)
                 } else if !onboardingManager.hasCompletedOnboarding {
                     OnboardingView(onboardingManager: onboardingManager)
@@ -36,6 +38,7 @@ struct NeonVPNApp: App {
                 } else {
                     ContentView()
                         .environmentObject(globalConnectVM)
+                        .environmentObject(vipCenter)
                         .preferredColorScheme(.dark)
                 }
                 
@@ -66,31 +69,36 @@ struct NeonVPNApp: App {
         case .active:
             // App 进入前台时的处理
             requestATTPermissionIfNeeded()
-            if isBack
-                && startupDone
-                && onboardingManager.hasCompletedOnboarding
-                && globalConnectVM.stage != .connecting
-                && !launchManager.isLaunching {
+            Task {
+                // 前台时优先刷新 VIP 状态，避免过期 / 新购时广告判断不准确
+                await vipCenter.refreshVipStatus()
                 
-                let ads = AdCoordinator.instance
-                
-                // 拉广告
-                ads.loadAllAds(moment: StoreKeys.AdTrigger.foreground)
-                
-                // 检查是否有广告正在展示
-                if !ads.isActive {
-                    // 检查是否有广告可以展示
-                    if ads.hasAnyReady {
-                        debugPrint("[ADS] [Manager] 从后台返回，显示后台页")
-                        showReturnLaunch = true
-                        isBack = false
+                if isBack
+                    && startupDone
+                    && onboardingManager.hasCompletedOnboarding
+                    && globalConnectVM.stage != .connecting
+                    && !launchManager.isLaunching {
+                    
+                    let ads = AdCoordinator.instance
+                    
+                    // 拉广告（内部已根据 isVip 决定是否真正请求）
+                    ads.loadAllAds(moment: StoreKeys.AdTrigger.foreground)
+                    
+                    // 检查是否有广告正在展示
+                    if !ads.isActive {
+                        // 检查是否有广告可以展示
+                        if ads.hasAnyReady {
+                            debugPrint("[ADS] [Manager] 从后台返回，显示后台页")
+                            showReturnLaunch = true
+                            isBack = false
+                        } else {
+                            debugPrint("[ADS] [Manager] 从后台返回，但没有广告可展示，跳过后台页")
+                            isBack = false
+                        }
                     } else {
-                        debugPrint("[ADS] [Manager] 从后台返回，但没有广告可展示，跳过后台页")
+                        debugPrint("[ADS] [Manager] 从后台返回，但广告正在展示，跳过后台页")
                         isBack = false
                     }
-                } else {
-                    debugPrint("[ADS] [Manager] 从后台返回，但广告正在展示，跳过后台页")
-                    isBack = false
                 }
             }
         case .background:

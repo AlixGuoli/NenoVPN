@@ -11,53 +11,57 @@ private struct ServerItem: Identifiable, Equatable {
 }
 
 struct ServersView: View {
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var vipCenter: VipCenter
+    /// 关闭节点页（pop）：取消或选择节点后调用
+    var onDismiss: () -> Void
+    
     @State private var selected: String = UserDefaults.standard.string(forKey: "selectedServerCode") ?? "auto"
     @State private var servers: [ServerItem] = []
     @State private var didLoad = false
+    @State private var showSubscription = false
     @ObservedObject private var localeManager = LocaleDao.shared
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                // 暗黑背景
-                Color.black.ignoresSafeArea()
-                
-                ScrollView {
-                    LazyVStack(spacing: 12) {
-                        ForEach(servers) { item in
-                            ServerCard(
-                                item: item,
-                                isSelected: item.serverCode == selected
-                            ) {
-                                let code: String
-                                if item.backendId == -1 {
-                                    code = "auto"
-                                } else {
-                                    code = item.serverCode
-                                }
-                                selected = code
-                                UserDefaults.standard.set(code, forKey: "selectedServerCode")
-                                NodeVault.shared.storeSelectedId(item.backendId)
-                                NotificationCenter.default.post(name: .selectedServerChanged, object: item.id)
-                                dismiss() // 选择后自动关闭
+        ZStack {
+            // 暗黑背景
+            Color.black.ignoresSafeArea()
+            
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    ForEach(servers) { item in
+                        let isLocked = !vipCenter.hasVip && item.serverCode != "auto"
+                        ServerCard(
+                            item: item,
+                            isSelected: item.serverCode == selected,
+                            isLocked: isLocked
+                        ) {
+                            if isLocked {
+                                showSubscription = true
+                                return
                             }
-                            .padding(.horizontal, 16)
+                            let code: String
+                            if item.backendId == -1 {
+                                code = "auto"
+                            } else {
+                                code = item.serverCode
+                            }
+                            selected = code
+                            UserDefaults.standard.set(code, forKey: "selectedServerCode")
+                            NodeVault.shared.storeSelectedId(item.backendId)
+                            NotificationCenter.default.post(name: .selectedServerChanged, object: item.id)
+                            onDismiss() // 选择后 pop 回主页
                         }
-                        .padding(.top, 12)
+                        .padding(.horizontal, 16)
                     }
+                    .padding(.top, 12)
                 }
             }
-            .navigationTitle(LocalizedText("servers_title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(LocalizedText("cancel")) {
-                        dismiss()
-                    }
-                    .foregroundColor(.accentColor)
-                }
-            }
+        }
+        .navigationTitle(LocalizedText("servers_title"))
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $showSubscription) {
+            SubscriptionView()
+                .environmentObject(vipCenter)
         }
         .bindLocale()
         .onAppear {
@@ -202,6 +206,7 @@ extension Notification.Name {
 private struct ServerCard: View {
     let item: ServerItem
     let isSelected: Bool
+    var isLocked: Bool = false
     let onTap: () -> Void
     @State private var pressed = false
 
@@ -223,7 +228,7 @@ private struct ServerCard: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(item.name)
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(isLocked ? .white.opacity(0.6) : .white)
                         .lineLimit(1)
                     if let subtitle = item.subtitle {
                         Text(subtitle)
@@ -235,19 +240,25 @@ private struct ServerCard: View {
 
                 Spacer()
 
-                Image(systemName: isSelected ? "checkmark.circle.fill" : "chevron.right")
-                    .foregroundColor(isSelected ? .green : .white.opacity(0.6))
-                    .font(.system(size: 18, weight: .semibold))
+                if isLocked {
+                    Image(systemName: "lock.fill")
+                        .foregroundColor(.white.opacity(0.5))
+                        .font(.system(size: 16, weight: .medium))
+                } else {
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "chevron.right")
+                        .foregroundColor(isSelected ? .green : .white.opacity(0.6))
+                        .font(.system(size: 18, weight: .semibold))
+                }
             }
             .padding(.horizontal, 16)
             .frame(height: 56)
             .background(
                 RoundedRectangle(cornerRadius: 14)
-                    .fill(Color.white.opacity(0.06))
+                    .fill(Color.white.opacity(isLocked ? 0.04 : 0.06))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 14)
-                    .stroke(isSelected ? Color.green.opacity(0.5) : Color.white.opacity(0.12), lineWidth: isSelected ? 1.5 : 1)
+                    .stroke(isSelected ? Color.green.opacity(0.5) : Color.white.opacity(isLocked ? 0.08 : 0.12), lineWidth: isSelected ? 1.5 : 1)
             )
             .scaleEffect(pressed ? 0.98 : 1)
             .contentShape(Rectangle())
@@ -257,6 +268,9 @@ private struct ServerCard: View {
 }
 
 #Preview {
-    NavigationStack { ServersView() }
+    NavigationStack {
+        ServersView(onDismiss: {})
+            .environmentObject(VipCenter.shared)
+    }
 }
 

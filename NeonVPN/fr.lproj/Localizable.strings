@@ -186,7 +186,8 @@
 // Alerte pas de réseau
 "no_network_title" = "Pas de réseau";
 "no_network_message" = "Vérifiez votre connexion et réessayez.";
-
+"disconnect_first_title" = "Déconnecter d'abord";
+"disconnect_first_message" = "Veuillez déconnecter le VPN avant de changer de serveur.";
 "disconnect_success_title" = "Déconnecté";
 "disconnect_success_subtitle" = "La connexion VPN a été interrompue avec succès.";
 
@@ -199,3 +200,31 @@
 // Bouton pour ignorer la publicité
 "Skip_Ad" = "Passer l’annonce";
 "Skip_Ad_Time" = "Passer l’annonce dans %ld s";
+
+// Vip / Abonnement
+"vip_title" = "Vip";
+"vip_premium_active" = "Premium actif";
+"vip_premium_membership" = "Abonnement premium";
+"vip_valid_until" = "Valide jusqu'au %@";
+"vip_unlock_description" = "Débloquez haute vitesse, sans pub et plus de serveurs dans le monde.";
+"vip_select_package" = "Choisir l'offre";
+"vip_plan_weekly" = "Hebdomadaire";
+"vip_plan_monthly" = "Mensuel";
+"vip_plan_yearly" = "Annuel";
+"vip_processing" = "Traitement en cours...";
+"vip_privileges" = "Avantages de l'abonnement";
+"vip_benefit_speed_title" = "Réseau haute vitesse";
+"vip_benefit_speed_desc" = "Routes prioritaires pour streaming et jeux fluides.";
+"vip_benefit_ad_title" = "Sans publicité";
+"vip_benefit_ad_desc" = "Supprime les pubs dans l'app pour une interface épurée.";
+"vip_benefit_server_title" = "Plus de serveurs mondiaux";
+"vip_benefit_server_desc" = "Débloquez plus de pays et changez de serveur en priorité.";
+"vip_terms_conditions" = "Conditions générales";
+"vip_terms_long" = "Le paiement sera débité de votre compte iTunes à la confirmation. L'abonnement se renouvelle automatiquement sauf désactivation au moins 24 h avant la fin de la période. Gérez l'abonnement dans Réglages du compte.";
+"vip_agree_prefix" = "J'accepte ";
+"vip_auto_renewal_terms" = "Conditions de renouvellement";
+"vip_membership_terms" = "Conditions d'abonnement";
+"vip_agree_and_pay" = "Accepter et payer";
+"vip_restore_purchase" = "Restaurer l'achat";
+"vip_not_subscribed" = "Non abonné";
+"vip_active_until" = "Actif jusqu'au %@";

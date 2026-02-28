@@ -186,7 +186,8 @@
 // Нет сети
 "no_network_title" = "Нет сети";
 "no_network_message" = "Проверьте подключение к интернету и попробуйте снова.";
-
+"disconnect_first_title" = "Сначала отключитесь";
+"disconnect_first_message" = "Отключите VPN перед сменой сервера.";
 "disconnect_success_title" = "Отключено";
 "disconnect_success_subtitle" = "VPN-подключение успешно разорвано.";
 
@@ -199,3 +200,31 @@
 // Пропуск рекламы
 "Skip_Ad" = "Пропустить";
 "Skip_Ad_Time" = "Пропустить рекламу через %ld";
+
+// Vip / Подписка
+"vip_title" = "Vip";
+"vip_premium_active" = "Премиум активна";
+"vip_premium_membership" = "Премиум подписка";
+"vip_valid_until" = "Действует до %@";
+"vip_unlock_description" = "Высокая скорость, без рекламы и больше серверов по всему миру.";
+"vip_select_package" = "Выберите пакет";
+"vip_plan_weekly" = "Неделя";
+"vip_plan_monthly" = "Месяц";
+"vip_plan_yearly" = "Год";
+"vip_processing" = "Обработка...";
+"vip_privileges" = "Преимущества подписки";
+"vip_benefit_speed_title" = "Высокоскоростная сеть";
+"vip_benefit_speed_desc" = "Приоритетные маршруты для плавного стриминга и игр.";
+"vip_benefit_ad_title" = "Без рекламы";
+"vip_benefit_ad_desc" = "Убрать рекламу в приложении для чистого интерфейса.";
+"vip_benefit_server_title" = "Больше серверов";
+"vip_benefit_server_desc" = "Разблокируйте больше регионов и переключайте серверы с приоритетом.";
+"vip_terms_conditions" = "Условия использования";
+"vip_terms_long" = "Оплата будет списана с вашего аккаунта iTunes при подтверждении. Подписка продлевается автоматически, если не отключить не менее чем за 24 часа до конца периода. Управление — в настройках аккаунта.";
+"vip_agree_prefix" = "Я согласен с ";
+"vip_auto_renewal_terms" = "Условиями продления";
+"vip_membership_terms" = "Условиями подписки";
+"vip_agree_and_pay" = "Согласен и оплатить";
+"vip_restore_purchase" = "Восстановить покупку";
+"vip_not_subscribed" = "Не подписан";
+"vip_active_until" = "Активна до %@";

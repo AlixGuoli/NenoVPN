@@ -91,7 +91,9 @@ struct ContentView: View {
 // MARK: - 主页视图
 struct HomeView: View {
     @ObservedObject private var viewModel: ConnectVM
+    @EnvironmentObject private var vipCenter: VipCenter
     @State private var showServers = false
+    @State private var showDisconnectFirstAlert = false
     @ObservedObject private var localeManager = LocaleDao.shared
     @State private var isAnimating = false
     
@@ -106,16 +108,30 @@ struct HomeView: View {
             
             ScrollView {
             VStack(spacing: 0) {
-                // 顶部状态行
+                // 顶部状态行 + Vip 入口
                 HStack(spacing: 12) {
                     StatusCapsule(stage: viewModel.stage)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    NavigationLink(destination: SubscriptionView()) {
+                        Image("isVip")
+                            .resizable()
+                            .frame(width: 45, height: 45)
+                    }
+                    .buttonStyle(.plain)
                 }
                 .padding(.top, 20)
                 .padding(.horizontal, 24)
 
                 // 顶部入口行（服务器）
                 CompactShortcutRow(
-                    serversAction: { showServers = true },
+                    serversAction: {
+                        if viewModel.stage == .connected {
+                            showDisconnectFirstAlert = true
+                        } else {
+                            showServers = true
+                        }
+                    },
                     settingsAction: { } // 移除设置入口，现在在Tab中
                 )
                 .onReceive(NotificationCenter.default.publisher(for: .selectedServerChanged)) { _ in
@@ -124,9 +140,7 @@ struct HomeView: View {
                 .padding(.top, 8)
                 .padding(.horizontal, 24)
                 
-                 // （入口已移至顶部信息行）
-
-                 // 中央连接区域
+                // 中央连接区域
                 VStack(spacing: 0) {
                     // 连接状态卡片
                         PremiumConnectionCard(
@@ -154,8 +168,16 @@ struct HomeView: View {
                     .padding(.bottom, 30)
                 }
             }
-            .fullScreenCover(isPresented: $showServers) {
-                ServersView()
+            .navigationDestination(isPresented: $showServers) {
+                ServersView(onDismiss: { showServers = false })
+                    .environmentObject(vipCenter)
+            }
+            .alert(LocalizedText("disconnect_first_title"), isPresented: $showDisconnectFirstAlert) {
+                Button(LocalizedText("got_it")) {
+                    showDisconnectFirstAlert = false
+                }
+            } message: {
+                Text(LocalizedText("disconnect_first_message"))
             }
              // toolbar 移除，入口改为快捷卡片
         }
@@ -1041,6 +1063,7 @@ private struct SettingWideCard: View {
         .buttonStyle(.plain)
     }
 }
+
 private struct CapsuleShortcut: View {
     let icon: String
     let text: String
@@ -1075,6 +1098,10 @@ private struct CapsuleShortcut: View {
         .buttonStyle(.plain)
     }
 }
+
+// MARK: - 订阅入口卡片
+
+// PremiumEntryRow 已弃用
 
 // MARK: - 即时速率（模拟）
 struct ConnectionSpeedView: View {

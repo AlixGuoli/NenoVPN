@@ -11,6 +11,8 @@ struct SettingsView: View {
     @ObservedObject private var localeManager = LocaleDao.shared
     @State private var showLanguageSettings = false
     @State private var showAbout = false
+    @State private var showVip = false
+    @EnvironmentObject private var vipCenter: VipCenter
     
     var body: some View {
         NavigationView {
@@ -25,6 +27,16 @@ struct SettingsView: View {
                         
                         // 设置项
                         LazyVStack(spacing: 16) {
+                            // Vip 状态
+                            SettingsCard(
+                                icon: "crown.fill",
+                                title: LocalizedText("vip_title"),
+                                subtitle: vipCenter.hasVip
+                                    ? String(format: LocalizedText("vip_active_until"), formatVipExpiry(vipCenter.vipEndDate))
+                                    : LocalizedText("vip_not_subscribed"),
+                                action: { showVip = true }
+                            )
+                            
                             // 语言设置
                             SettingsCard(
                                 icon: "globe",
@@ -86,6 +98,9 @@ struct SettingsView: View {
                     .fullScreenCover(isPresented: $showAbout) {
                         AboutView()
                     }
+                    .navigationDestination(isPresented: $showVip) {
+                        SubscriptionView()
+                    }
         }
         .bindLocale()
     }
@@ -94,6 +109,13 @@ struct SettingsView: View {
         if let url = URL(string: urlString) {
             UIApplication.shared.open(url)
         }
+    }
+
+    private func formatVipExpiry(_ date: Date?) -> String {
+        guard let date else { return LocalizedText("vip_not_subscribed") }
+        let f = DateFormatter()
+        f.dateFormat = "yyyy.MM.dd"
+        return f.string(from: date)
     }
 }
 

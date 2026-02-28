@@ -202,6 +202,7 @@ final class AdVault {
     /// 原: getAdsType()
     func variant() -> String? {
         /// 测试服
+        //return "y;a"
         //return "y;e;a"
         return UserDefaults.standard.string(forKey: variantKey)
     }

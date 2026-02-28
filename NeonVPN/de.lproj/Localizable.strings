@@ -187,7 +187,8 @@ Datensammlungshinweis";
 // Kein Netzwerk
 "no_network_title" = "Kein Netzwerk";
 "no_network_message" = "Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.";
-
+"disconnect_first_title" = "Zuerst trennen";
+"disconnect_first_message" = "Bitte trennen Sie die VPN-Verbindung, bevor Sie den Server wechseln.";
 "disconnect_success_title" = "Getrennt";
 "disconnect_success_subtitle" = "Die VPN-Verbindung wurde erfolgreich getrennt.";
 
@@ -199,4 +200,32 @@ Datensammlungshinweis";
 
 // Werbe-Überspringen
 "Skip_Ad" = "Werbung überspringen";
+
+// Vip / Abo
+"vip_title" = "Vip";
+"vip_premium_active" = "Premium aktiv";
+"vip_premium_membership" = "Premium-Mitgliedschaft";
+"vip_valid_until" = "Gültig bis %@";
+"vip_unlock_description" = "Höhere Geschwindigkeit, werbefrei und mehr Server weltweit.";
+"vip_select_package" = "Mitgliedschaft wählen";
+"vip_plan_weekly" = "Wöchentlich";
+"vip_plan_monthly" = "Monatlich";
+"vip_plan_yearly" = "Jährlich";
+"vip_processing" = "Wird verarbeitet...";
+"vip_privileges" = "Mitgliedschaftsvorteile";
+"vip_benefit_speed_title" = "Hochgeschwindigkeitsnetz";
+"vip_benefit_speed_desc" = "Priorisierte Routen für flüssiges Streaming und Gaming.";
+"vip_benefit_ad_title" = "Werbefrei";
+"vip_benefit_ad_desc" = "Keine Werbung in der App für eine übersichtliche Oberfläche.";
+"vip_benefit_server_title" = "Mehr globale Server";
+"vip_benefit_server_desc" = "Mehr Standorte freischalten und Server mit höherer Priorität wechseln.";
+"vip_terms_conditions" = "AGB";
+"vip_terms_long" = "Die Zahlung wird bei Bestätigung Ihrem iTunes-Konto belastet. Das Abo verlängert sich automatisch, sofern Sie die Verlängerung mindestens 24 Stunden vor Ende der Laufzeit deaktivieren. Verwalten Sie das Abo in den Konto-Einstellungen.";
+"vip_agree_prefix" = "Ich stimme zu ";
+"vip_auto_renewal_terms" = "Verlängerungsbedingungen";
+"vip_membership_terms" = "Mitgliedschaftsbedingungen";
+"vip_agree_and_pay" = "Zustimmen und zahlen";
+"vip_restore_purchase" = "Kauf wiederherstellen";
+"vip_not_subscribed" = "Nicht abonniert";
+"vip_active_until" = "Aktiv bis %@";
 "Skip_Ad_Time" = "In %ld Sek. überspringen";

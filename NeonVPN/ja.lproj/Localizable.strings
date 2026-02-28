@@ -186,7 +186,8 @@
 // ネットワークなし
 "no_network_title" = "ネットワークなし";
 "no_network_message" = "ネットワーク接続を確認して、もう一度お試しください。";
-
+"disconnect_first_title" = "先に切断";
+"disconnect_first_message" = "サーバーを変更する前にVPNを切断してください。";
 "disconnect_success_title" = "切断されました";
 "disconnect_success_subtitle" = "VPN接続が正常に切断されました。";
 
@@ -199,3 +200,31 @@
 // 広告スキップ
 "Skip_Ad" = "広告をスキップ";
 "Skip_Ad_Time" = "%ld秒後にスキップ";
+
+// Vip / 購読
+"vip_title" = "Vip";
+"vip_premium_active" = "プレミアム有効";
+"vip_premium_membership" = "プレミアム会員";
+"vip_valid_until" = "有効期限：%@";
+"vip_unlock_description" = "高速・広告なし・世界中のサーバーを利用できます。";
+"vip_select_package" = "プランを選択";
+"vip_plan_weekly" = "週間";
+"vip_plan_monthly" = "月間";
+"vip_plan_yearly" = "年間";
+"vip_processing" = "処理中...";
+"vip_privileges" = "会員特典";
+"vip_benefit_speed_title" = "高速ネットワーク";
+"vip_benefit_speed_desc" = "ストリーミングやゲームに最適な優先ルート。";
+"vip_benefit_ad_title" = "広告なし";
+"vip_benefit_ad_desc" = "アプリ内広告を非表示にし、すっきりした画面で利用できます。";
+"vip_benefit_server_title" = "より多くのサーバー";
+"vip_benefit_server_desc" = "より多くの地域をアンロックし、優先的にサーバーを切り替えられます。";
+"vip_terms_conditions" = "利用規約";
+"vip_terms_long" = "購入の確認時にiTunesアカウントに請求されます。現在の期間終了の24時間前までに自動更新をオフにしない限り、サブスクリプションは自動更新されます。購入後はアカウント設定で管理できます。";
+"vip_agree_prefix" = "以下に同意します：";
+"vip_auto_renewal_terms" = "自動更新の条件";
+"vip_membership_terms" = "会員規約";
+"vip_agree_and_pay" = "同意して支払う";
+"vip_restore_purchase" = "購入を復元";
+"vip_not_subscribed" = "未加入";
+"vip_active_until" = "有効期限：%@";

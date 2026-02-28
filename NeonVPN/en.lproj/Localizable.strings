@@ -148,7 +148,6 @@
 "cancel" = "Cancel";
 "edit" = "Edit";
 "done" = "Done";
-"cancel" = "Cancel";
 "confirm" = "Confirm";
 "vpn_status" = "VPN Status";
 "success_subtitle" = "Your connection is secure and protected";
@@ -187,6 +186,8 @@
 // No network alert
 "no_network_title" = "No Network";
 "no_network_message" = "Please check your network connection and try again.";
+"disconnect_first_title" = "Disconnect First";
+"disconnect_first_message" = "Please disconnect the VPN before changing server.";
 "disconnect_success_title" = "Disconnected";
 "disconnect_success_subtitle" = "VPN connection has been disconnected successfully";
 
@@ -199,3 +200,32 @@
 // Ad Skip Button
 "Skip_Ad" = "Skip Ad";
 "Skip_Ad_Time" = "Skip Ad %ldS";
+
+// Vip / Subscription
+"vip_title" = "Vip";
+"vip_premium_active" = "Premium Active";
+"vip_premium_membership" = "Premium Membership";
+"vip_valid_until" = "Valid until %@";
+"vip_unlock_description" = "Unlock high-speed, ad-free and more global servers.";
+"vip_select_package" = "Select Membership Package";
+"vip_plan_weekly" = "Weekly";
+"vip_plan_monthly" = "Monthly";
+"vip_plan_yearly" = "Yearly";
+"vip_processing" = "Processing...";
+"vip_privileges" = "Membership Privileges";
+"vip_benefit_speed_title" = "High-speed network";
+"vip_benefit_speed_desc" = "Prioritized fast routes for smoother streaming and gaming.";
+"vip_benefit_ad_title" = "Ad-free experience";
+"vip_benefit_ad_desc" = "Remove in-app ads inside this VPN for a clean interface.";
+"vip_benefit_server_title" = "More global routes";
+"vip_benefit_server_desc" = "Unlock more locations and switch servers with higher priority.";
+"vip_terms_conditions" = "Terms & Conditions";
+"vip_terms_long" = "Payment will be charged to your iTunes Account at confirmation of purchase. Your subscription will automatically renew unless auto-renew is turned off at least 24 hours before the end of the current period. You can manage your subscription and turn off auto-renewal in Account Settings after purchase.";
+"vip_agree_prefix" = "I agree to ";
+"vip_agree_prefix" = "I agree to ";
+"vip_auto_renewal_terms" = "Auto-Renewal Terms";
+"vip_membership_terms" = "Membership Terms";
+"vip_agree_and_pay" = "Agree and Pay";
+"vip_restore_purchase" = "Restore Purchase";
+"vip_not_subscribed" = "Not subscribed";
+"vip_active_until" = "Active until %@";

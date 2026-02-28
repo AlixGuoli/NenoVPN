@@ -186,7 +186,8 @@
 // Sem rede
 "no_network_title" = "Sem rede";
 "no_network_message" = "Verifique sua conexão e tente novamente.";
-
+"disconnect_first_title" = "Desconectar primeiro";
+"disconnect_first_message" = "Desconecte a VPN antes de trocar de servidor.";
 "disconnect_success_title" = "Desconectado";
 "disconnect_success_subtitle" = "A conexão VPN foi encerrada com sucesso.";
 
@@ -198,4 +199,32 @@
 
 // Pular anúncio
 "Skip_Ad" = "Pular anúncio";
+
+// Vip / Assinatura
+"vip_title" = "Vip";
+"vip_premium_active" = "Premium ativo";
+"vip_premium_membership" = "Assinatura premium";
+"vip_valid_until" = "Válido até %@";
+"vip_unlock_description" = "Desbloqueie alta velocidade, sem anúncios e mais servidores globais.";
+"vip_select_package" = "Escolher plano";
+"vip_plan_weekly" = "Semanal";
+"vip_plan_monthly" = "Mensal";
+"vip_plan_yearly" = "Anual";
+"vip_processing" = "Processando...";
+"vip_privileges" = "Benefícios da assinatura";
+"vip_benefit_speed_title" = "Rede de alta velocidade";
+"vip_benefit_speed_desc" = "Rotas prioritárias para streaming e jogos mais fluidos.";
+"vip_benefit_ad_title" = "Sem anúncios";
+"vip_benefit_ad_desc" = "Remova os anúncios no app para uma interface limpa.";
+"vip_benefit_server_title" = "Mais servidores globais";
+"vip_benefit_server_desc" = "Desbloqueie mais regiões e troque de servidor com prioridade.";
+"vip_terms_conditions" = "Termos e condições";
+"vip_terms_long" = "O pagamento será cobrado na sua conta iTunes na confirmação. A assinatura renova automaticamente a menos que desative até 24 horas antes do fim do período. Gerencie em Ajustes da conta.";
+"vip_agree_prefix" = "Concordo com ";
+"vip_auto_renewal_terms" = "Termos de renovação";
+"vip_membership_terms" = "Termos da assinatura";
+"vip_agree_and_pay" = "Concordar e pagar";
+"vip_restore_purchase" = "Restaurar compra";
+"vip_not_subscribed" = "Não inscrito";
+"vip_active_until" = "Ativo até %@";
 "Skip_Ad_Time" = "Pular anúncio em %ld s";

@@ -186,7 +186,8 @@
 // 네트워크 없음
 "no_network_title" = "네트워크 없음";
 "no_network_message" = "네트워크 연결을 확인한 후 다시 시도해 주세요.";
-
+"disconnect_first_title" = "먼저 연결 해제";
+"disconnect_first_message" = "서버를 변경하려면 먼저 VPN 연결을 해제해 주세요.";
 "disconnect_success_title" = "연결 해제됨";
 "disconnect_success_subtitle" = "VPN 연결이 성공적으로 종료되었습니다.";
 
@@ -199,3 +200,31 @@
 // 광고 건너뛰기
 "Skip_Ad" = "광고 건너뛰기";
 "Skip_Ad_Time" = "%ld초 후 건너뛰기";
+
+// Vip / 구독
+"vip_title" = "Vip";
+"vip_premium_active" = "프리미엄 활성";
+"vip_premium_membership" = "프리미엄 멤버십";
+"vip_valid_until" = "유효 기간: %@";
+"vip_unlock_description" = "고속, 광고 없음, 더 많은 글로벌 서버를 이용하세요.";
+"vip_select_package" = "멤버십 선택";
+"vip_plan_weekly" = "주간";
+"vip_plan_monthly" = "월간";
+"vip_plan_yearly" = "연간";
+"vip_processing" = "처리 중...";
+"vip_privileges" = "멤버십 혜택";
+"vip_benefit_speed_title" = "고속 네트워크";
+"vip_benefit_speed_desc" = "스트리밍과 게임에 최적화된 우선 경로.";
+"vip_benefit_ad_title" = "광고 없음";
+"vip_benefit_ad_desc" = "앱 내 광고를 제거하여 깔끔한 화면을 경험하세요.";
+"vip_benefit_server_title" = "더 많은 글로벌 서버";
+"vip_benefit_server_desc" = "더 많은 지역을 잠금 해제하고 우선적으로 서버를 전환하세요.";
+"vip_terms_conditions" = "이용약관";
+"vip_terms_long" = "구매 확인 시 iTunes 계정으로 청구됩니다. 현재 기간 종료 24시간 전까지 자동 갱신을 끄지 않으면 구독이 자동 갱신됩니다. 구매 후 계정 설정에서 관리할 수 있습니다.";
+"vip_agree_prefix" = "다음에 동의합니다: ";
+"vip_auto_renewal_terms" = "자동 갱신 약관";
+"vip_membership_terms" = "멤버십 약관";
+"vip_agree_and_pay" = "동의하고 결제";
+"vip_restore_purchase" = "구매 복원";
+"vip_not_subscribed" = "미가입";
+"vip_active_until" = "유효 기간: %@";

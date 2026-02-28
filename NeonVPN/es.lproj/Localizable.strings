@@ -182,6 +182,8 @@
 // No network alert
 "no_network_title" = "Sin red";
 "no_network_message" = "Comprueba tu conexión e inténtalo de nuevo.";
+"disconnect_first_title" = "Desconectar primero";
+"disconnect_first_message" = "Desconecta la VPN antes de cambiar de servidor.";
 "disconnect_confirm_title" = "Desconectar";
 "disconnect_confirm_message" = "¿Seguro que deseas desconectar la VPN?";
 "disconnect_confirm_button" = "Desconectar";
@@ -197,3 +199,31 @@
 // Botón de omitir anuncio
 "Skip_Ad" = "Saltar anuncio";
 "Skip_Ad_Time" = "Saltar anuncio %ld s";
+
+// Vip / Suscripción
+"vip_title" = "Vip";
+"vip_premium_active" = "Premium activo";
+"vip_premium_membership" = "Membresía premium";
+"vip_valid_until" = "Válido hasta %@";
+"vip_unlock_description" = "Desbloquea alta velocidad, sin anuncios y más servidores globales.";
+"vip_select_package" = "Elige tu paquete";
+"vip_plan_weekly" = "Semanal";
+"vip_plan_monthly" = "Mensual";
+"vip_plan_yearly" = "Anual";
+"vip_processing" = "Procesando...";
+"vip_privileges" = "Beneficios de la membresía";
+"vip_benefit_speed_title" = "Red de alta velocidad";
+"vip_benefit_speed_desc" = "Rutas rápidas prioritarias para streaming y juegos más fluidos.";
+"vip_benefit_ad_title" = "Sin anuncios";
+"vip_benefit_ad_desc" = "Elimina los anuncios en la app para una interfaz limpia.";
+"vip_benefit_server_title" = "Más rutas globales";
+"vip_benefit_server_desc" = "Desbloquea más ubicaciones y cambia de servidor con prioridad.";
+"vip_terms_conditions" = "Términos y condiciones";
+"vip_terms_long" = "El pago se cargará a tu cuenta de iTunes al confirmar la compra. La suscripción se renovará automáticamente a menos que desactives la renovación al menos 24 horas antes del final del período actual. Puedes gestionar la suscripción en Ajustes de la cuenta.";
+"vip_agree_prefix" = "Acepto ";
+"vip_auto_renewal_terms" = "Términos de renovación";
+"vip_membership_terms" = "Términos de membresía";
+"vip_agree_and_pay" = "Aceptar y pagar";
+"vip_restore_purchase" = "Restaurar compra";
+"vip_not_subscribed" = "No suscrito";
+"vip_active_until" = "Activo hasta %@";
