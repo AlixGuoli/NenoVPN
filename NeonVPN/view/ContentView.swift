@@ -85,6 +85,9 @@ struct ContentView: View {
                 globalConnectVM.showAdForResultIfNeeded()
             }
         }
+        .onAppear {
+            AdCoordinator.instance.loadAllAds()
+        }
     }
 }
 

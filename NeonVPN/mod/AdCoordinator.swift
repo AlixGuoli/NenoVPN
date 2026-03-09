@@ -44,6 +44,10 @@ final class AdCoordinator {
     
     // MARK: - Load entry points
     func loadAllAds(moment: String? = nil) {
+        guard PostATTManager.shared.isInitialized else {
+            debugPrint("[ADS] [Manager] ATT 未就绪，跳过加载")
+            return
+        }
         guard adsEnabled else {
             debugPrint("[ADS] [Manager] 广告已关闭")
             return
@@ -60,6 +64,10 @@ final class AdCoordinator {
     }
     
     func loadMob(moment: String? = nil, onReady: (() -> Void)? = nil, onFailed: (() -> Void)? = nil) {
+        guard PostATTManager.shared.isInitialized else {
+            onFailed?()
+            return
+        }
         guard adsEnabled && isMobEnabled && !AdVault.admobDisabledInCode else {
             mobService.clear()
             onReady?()
@@ -71,6 +79,10 @@ final class AdCoordinator {
     }
     
     func loadInYa(onReady: (() -> Void)? = nil, onFailed: (() -> Void)? = nil) {
+        guard PostATTManager.shared.isInitialized else {
+            onFailed?()
+            return
+        }
         guard adsEnabled && isInYaEnabled else {
             onReady?()
             return

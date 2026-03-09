@@ -42,16 +42,15 @@ struct OnboardingView: View {
                             hasAgreed: $hasAgreedToTerms,
                             onNext: {
                                 if hasAgreedToTerms {
-                                    withAnimation(.easeInOut(duration: 0.35)) { currentPage = 1 }
+                                    requestATTThenNext {
+                                        withAnimation(.easeInOut(duration: 0.35)) { currentPage = 1 }
+                                    }
                                 }
                             },
                             onboardingManager: onboardingManager
                         )
                         .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
                                                 removal: .move(edge: .leading).combined(with: .opacity)))
-                        .onAppear {
-                            requestATTPermission()
-                        }
                     }
                     if currentPage == 1 {
                         NetworkPermissionPage(
@@ -86,30 +85,39 @@ struct OnboardingView: View {
         }
     }
     
-    private func requestATTPermission() {
-        guard !hasRequestedATT else { return }
+    /// 同意隐私协议后请求 ATT，有结果后执行 completion（含初始化）
+    private func requestATTThenNext(completion: @escaping () -> Void) {
+        guard !hasRequestedATT else {
+            PostATTManager.shared.performInitIfReady()
+            completion()
+            return
+        }
         hasRequestedATT = true
-        
-        // 延迟一点时间，确保网络权限请求已完成
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if #available(iOS 14, *) {
-                ATTrackingManager.requestTrackingAuthorization { status in
-                    DispatchQueue.main.async {
-                        switch status {
-                        case .authorized:
-                            debugPrint("[ATT] 用户授权了追踪权限")
-                        case .denied:
-                            debugPrint("[ATT] 用户拒绝了追踪权限")
-                        case .restricted:
-                            debugPrint("[ATT] 追踪权限受限")
-                        case .notDetermined:
-                            debugPrint("[ATT] 追踪权限未确定")
-                        @unknown default:
-                            debugPrint("[ATT] 未知的追踪权限状态")
-                        }
+
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                DispatchQueue.main.async {
+                    switch status {
+                    case .authorized:
+                        debugPrint("[ATT] 用户授权了追踪权限")
+                    case .denied:
+                        debugPrint("[ATT] 用户拒绝了追踪权限")
+                    case .restricted:
+                        debugPrint("[ATT] 追踪权限受限")
+                    case .notDetermined:
+                        debugPrint("[ATT] 追踪权限未确定")
+                    @unknown default:
+                        debugPrint("[ATT] 未知的追踪权限状态")
+                    }
+                    completion()  // 先跳转，避免主线程被 init 阻塞导致卡顿
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        PostATTManager.shared.performInitIfReady()
                     }
                 }
             }
+        } else {
+            PostATTManager.shared.performInitIfReady()
+            completion()
         }
     }
 }
